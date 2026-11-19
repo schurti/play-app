@@ -4,6 +4,7 @@ import { CATEGORIES, catVars } from '../games/categories'
 import { GAMES, getGame } from '../games'
 import type { Game } from '../games/types'
 import { useGameNav } from '../hooks/useGameNav'
+import { useTimers } from '../hooks/useTimers'
 import { useTouchGestures } from '../hooks/useTouchGestures'
 import { useVisibleGames } from '../hooks/useVisibleGames'
 import { stopSpeech } from '../lib/audio'
@@ -14,6 +15,20 @@ import styles from './GameSheet.module.css'
 import Scene from './Scene'
 import { useToast } from './Toast'
 
+const CLOSE_MS = 220
+/** Zum Schliessen mindestens so weit ziehen (px) … */
+const PULL_MIN = 180
+/** … bzw. diesen Anteil der Dialoghöhe, je nachdem was grösser ist. */
+const PULL_SHARE = 0.35
+/** Ein schneller Wisch schliesst schon ab dieser Strecke (px) … */
+const FLICK_MIN = 100
+/** … wenn er mindestens so schnell ist (px/ms). */
+const FLICK_SPEED = 0.9
+
+/** Abdunkelung hinter dem Dialog (1 = voll, 0 = weg). */
+const backdrop = (strength: number) =>
+  `rgba(42, 36, 83, ${(0.4 * Math.max(0, strength)).toFixed(3)})`
+
 interface BodyProps {
   game: Game
   /** Zum vorherigen / nächsten Spiel der aktuellen Liste (Wischen, Pfeiltasten). */
@@ -22,40 +37,69 @@ interface BodyProps {
 
 function SheetBody({ game, onStep }: BodyProps) {
   const { closeGame: navigateClose } = useGameNav()
+  const timers = useTimers()
+  const sheetRef = useRef<HTMLDivElement>(null)
+  const bgRef = useRef<HTMLDivElement>(null)
   const closing = useRef(false)
+
+  /** Dialog nach unten hinausgleiten lassen, Hintergrund ausblenden, dann schliessen. */
   const closeGame = useCallback(() => {
     if (closing.current) return
     closing.current = true
-    navigateClose()
-  }, [navigateClose])
+    stopSpeech()
+    const sheet = sheetRef.current
+    const bg = bgRef.current
+    const reduced = window.matchMedia?.(
+      '(prefers-reduced-motion: reduce)',
+    ).matches
+    if (!sheet || !bg || reduced) {
+      navigateClose()
+      return
+    }
+    sheet.style.transition = `transform ${CLOSE_MS}ms cubic-bezier(0.4, 0, 1, 1)`
+    sheet.style.transform = 'translateY(100%)'
+    bg.style.transition = `background-color ${CLOSE_MS}ms ease-in`
+    bg.style.backgroundColor = backdrop(0)
+    timers.later(navigateClose, CLOSE_MS)
+  }, [navigateClose, timers])
+
   const toast = useToast()
   const fav = useProgress((s) => Boolean(s.fav[game.id]))
   const cat = CATEGORIES[game.category]
   const Tool = game.tool ? TOOLS[game.tool] : undefined
-  const sheetRef = useRef<HTMLDivElement>(null)
-  const bgRef = useRef<HTMLDivElement>(null)
 
   // Nach unten ziehen schliesst, seitlich wischen blättert zum nächsten Spiel.
   useTouchGestures(sheetRef, {
     onPull(dy) {
       const sheet = sheetRef.current
-      if (!sheet) return
+      const bg = bgRef.current
+      if (!sheet || !bg) return
+      // Dialog und Inhalt bewegen sich gemeinsam; nur das Abdunkeln wird schwächer.
       sheet.style.transition = 'none'
       sheet.style.transform = `translateY(${dy}px)`
-      if (bgRef.current)
-        bgRef.current.style.opacity = String(Math.max(0.3, 1 - dy / 400))
+      const h = sheet.offsetHeight || 600
+      bg.style.transition = 'none'
+      bg.style.backgroundColor = backdrop(1 - Math.min(1, dy / h))
     },
-    onPullEnd(release) {
+    onPullEnd(dy, velocity) {
       const sheet = sheetRef.current
-      if (release) {
+      const bg = bgRef.current
+      const h = sheet?.offsetHeight || 600
+      const far = dy > Math.max(PULL_MIN, h * PULL_SHARE)
+      const flick = dy > FLICK_MIN && velocity > FLICK_SPEED
+      if (far || flick) {
         closeGame()
         return
       }
       if (sheet) {
-        sheet.style.transition = 'transform 0.2s ease-out'
+        sheet.style.transition =
+          'transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1)'
         sheet.style.transform = ''
       }
-      if (bgRef.current) bgRef.current.style.opacity = ''
+      if (bg) {
+        bg.style.transition = 'background-color 0.25s ease-out'
+        bg.style.backgroundColor = ''
+      }
     },
     onSwipeLeft: () => onStep?.(1),
     onSwipeRight: () => onStep?.(-1),

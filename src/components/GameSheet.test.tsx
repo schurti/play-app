@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryRouter, RouterProvider } from 'react-router'
 import { routes } from '../router'
@@ -59,15 +59,19 @@ describe('GameSheet', () => {
   it('schliesst mit Escape und stoppt die Sprachausgabe', async () => {
     renderAt('/?spiel=farben')
     await userEvent.keyboard('{Escape}')
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     expect(cancel).toHaveBeenCalled()
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+    )
     expect(document.body).not.toHaveClass('lock')
   })
 
   it('schliesst per ✕', async () => {
     renderAt('/?spiel=farben')
     await userEvent.click(screen.getByRole('button', { name: 'Schliessen' }))
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+    )
   })
 
   it('schliesst per Tipp auf den Hintergrund', async () => {
@@ -75,7 +79,9 @@ describe('GameSheet', () => {
     await userEvent.click(
       screen.getByRole('dialog').parentElement as HTMLElement,
     )
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+    )
   })
 
   it('schaltet Favoriten um und meldet es', async () => {
@@ -92,6 +98,9 @@ describe('GameSheet', () => {
     const nav = vi.spyOn(router, 'navigate')
     await userEvent.keyboard('{Escape}')
     await userEvent.keyboard('{Escape}')
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+    )
     expect(
       nav.mock.calls.filter(([to]) => (to as unknown) === -1),
     ).toHaveLength(1)
@@ -122,10 +131,33 @@ describe('GameSheet', () => {
   describe('Gesten', () => {
     beforeEach(() => useFilters.getState().resetFilters())
 
-    it('schliesst beim Ziehen nach unten', () => {
+    it('schliesst erst nach weitem Ziehen und gleitet dabei hinaus', async () => {
       renderAt('/?spiel=farben')
-      swipe(screen.getByRole('dialog'), 150, 100, 152, 300)
-      expect(screen.queryByRole('dialog')).toBeNull()
+      const dialog = screen.getByRole('dialog')
+      swipe(dialog, 150, 100, 152, 320)
+      // Animation läuft: Dialog gleitet nach unten, ist aber noch da
+      expect(dialog.style.transform).toBe('translateY(100%)')
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
+      await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
+    })
+
+    it('federt bei mittlerem, langsamem Ziehen zurück', () => {
+      renderAt('/?spiel=farben')
+      const dialog = screen.getByRole('dialog')
+      swipe(dialog, 150, 100, 150, 220, { slow: true })
+      expect(dialog.style.transform).toBe('')
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
+    })
+
+    it('blendet beim Ziehen nur die Abdunkelung aus, nicht den Dialog', () => {
+      renderAt('/?spiel=farben')
+      const dialog = screen.getByRole('dialog')
+      swipe(dialog, 150, 100, 150, 220, { slow: true, keepDown: true })
+      expect(dialog.style.transform).toBe('translateY(120px)')
+      expect(dialog.parentElement!.style.opacity).toBe('')
+      expect(dialog.parentElement!.style.backgroundColor).toMatch(
+        /^rgba\(42, 36, 83/,
+      )
     })
 
     it('bleibt offen bei einem kurzen Zupfen nach unten', () => {

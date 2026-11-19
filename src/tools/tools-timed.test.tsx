@@ -231,6 +231,9 @@ describe('Schliessen stoppt Ton und Sprache (Review Focus 2)', () => {
     })
     expect(tone).toHaveBeenCalled()
     await u.click(screen.getByRole('button', { name: 'Schliessen' }))
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(300)
+    })
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     vi.mocked(tone).mockClear()
     await act(async () => {
@@ -249,6 +252,10 @@ describe('Schliessen stoppt Ton und Sprache (Review Focus 2)', () => {
     await u.click(screen.getByRole('button', { name: '▶ Automatisch' }))
     expect(speak).toHaveBeenCalled()
     await u.click(screen.getByRole('button', { name: 'Schliessen' }))
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(300)
+    })
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     vi.mocked(speak).mockClear()
     vi.mocked(tone).mockClear()
     await act(async () => {

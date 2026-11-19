@@ -10,14 +10,12 @@ export interface TouchGestureHandlers {
    * Wird während der Bewegung mit dem Abstand in px aufgerufen.
    */
   onPull?(dy: number): void
-  /** Ziehen beendet: `true`, wenn weit oder schnell genug gezogen wurde. */
-  onPullEnd?(release: boolean): void
+  /** Ziehen beendet, mit Abstand (px) und Tempo (px/ms) – der Aufrufer entscheidet. */
+  onPullEnd?(dy: number, velocity: number): void
 }
 
 const START = 10 // px, ab hier steht die Richtung fest
 const SWIPE = 70 // px für einen Wisch
-const PULL = 110 // px zum Schliessen
-const FLICK = 0.6 // px/ms – schnelles Ziehen schliesst schon früher
 
 const point = (e: TouchEvent) => e.touches[0] ?? e.changedTouches[0]
 
@@ -42,6 +40,10 @@ export function useTouchGestures(
     let y0 = 0
     let t0 = 0
     let atTop = false
+    // Tempo aus den letzten Bewegungen, nicht über die ganze Geste gemittelt
+    let lastY = 0
+    let lastT = 0
+    let vy = 0
     let mode: 'none' | 'pull' | 'swipe' | 'other' = 'none'
     let active = false
 
@@ -57,6 +59,9 @@ export function useTouchGestures(
       x0 = p.clientX
       y0 = p.clientY
       t0 = e.timeStamp
+      lastY = y0
+      lastT = t0
+      vy = 0
       atTop = el.scrollTop <= 0
       mode = 'none'
     }
@@ -67,12 +72,22 @@ export function useTouchGestures(
       if (!p) return
       const dx = p.clientX - x0
       const dy = p.clientY - y0
+      const dtMove = e.timeStamp - lastT
+      if (dtMove > 0) vy = 0.7 * ((p.clientY - lastY) / dtMove) + 0.3 * vy
+      lastY = p.clientY
+      lastT = e.timeStamp
       if (mode === 'none') {
-        if (Math.abs(dx) < START && Math.abs(dy) < START) return
-        if (dy > 0 && Math.abs(dy) > Math.abs(dx) && atTop && h.current.onPull)
+        const down = dy > 0 && Math.abs(dy) >= Math.abs(dx)
+        if (down && atTop && h.current.onPull) {
+          // Sofort unterbinden, sonst beginnt der Browser zu scrollen/federn
+          // und der Inhalt läuft dem Dialog davon.
+          if (e.cancelable) e.preventDefault()
+          if (dy < START) return
           mode = 'pull'
-        else if (Math.abs(dx) > Math.abs(dy) * 1.5) mode = 'swipe'
-        else mode = 'other'
+        } else {
+          if (Math.abs(dx) < START && Math.abs(dy) < START) return
+          mode = Math.abs(dx) > Math.abs(dy) * 1.5 ? 'swipe' : 'other'
+        }
       }
       if (mode === 'pull') {
         if (e.cancelable) e.preventDefault()
@@ -87,9 +102,10 @@ export function useTouchGestures(
       if (!p) return
       const dx = p.clientX - x0
       const dy = p.clientY - y0
-      const dt = Math.max(1, e.timeStamp - t0)
       if (mode === 'pull') {
-        h.current.onPullEnd?.(dy > PULL || (dy > 40 && dy / dt > FLICK))
+        // Ohne Bewegungsdaten (sehr kurze Geste) Durchschnitt verwenden.
+        const v = vy || dy / Math.max(1, e.timeStamp - t0)
+        h.current.onPullEnd?.(Math.max(0, dy), v)
       } else if (mode === 'swipe' && Math.abs(dx) > SWIPE) {
         if (dx < 0) h.current.onSwipeLeft?.()
         else h.current.onSwipeRight?.()
@@ -98,7 +114,7 @@ export function useTouchGestures(
     }
 
     const cancel = () => {
-      if (mode === 'pull') h.current.onPullEnd?.(false)
+      if (mode === 'pull') h.current.onPullEnd?.(0, 0)
       active = false
       mode = 'none'
     }
