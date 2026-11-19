@@ -78,7 +78,7 @@ const SCENES: Record<CategoryId, ReactNode> = {
   bewegung: (
     <>
       <rect width="320" height="140" fill="#E4F6FF" />
-      <circle cx="250" cy="34" r="18" fill="#FFD25E" />
+      <circle cx="214" cy="34" r="18" fill="#FFD25E" />
       <path d="M-10 104 Q70 64 160 96 T330 88 V150 H-10Z" fill="#B7E08C" />
       <path d="M-10 122 Q100 90 200 116 T330 112 V150 H-10Z" fill="#8FCB64" />
       <circle cx="62" cy="80" r="15" fill="#6DB24A" />

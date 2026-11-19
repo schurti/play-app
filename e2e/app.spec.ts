@@ -11,10 +11,10 @@ test('Spiel öffnen und mit Zurück wieder schliessen', async ({ page }) => {
   expect(new URL(page.url()).pathname).toBe('/')
 })
 
-test('Direktaufruf /sticker zeigt das Sticker-Album', async ({ page }) => {
-  await page.goto('sticker')
+test('Direktaufruf /favoriten zeigt die Favoriten', async ({ page }) => {
+  await page.goto('favoriten')
   await expect(
-    page.getByRole('heading', { name: '🏆 Sticker-Album' }),
+    page.getByRole('heading', { name: '❤️ Eure Lieblingsspiele' }),
   ).toBeVisible()
 })
 

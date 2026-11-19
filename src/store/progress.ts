@@ -4,8 +4,6 @@ import {
   persist,
   type StateStorage,
 } from 'zustand/middleware'
-import { GAMES } from '../games'
-import { stickerSet, type StickerKey } from '../lib/progress'
 import { loadLegacy } from './legacy'
 
 export interface Progress {
@@ -16,7 +14,7 @@ export interface Progress {
 }
 
 interface ProgressActions {
-  markDone(id: string, now?: number): StickerKey[]
+  markDone(id: string, now?: number): void
   toggleFav(id: string): boolean
   reset(): void
 }
@@ -58,14 +56,11 @@ export const useProgress = create<Progress & ProgressActions>()(
       ...EMPTY,
       markDone(id, now = Date.now()) {
         const s = get()
-        const before = stickerSet(GAMES, s.done)
-        const done = { ...s.done, [id]: (s.done[id] ?? 0) + 1 }
         set({
           stars: s.stars + 1,
-          done,
+          done: { ...s.done, [id]: (s.done[id] ?? 0) + 1 },
           hist: [{ id, t: now }, ...s.hist].slice(0, 30),
         })
-        return stickerSet(GAMES, done).filter((k) => !before.includes(k))
       },
       toggleFav(id) {
         const fav = { ...get().fav }

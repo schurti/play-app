@@ -14,7 +14,7 @@ export default defineGame({
     'Eine Person denkt sich heimlich ein Wort aus: Hund, Velo, Glace, Regenschirm.',
     'Sie zeichnet es – ohne Buchstaben und ohne zu sprechen.',
     'Die anderen raten laut. Wer es errät, zeichnet als Nächstes.',
-    'Mit dem Timer wird es spannender: Schafft ihr es in einer Minute?',
+    'Spannender wird es mit Zeitlimit: Jemand zählt langsam bis 60 – schafft ihr es bis dahin?',
   ],
   learn: 'Ideen auf das Wesentliche reduzieren und genau hinschauen.',
   variants:

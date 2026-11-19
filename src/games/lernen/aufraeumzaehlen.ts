@@ -11,7 +11,7 @@ export default defineGame({
   tags: ['allein'],
   order: 290,
   steps: [
-    'Stellt den Timer auf 5 Minuten.',
+    'Stellt einen Küchenwecker auf 5 Minuten.',
     'Bei jedem Ding, das ihr aufräumt, zählt ihr laut.',
     'Wie weit kommt ihr? 10? 20? 30?',
     'Ruft zwischendurch: „Jetzt nur rote Sachen!“',

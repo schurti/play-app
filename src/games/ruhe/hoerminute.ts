@@ -11,7 +11,7 @@ export default defineGame({
   tags: ['allein', 'leise'],
   order: 40,
   steps: [
-    'Startet unten den Timer mit 1 Minute.',
+    'Stellt einen Küchenwecker auf 1 Minute.',
     'Augen zu und ganz still sein.',
     'Zählt an den Fingern jedes Geräusch, das ihr hört.',
     'Danach erzählen: Was habt ihr gehört?',

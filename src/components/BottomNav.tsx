@@ -10,7 +10,6 @@ import styles from './BottomNav.module.css'
 const TABS = [
   { to: '/', emoji: '🏠', label: 'Spiele' },
   { to: '/favoriten', emoji: '❤️', label: 'Favoriten' },
-  { to: '/sticker', emoji: '🏆', label: 'Sticker' },
 ] as const
 
 export default function BottomNav() {
@@ -50,7 +49,6 @@ export default function BottomNav() {
           Zufall
         </button>
         {tab(TABS[1])}
-        {tab(TABS[2])}
       </div>
     </nav>
   )

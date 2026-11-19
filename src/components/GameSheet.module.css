@@ -12,7 +12,8 @@
   max-width: 680px;
   max-height: 94vh;
   overflow: auto;
-  background: var(--bg);
+  /* Helle Tönung der Kategorie-Farbe statt immer Creme */
+  background: color-mix(in srgb, var(--soft) 55%, #fff);
   border-radius: var(--r-xl) var(--r-xl) 0 0;
   padding: 0 16px calc(28px + env(safe-area-inset-bottom));
   animation: up 0.22s ease-out;
@@ -171,26 +172,12 @@
   transform: translateY(3px);
   box-shadow: 0 2px 0 var(--coral-edge);
 }
-.alt {
-  color: var(--ink);
-  background: var(--surface);
-  box-shadow: var(--lift-sm);
-}
-.sm {
-  padding: 8px 14px;
-  font-size: 15px;
-}
 .btns {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
   margin-top: 12px;
   align-items: center;
-}
-.timer {
-  font-size: 22px;
-  font-weight: 900;
-  min-width: 70px;
 }
 .burst {
   position: fixed;

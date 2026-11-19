@@ -29,16 +29,6 @@ describe('useProgress', () => {
     expect(hist[0].t).toBe(34)
   })
 
-  it('gibt neue Sticker und Abzeichen zurück', () => {
-    const s = useProgress.getState()
-    expect(s.markDone('farben')).toEqual([])
-    expect(s.markDone('formen')).toEqual([])
-    expect(s.markDone('zahlen')).toContain('lernen')
-    expect(s.markDone('kim')).toEqual([])
-    expect(s.markDone('sortieren')).toContain('b5')
-    expect(s.markDone('sortieren')).toEqual([])
-  })
-
   it('toggleFav schaltet um', () => {
     expect(useProgress.getState().toggleFav('kim')).toBe(true)
     expect(useProgress.getState().fav).toEqual({ kim: true })

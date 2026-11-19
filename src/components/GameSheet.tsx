@@ -7,26 +7,18 @@ import {
 } from 'react'
 import { useSearchParams } from 'react-router'
 import { CATEGORIES, catVars } from '../games/categories'
-import { GAMES, getGame } from '../games'
+import { getGame } from '../games'
 import type { Game } from '../games/types'
 import { useGameNav } from '../hooks/useGameNav'
 import { useTimers } from '../hooks/useTimers'
-import { fanfare, audioContext, stopSpeech } from '../lib/audio'
-import { rewardMessage } from '../lib/reward'
+import { fanfare, stopSpeech } from '../lib/audio'
 import { useProgress } from '../store/progress'
 import { TOOLS } from '../tools/registry'
 import Art from './Art'
 import Burst from './Burst'
-import Countdown from './Countdown'
 import styles from './GameSheet.module.css'
 import Scene from './Scene'
 import { useToast } from './Toast'
-
-const TIMERS = [
-  { seconds: 60, label: '⏱ 1 Min.' },
-  { seconds: 300, label: '⏱ 5 Min.' },
-  { seconds: 600, label: '⏱ 10 Min.' },
-]
 
 interface BodyProps {
   game: Game
@@ -46,9 +38,6 @@ function SheetBody({ game, onBurst }: BodyProps) {
   const fav = useProgress((s) => Boolean(s.fav[game.id]))
   const doneCount = useProgress((s) => s.done[game.id] ?? 0)
   const [finished, setFinished] = useState(false)
-  const [timer, setTimer] = useState<{ seconds: number; run: number } | null>(
-    null,
-  )
   const cat = CATEGORIES[game.category]
   const Tool = game.tool ? TOOLS[game.tool] : undefined
 
@@ -74,19 +63,12 @@ function SheetBody({ game, onBurst }: BodyProps) {
   const onDone = (e: MouseEvent<HTMLButtonElement>) => {
     if (finished) return
     setFinished(true)
-    const keys = useProgress.getState().markDone(game.id)
+    useProgress.getState().markDone(game.id)
     const r = e.currentTarget.getBoundingClientRect()
     onBurst(r.left + r.width / 2, r.top)
     fanfare()
-    if (keys.length)
-      timers.later(() => toast(rewardMessage(keys[0], GAMES.length)), 300)
-    else toast('⭐ Super gemacht! +1 Stern')
+    toast('⭐ Super gemacht! +1 Stern')
     timers.later(closeGame, 650)
-  }
-
-  const startTimer = (seconds: number) => {
-    audioContext()
-    setTimer((t) => ({ seconds, run: (t?.run ?? 0) + 1 }))
   }
 
   return (
@@ -171,18 +153,6 @@ function SheetBody({ game, onBurst }: BodyProps) {
           {doneCount > 0 && (
             <span className="meta">schon {doneCount}× gespielt</span>
           )}
-        </div>
-        <div className={styles.btns}>
-          {TIMERS.map((t) => (
-            <button
-              key={t.seconds}
-              className={`${styles.btn} ${styles.alt} ${styles.sm}`}
-              onClick={() => startTimer(t.seconds)}
-            >
-              {t.label}
-            </button>
-          ))}
-          {timer && <Countdown key={timer.run} seconds={timer.seconds} />}
         </div>
       </div>
     </div>

@@ -3,7 +3,6 @@ import ErrorPage from './components/ErrorPage'
 import Layout from './components/Layout'
 import FavoritesPage from './pages/FavoritesPage'
 import GamesPage from './pages/GamesPage'
-import StickerPage from './pages/StickerPage'
 
 export const routes: RouteObject[] = [
   {
@@ -12,7 +11,6 @@ export const routes: RouteObject[] = [
     children: [
       { index: true, element: <GamesPage /> },
       { path: 'favoriten', element: <FavoritesPage /> },
-      { path: 'sticker', element: <StickerPage /> },
       { path: '*', element: <Navigate to="/" replace /> },
     ],
   },

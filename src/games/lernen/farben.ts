@@ -13,7 +13,7 @@ export default defineGame({
   steps: [
     'Die App zeigt eine Farbe.',
     'Lauft los und bringt etwas in dieser Farbe zurück.',
-    'Wer zuerst zurück ist, bekommt einen Punkt. Allein spielt man gegen den Timer.',
+    'Wer zuerst zurück ist, bekommt einen Punkt. Allein: Schaffst du es, bevor jemand bis 20 gezählt hat?',
   ],
   learn: 'Farben erkennen und benennen.',
   variants:

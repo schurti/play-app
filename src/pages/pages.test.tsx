@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryRouter, RouterProvider, useLocation } from 'react-router'
 import { GAMES } from '../games'
@@ -104,40 +104,11 @@ describe('Favoriten-Seite', () => {
   })
 })
 
-describe('Sticker-Seite', () => {
-  it('zeigt Statistik und neun Kategorie-Sticker', () => {
-    renderAt('/sticker')
-    expect(screen.getByText('0/256')).toBeInTheDocument()
-    const list = screen.getByRole('list', { name: 'Kategorie-Sticker' })
-    expect(within(list).getAllByRole('listitem')).toHaveLength(9)
-  })
-
-  it('überspringt Verlaufseinträge mit unbekannter ID', () => {
-    useProgress.setState({
-      hist: [
-        { id: 'gibtsnicht', t: 1 },
-        { id: 'farben', t: 2 },
-      ],
-    })
-    renderAt('/sticker')
-    expect(screen.getByText(/Farben-Jagd/)).toBeInTheDocument()
-    expect(screen.queryByText(/gibtsnicht/)).not.toBeInTheDocument()
-  })
-
-  it('löscht den Fortschritt erst beim zweiten Tippen', async () => {
-    useProgress.getState().markDone('farben')
-    renderAt('/sticker')
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Fortschritt zurücksetzen' }),
-    )
-    expect(useProgress.getState().stars).toBe(1)
-    await userEvent.click(
-      screen.getByRole('button', {
-        name: 'Wirklich alles löschen? Nochmal tippen',
-      }),
-    )
-    expect(useProgress.getState().stars).toBe(0)
-    expect(screen.getByText('Fortschritt zurückgesetzt')).toBeInTheDocument()
+describe('Navigation', () => {
+  it('hat keinen Sticker-Tab mehr und leitet /sticker auf / um', () => {
+    const router = renderAt('/sticker')
+    expect(router.state.location.pathname).toBe('/')
+    expect(screen.queryByRole('link', { name: /Sticker/ })).toBeNull()
   })
 })
 

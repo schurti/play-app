@@ -13,7 +13,7 @@ export default defineGame({
   steps: [
     'Baut einen Parcours: über Kissen steigen, unter einer Decke durchkriechen, um Stühle laufen.',
     'Zeigt den Weg einmal vor.',
-    'Das Kind läuft den Parcours – stoppt die Zeit mit dem Timer.',
+    'Das Kind läuft den Parcours – jemand zählt laut mit, wie lange es dauert.',
     'Baut ihn um und versucht es nochmals.',
   ],
   learn: 'Grobmotorik, Planen und Ausdauer.',

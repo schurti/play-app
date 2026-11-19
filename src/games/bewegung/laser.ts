@@ -13,7 +13,7 @@ export default defineGame({
   steps: [
     'Spannt Schnur kreuz und quer durch den Flur und klebt sie fest.',
     'Klettert durch, ohne eine Schnur zu berühren.',
-    'Wer schafft es am schnellsten? Nutzt den Timer.',
+    'Wer schafft es am schnellsten? Jemand zählt laut mit.',
   ],
   learn: 'Körpergefühl und Beweglichkeit.',
   adultNote: 'Schnur nie auf Halshöhe spannen und nach dem Spiel wegräumen.',

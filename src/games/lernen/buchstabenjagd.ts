@@ -12,7 +12,7 @@ export default defineGame({
   order: 400,
   steps: [
     'Wählt einen Buchstaben, z. B. das A.',
-    'Stellt den Timer auf 1 Minute.',
+    'Stellt einen Küchenwecker auf 1 Minute – oder jemand zählt langsam bis 60.',
     'Kreist in einem Zeitungsartikel jedes A ein, das ihr findet.',
     'Zählt am Ende: Wer hat die meisten gefunden?',
   ],
