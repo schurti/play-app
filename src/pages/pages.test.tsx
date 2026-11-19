@@ -23,14 +23,14 @@ beforeEach(() => {
 describe('Spiele-Seite', () => {
   it('zeigt alle Spiele und die Tageskarte', () => {
     renderAt('/')
-    expect(screen.getByText('78 Spiele')).toBeInTheDocument()
+    expect(screen.getByText('200 Spiele')).toBeInTheDocument()
     expect(screen.getByText('⭐ Spiel des Tages')).toBeInTheDocument()
   })
 
   it('filtert per Kategorie-Chip und blendet die Tageskarte aus', async () => {
     renderAt('/')
     await userEvent.click(screen.getByRole('button', { name: '🌙 Ruhe' }))
-    expect(screen.getByText('6 Spiele')).toBeInTheDocument()
+    expect(screen.getByText('25 Spiele')).toBeInTheDocument()
     expect(screen.queryByText('⭐ Spiel des Tages')).not.toBeInTheDocument()
   })
 
@@ -42,7 +42,7 @@ describe('Spiele-Seite', () => {
       matchGame(g, { ...EMPTY_FILTERS, q: 'socken' }),
     )
     expect(expected.length).toBeGreaterThan(0)
-    expect(expected.length).toBeLessThan(78)
+    expect(expected.length).toBeLessThan(200)
     expect(
       screen.getByText(
         `${expected.length} Spiel${expected.length === 1 ? '' : 'e'}`,
@@ -107,7 +107,7 @@ describe('Favoriten-Seite', () => {
 describe('Sticker-Seite', () => {
   it('zeigt Statistik und acht Kategorie-Sticker', () => {
     renderAt('/sticker')
-    expect(screen.getByText('0/78')).toBeInTheDocument()
+    expect(screen.getByText('0/200')).toBeInTheDocument()
     const list = screen.getByRole('list', { name: 'Kategorie-Sticker' })
     expect(within(list).getAllByRole('listitem')).toHaveLength(8)
   })

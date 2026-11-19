@@ -51,7 +51,7 @@ describe('stickerSet', () => {
   })
   it('alle Ruhe-Spiele -> ruhe und ruhe*', () => {
     const ids = idsOf('ruhe')
-    expect(ids).toHaveLength(6)
+    expect(ids).toHaveLength(25)
     const s = stickerSet(GAMES, doneOf(ids))
     expect(s).toContain('ruhe')
     expect(s).toContain('ruhe*')

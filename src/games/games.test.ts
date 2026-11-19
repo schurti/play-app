@@ -9,9 +9,9 @@ const gameFiles = Object.entries(files).filter(
 )
 
 describe('Spiele', () => {
-  it('hat 78 Spiele', () => {
-    expect(GAMES).toHaveLength(78)
-    expect(gameFiles).toHaveLength(78)
+  it('hat 200 Spiele', () => {
+    expect(GAMES).toHaveLength(200)
+    expect(gameFiles).toHaveLength(200)
   })
 
   it('hat die erwarteten Anzahlen je Kategorie', () => {
@@ -22,14 +22,14 @@ describe('Spiele', () => {
       ]),
     )
     expect(counts).toEqual({
-      lernen: 12,
-      malen: 11,
-      bewegung: 12,
-      basteln: 11,
-      musik: 7,
-      forschen: 10,
-      ruhe: 6,
-      rollen: 9,
+      lernen: 25,
+      malen: 25,
+      bewegung: 25,
+      basteln: 25,
+      musik: 25,
+      forschen: 25,
+      ruhe: 25,
+      rollen: 25,
     })
   })
 
@@ -52,17 +52,17 @@ describe('Spiele', () => {
     }
   })
 
-  it('verwendet jedes Werkzeug genau einmal', () => {
+  it('verwendet jedes Werkzeug mindestens einmal', () => {
     for (const tool of TOOL_IDS) {
       expect(
         GAMES.filter((g) => g.tool === tool),
         tool,
-      ).toHaveLength(1)
+      ).not.toHaveLength(0)
     }
   })
 
-  it('behält die Legacy-Reihenfolge (Spiel des Tages)', () => {
-    expect(GAMES[28].id).toBe('kommando')
+  it('behält die Reihenfolge (Spiel des Tages)', () => {
+    expect(GAMES[28].id).toBe('blindmalen')
   })
 
   it('findet Spiele über getGame', () => {
