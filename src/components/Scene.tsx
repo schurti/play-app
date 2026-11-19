@@ -33,6 +33,217 @@ const SCENES: Record<CategoryId, ReactNode> = {
       <rect x="237" y="76" width="18" height="18" rx="4" fill="#F2C7BF" />
     </>
   ),
+  sprache: (
+    <>
+      {bg('#F7E4D8')}
+      {floor(112, '#F2D7C7')}
+      <path
+        d="M40 30 h52 a8 8 0 0 1 8 8 v18 a8 8 0 0 1 -8 8 h-30 l-10 9 v-9 h-12 a8 8 0 0 1 -8 -8 v-18 a8 8 0 0 1 8 -8z"
+        fill="#FFFFFF"
+        opacity="0.7"
+      />
+      <path
+        d="M232 46 h40 a7 7 0 0 1 7 7 v14 a7 7 0 0 1 -7 7 h-8 v8 l-9 -8 h-23 a7 7 0 0 1 -7 -7 v-14 a7 7 0 0 1 7 -7z"
+        fill="#EFCBB6"
+      />
+      <g fill="#E6B9A0">
+        <circle cx="56" cy="47" r="3" />
+        <circle cx="66" cy="47" r="3" />
+        <circle cx="76" cy="47" r="3" />
+      </g>
+    </>
+  ),
+  knobeln: (
+    <>
+      {bg('#F1E2F4')}
+      {floor(112, '#EAD5EE')}
+      <path
+        d="M44 40 h18 a7 7 0 1 1 10 0 h18 v18 a7 7 0 1 0 0 10 v18 h-46z"
+        fill="#E3C6EA"
+      />
+      <path
+        d="M232 64 h16 a6 6 0 1 1 9 0 h16 v16 a6 6 0 1 0 0 9 v16 h-41z"
+        fill="#FFFFFF"
+        opacity="0.7"
+      />
+      <text x="248" y="48" fontSize="26" fontWeight="900" fill="#DDBDE5">
+        ?
+      </text>
+    </>
+  ),
+  wasser: (
+    <>
+      {bg('#D2F1F7')}
+      <g stroke="#C3EAF2" strokeWidth="2">
+        <path d={`M${W.x} 30 H480 M${W.x} 60 H480`} />
+        <path d="M0 0 V90 M40 0 V90 M80 0 V90 M240 0 V90 M280 0 V90 M320 0 V90" />
+      </g>
+      <path
+        d="M-170 98 Q-120 90 -80 98 T0 98 T80 98 T160 98 T240 98 T320 98 T400 98 T490 98 V150 H-170Z"
+        fill="#B9E5EF"
+      />
+      <circle cx="60" cy="58" r="9" fill="#FFFFFF" opacity="0.6" />
+      <circle cx="76" cy="44" r="5" fill="#FFFFFF" opacity="0.6" />
+      <circle cx="252" cy="52" r="7" fill="#FFFFFF" opacity="0.6" />
+      <circle cx="264" cy="66" r="4" fill="#FFFFFF" opacity="0.6" />
+    </>
+  ),
+  kochen: (
+    <>
+      {bg('#FEE5D2')}
+      {floor(106, '#F9D6BC')}
+      <rect x={W.x} y="102" width={W.w} height="6" fill="#F4C8A8" />
+      <rect x="44" y="20" width="56" height="4" rx="2" fill="#F1C6A6" />
+      <path
+        d="M54 24 v14 M70 24 v18 M86 24 v12"
+        stroke="#EDBB97"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+      <circle cx="54" cy="42" r="4" fill="#EDBB97" />
+      <ellipse cx="70" cy="46" rx="4" ry="5" fill="#EDBB97" />
+      <rect
+        x="230"
+        y="70"
+        width="40"
+        height="32"
+        rx="5"
+        fill="#FFFFFF"
+        opacity="0.65"
+      />
+      <rect x="226" y="66" width="48" height="6" rx="3" fill="#F1C6A6" />
+    </>
+  ),
+  haushalt: (
+    <>
+      {bg('#F6E1E7')}
+      {floor(114, '#F0D3DC')}
+      <path
+        d={`M${W.x} 26 Q160 44 480 26`}
+        stroke="#E3BCC8"
+        strokeWidth="2"
+        fill="none"
+      />
+      <path
+        d="M48 32 h22 l4 10 -6 2 v20 h-18 v-20 l-6 -2z"
+        fill="#FFFFFF"
+        opacity="0.7"
+      />
+      <rect x="236" y="34" width="14" height="22" rx="3" fill="#EAC5D1" />
+      <rect x="254" y="35" width="14" height="22" rx="3" fill="#D8E6F3" />
+      <path d="M226 114 l8 -18 h28 l8 18z" fill="#EAC5D1" opacity="0.8" />
+    </>
+  ),
+  karten: (
+    <>
+      {bg('#FBE2E2')}
+      {floor(112, '#F6D3D3')}
+      <g transform="rotate(-10 70 66)">
+        <rect
+          x="50"
+          y="40"
+          width="40"
+          height="56"
+          rx="5"
+          fill="#FFFFFF"
+          opacity="0.75"
+        />
+        <path
+          d="M70 60 c-6 -8 -16 0 0 12 c16 -12 6 -20 0 -12z"
+          fill="#F2B8B8"
+        />
+      </g>
+      <rect
+        x="230"
+        y="70"
+        width="28"
+        height="28"
+        rx="6"
+        fill="#FFFFFF"
+        opacity="0.75"
+      />
+      <g fill="#EBB0B0">
+        <circle cx="238" cy="78" r="2.5" />
+        <circle cx="244" cy="84" r="2.5" />
+        <circle cx="250" cy="90" r="2.5" />
+      </g>
+    </>
+  ),
+  party: (
+    <>
+      {bg('#F8E1FA')}
+      {floor(114, '#F1D2F4')}
+      <path
+        d={`M${W.x} 18 Q160 40 480 18`}
+        stroke="#E7C1EC"
+        strokeWidth="2"
+        fill="none"
+      />
+      <g>
+        <path d="M30 22 l8 14 l8 -12z" fill="#F6CFE0" />
+        <path d="M62 27 l8 14 l8 -12z" fill="#D9E6F7" />
+        <path d="M94 30 l8 14 l8 -12z" fill="#FBE6BF" />
+        <path d="M210 30 l8 14 l8 -12z" fill="#D7EDD0" />
+        <path d="M242 27 l8 14 l8 -12z" fill="#F6CFE0" />
+        <path d="M274 22 l8 14 l8 -12z" fill="#E6D9FB" />
+      </g>
+      <ellipse cx="60" cy="80" rx="10" ry="12" fill="#EFC4F2" />
+      <path
+        d="M60 92 q-3 10 2 18"
+        stroke="#E7C1EC"
+        strokeWidth="1.5"
+        fill="none"
+      />
+      <ellipse cx="262" cy="74" rx="9" ry="11" fill="#D9E6F7" />
+      <path
+        d="M262 85 q3 10 -2 18"
+        stroke="#E7C1EC"
+        strokeWidth="1.5"
+        fill="none"
+      />
+    </>
+  ),
+  gefuehle: (
+    <>
+      {bg('#FDF3C7')}
+      {floor(114, '#F8E9AE')}
+      <path
+        d="M66 44 c-10 -14 -28 0 0 22 c28 -22 10 -36 0 -22z"
+        fill="#FAE0A0"
+      />
+      <circle cx="252" cy="56" r="16" fill="#FFFFFF" opacity="0.7" />
+      <circle cx="246" cy="52" r="2" fill="#E8C979" />
+      <circle cx="258" cy="52" r="2" fill="#E8C979" />
+      <path
+        d="M245 60 q7 6 14 0"
+        stroke="#E8C979"
+        strokeWidth="2"
+        fill="none"
+        strokeLinecap="round"
+      />
+    </>
+  ),
+  unterwegs: (
+    <>
+      {bg('#DCEBF2')}
+      <path d={`M${W.x} 100 H480 V140 H${W.x}Z`} fill="#C9DDE7" />
+      <path
+        d={`M${W.x} 120 H480`}
+        stroke="#EEF5F9"
+        strokeWidth="3"
+        strokeDasharray="16 14"
+      />
+      <rect x="54" y="52" width="4" height="48" fill="#BCD3DF" />
+      <circle cx="56" cy="46" r="11" fill="#FFFFFF" opacity="0.75" />
+      <rect x="244" y="64" width="4" height="36" fill="#BCD3DF" />
+      <path d="M232 52 h28 l-6 12 h-22z" fill="#FFFFFF" opacity="0.75" />
+      <path
+        d="M180 26 q8 -8 16 0 q8 -6 14 2 q-14 4 -30 -2Z"
+        fill="#FFFFFF"
+        opacity="0.8"
+      />
+    </>
+  ),
   malen: (
     <>
       {bg('#FCE0EC')}

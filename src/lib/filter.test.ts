@@ -15,16 +15,16 @@ const g = (id: string) => {
 const f = (patch: Partial<Filters>): Filters => ({ ...EMPTY_FILTERS, ...patch })
 
 describe('itemsByFrequency', () => {
-  it('liefert alle 75 Gegenstände, häufigste zuerst', () => {
+  it('liefert alle 80 Gegenstände, häufigste zuerst', () => {
     const items = itemsByFrequency(GAMES)
-    expect(items).toHaveLength(75)
+    expect(items).toHaveLength(80)
     expect(items.slice(0, 6)).toEqual([
       'Papier',
       'Stifte',
       'Klebeband',
+      'Wasser',
       'Karton',
       'Becher',
-      'Wasser',
     ])
   })
 })
@@ -60,6 +60,9 @@ describe('matchGame', () => {
   })
   it('Alter', () => {
     expect(matchGame(g('buchstabe'), f({ age: 3 }))).toBe(false)
+    expect(matchGame(g('kniereiter'), f({ age: 1 }))).toBe(true)
+    expect(matchGame(g('farben'), f({ age: 1 }))).toBe(false)
+    expect(GAMES.filter((x) => matchGame(x, f({ age: 2 })))).toHaveLength(32)
   })
   it('Dauer', () => {
     expect(matchGame(g('collage'), f({ dur: 10 }))).toBe(false)
@@ -71,7 +74,7 @@ describe('matchGame', () => {
     expect(matchGame(g('kim'), f({ sit: { ohne: true } }))).toBe(false)
     expect(
       GAMES.filter((x) => matchGame(x, f({ sit: { ohne: true } }))),
-    ).toHaveLength(74)
+    ).toHaveLength(106)
   })
   it('Vorhandenes: alle Gegenstände müssen gewählt sein', () => {
     const have = f({ have: { Papier: true, Stifte: true } })

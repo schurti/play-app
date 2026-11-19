@@ -1,0 +1,13 @@
+.stage {
+  position: relative;
+  margin: -4px -4px 4px;
+  padding: 6px 0 0;
+  border-radius: var(--r-lg);
+  background: var(--tint, var(--bg));
+}
+.animal {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  filter: drop-shadow(0 3px 3px #2a245326);
+}

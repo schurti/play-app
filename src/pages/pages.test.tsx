@@ -52,7 +52,7 @@ describe('Spiele-Seite', () => {
 
   it('zeigt alle Spiele und die Tageskarte', () => {
     renderAt('/')
-    expect(screen.getByText('338 Spiele')).toBeInTheDocument()
+    expect(screen.getByText('483 Spiele')).toBeInTheDocument()
     expect(screen.getByText('⭐ Spiel des Tages')).toBeInTheDocument()
   })
 
@@ -71,7 +71,7 @@ describe('Spiele-Seite', () => {
       matchGame(g, { ...EMPTY_FILTERS, q: 'socken' }),
     )
     expect(expected.length).toBeGreaterThan(0)
-    expect(expected.length).toBeLessThan(338)
+    expect(expected.length).toBeLessThan(483)
     expect(
       screen.getByText(
         `${expected.length} Spiel${expected.length === 1 ? '' : 'e'}`,

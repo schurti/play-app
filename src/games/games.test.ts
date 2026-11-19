@@ -9,9 +9,9 @@ const gameFiles = Object.entries(files).filter(
 )
 
 describe('Spiele', () => {
-  it('hat 338 Spiele', () => {
-    expect(GAMES).toHaveLength(338)
-    expect(gameFiles).toHaveLength(338)
+  it('hat 483 Spiele', () => {
+    expect(GAMES).toHaveLength(483)
+    expect(gameFiles).toHaveLength(483)
   })
 
   it('hat die erwarteten Anzahlen je Kategorie', () => {
@@ -22,16 +22,25 @@ describe('Spiele', () => {
       ]),
     )
     expect(counts).toEqual({
-      lernen: 59,
-      malen: 25,
-      papier: 33,
-      bewegung: 44,
-      draussen: 27,
-      basteln: 31,
-      musik: 25,
-      forschen: 34,
+      lernen: 56,
+      sprache: 19,
+      knobeln: 14,
+      malen: 28,
+      papier: 32,
+      bewegung: 45,
+      draussen: 29,
+      wasser: 15,
+      basteln: 33,
+      kochen: 18,
+      musik: 27,
+      forschen: 32,
+      haushalt: 17,
+      karten: 13,
+      party: 13,
+      gefuehle: 15,
       ruhe: 33,
-      rollen: 27,
+      unterwegs: 16,
+      rollen: 28,
     })
   })
 
@@ -64,7 +73,7 @@ describe('Spiele', () => {
   })
 
   it('behält die Reihenfolge (Spiel des Tages)', () => {
-    expect(GAMES[28].id).toBe('aufraeumzaehlen')
+    expect(GAMES[28].id).toBe('luftzahlen')
   })
 
   it('findet Spiele über getGame', () => {

@@ -9,7 +9,7 @@ export interface Game {
   title: string
   emoji: string
   category: CategoryId
-  minAge: 3 | 4 | 5 | 6
+  minAge: 1 | 2 | 3 | 4 | 5 | 6
   minutes: number
   items: Item[]
   tags: Tag[]

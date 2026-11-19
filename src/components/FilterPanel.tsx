@@ -7,6 +7,8 @@ import styles from './FilterPanel.module.css'
 
 const AGES = [
   [0, 'Alle'],
+  [1, '1 J.'],
+  [2, '2 J.'],
   [3, '3 J.'],
   [4, '4 J.'],
   [5, '5 J.'],

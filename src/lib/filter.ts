@@ -4,7 +4,7 @@ import type { Game, Tag } from '../games/types'
 
 export interface Filters {
   cat: 'alle' | CategoryId
-  age: 0 | 3 | 4 | 5 | 6
+  age: 0 | 1 | 2 | 3 | 4 | 5 | 6
   dur: 0 | 10 | 20 | 99
   sit: Partial<Record<Tag | 'ohne', true>>
   have: Partial<Record<Item, true>>

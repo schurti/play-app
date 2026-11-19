@@ -5,6 +5,7 @@ import { GAMES } from '../games'
 import { ANIMALS } from './animal/animals'
 import { MONSTER_PARTS } from './monster/parts'
 import { YOGA } from './yoga/poses'
+import { FIGURES } from './yoga/figures'
 import { TREASURE } from './treasure/riddles'
 import { PANTO } from './panto/cards'
 import type { ToolId } from './ids'
@@ -78,6 +79,15 @@ describe('einfache Werkzeuge', () => {
       await screen.findByRole('button', { name: '🔄 Neue Figur' }),
     ).toBeInTheDocument()
     expect(screen.getByText('5 Atemzüge halten')).toBeInTheDocument()
+  })
+
+  it('yoga zeigt für jede Figur eine gezeichnete Haltung', async () => {
+    for (const y of YOGA) expect(FIGURES[y.name], y.name).toBeDefined()
+    expect(Object.keys(FIGURES)).toHaveLength(YOGA.length)
+    await renderTool('yoga')
+    expect(
+      await screen.findByRole('img', { name: /^So geht / }),
+    ).toBeInTheDocument()
   })
 
   it('animal und yoga haben viele Varianten mit gültigem Artikel', () => {
