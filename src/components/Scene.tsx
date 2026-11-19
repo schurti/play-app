@@ -53,6 +53,28 @@ const SCENES: Record<CategoryId, ReactNode> = {
       />
     </>
   ),
+  papier: (
+    <>
+      <rect width="320" height="140" fill="#D3F1EC" />
+      <rect x="0" y="108" width="320" height="32" fill="#B7E3DA" />
+      <rect x="0" y="106" width="320" height="5" fill="#9CD6CA" />
+      <g transform="rotate(-8 74 64)">
+        <rect x="46" y="34" width="56" height="70" rx="4" fill="#fff" />
+        <path
+          d="M54 50 H94 M54 60 H94 M54 70 H86 M54 80 H92"
+          stroke="#BFD9F2"
+          strokeWidth="3"
+        />
+      </g>
+      <g transform="rotate(30 248 60)">
+        <rect x="240" y="24" width="12" height="64" rx="3" fill="#FFB547" />
+        <path d="M240 88 L246 102 L252 88Z" fill="#F5D7A8" />
+        <path d="M244 96 L246 102 L248 96Z" fill="#2A2453" />
+        <rect x="240" y="18" width="12" height="8" rx="3" fill="#F7A8C6" />
+      </g>
+      <circle cx="236" cy="118" r="9" fill="#fff" opacity="0.85" />
+    </>
+  ),
   bewegung: (
     <>
       <rect width="320" height="140" fill="#E4F6FF" />

@@ -23,7 +23,7 @@ beforeEach(() => {
 describe('Spiele-Seite', () => {
   it('zeigt alle Spiele und die Tageskarte', () => {
     renderAt('/')
-    expect(screen.getByText('200 Spiele')).toBeInTheDocument()
+    expect(screen.getByText('255 Spiele')).toBeInTheDocument()
     expect(screen.getByText('⭐ Spiel des Tages')).toBeInTheDocument()
   })
 
@@ -42,7 +42,7 @@ describe('Spiele-Seite', () => {
       matchGame(g, { ...EMPTY_FILTERS, q: 'socken' }),
     )
     expect(expected.length).toBeGreaterThan(0)
-    expect(expected.length).toBeLessThan(200)
+    expect(expected.length).toBeLessThan(255)
     expect(
       screen.getByText(
         `${expected.length} Spiel${expected.length === 1 ? '' : 'e'}`,
@@ -105,11 +105,11 @@ describe('Favoriten-Seite', () => {
 })
 
 describe('Sticker-Seite', () => {
-  it('zeigt Statistik und acht Kategorie-Sticker', () => {
+  it('zeigt Statistik und neun Kategorie-Sticker', () => {
     renderAt('/sticker')
-    expect(screen.getByText('0/200')).toBeInTheDocument()
+    expect(screen.getByText('0/255')).toBeInTheDocument()
     const list = screen.getByRole('list', { name: 'Kategorie-Sticker' })
-    expect(within(list).getAllByRole('listitem')).toHaveLength(8)
+    expect(within(list).getAllByRole('listitem')).toHaveLength(9)
   })
 
   it('überspringt Verlaufseinträge mit unbekannter ID', () => {

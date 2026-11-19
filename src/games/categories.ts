@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react'
 export type CategoryId =
   | 'lernen'
   | 'malen'
+  | 'papier'
   | 'bewegung'
   | 'basteln'
   | 'musik'
@@ -22,6 +23,12 @@ export interface Category {
 export const CATEGORIES: Record<CategoryId, Category> = {
   lernen: { name: 'Lernen', emoji: '🧠', color: '#4C6EF5', soft: '#E2E8FF' },
   malen: { name: 'Malen', emoji: '🎨', color: '#D9488F', soft: '#FCE0EC' },
+  papier: {
+    name: 'Stift & Papier',
+    emoji: '✏️',
+    color: '#13897F',
+    soft: '#D3F1EC',
+  },
   bewegung: {
     name: 'Bewegung',
     emoji: '🏃',
@@ -48,6 +55,7 @@ export const CATEGORIES: Record<CategoryId, Category> = {
 export const CATEGORY_IDS: readonly CategoryId[] = [
   'lernen',
   'malen',
+  'papier',
   'bewegung',
   'basteln',
   'musik',

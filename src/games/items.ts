@@ -29,6 +29,7 @@ export const ITEM_NAMES = [
   'Löffel',
   'Magnet',
   'Mehl',
+  'Münzen',
   'Murmeln',
   'Nudeln',
   'Obst',
