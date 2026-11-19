@@ -12,8 +12,9 @@ export default defineConfig({
     },
     apple: {
       ...minimal2023Preset.apple,
+      padding: 0.1,
       resizeOptions: { background: '#FFF6E6' },
     },
   },
-  images: ['public/icon.svg'],
+  images: ['assets/icon.svg'],
 })

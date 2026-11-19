@@ -24,7 +24,7 @@ pnpm build      # tsc, Vite-Build, Kopie dist/index.html -> dist/404.html
 Für `pnpm e2e` muss einmalig Chromium installiert werden: `pnpm exec playwright install chromium`.
 Die E2E-Tests laufen bewusst nicht in der CI (Browser-Installation ist langsam); `pnpm lint`, `pnpm test` und `pnpm build` schon.
 
-PWA-Icons werden aus `public/icon.svg` erzeugt: `pnpm generate-pwa-assets` (die PNGs liegen eingecheckt in `public/`).
+PWA-Icons werden aus `assets/icon.svg` erzeugt (3D-Teddybär aus Fluent Emoji auf Creme): `pnpm generate-pwa-assets` legt die PNGs und das Favicon in `public/` ab (eingecheckt).
 
 ### Deployen (GitHub Pages)
 
