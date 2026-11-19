@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { registerSW } from 'virtual:pwa-register'
 import '@fontsource/baloo-2/500.css'
 import '@fontsource/baloo-2/600.css'
 import '@fontsource/baloo-2/700.css'
@@ -13,3 +14,6 @@ createRoot(document.getElementById('root')!).render(
     <App />
   </StrictMode>,
 )
+
+// Neue Version sofort aktivieren und die Seite neu laden, damit alte Chunk-Hashes nie auf 404 laufen.
+registerSW({ immediate: true })

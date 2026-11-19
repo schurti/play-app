@@ -1,4 +1,4 @@
-import { Suspense, useCallback, useEffect, useState, type CSSProperties, type MouseEvent } from 'react'
+import { useCallback, useEffect, useState, type CSSProperties, type MouseEvent } from 'react'
 import { useSearchParams } from 'react-router'
 import { CATEGORIES } from '../games/categories'
 import { GAMES, getGame } from '../games'
@@ -116,11 +116,7 @@ function SheetBody({ game, onBurst }: BodyProps) {
         {game.adultNote && <div className={`${styles.box} ${styles.hint}`}>👩‍👧 {game.adultNote}</div>}
         {game.tool && (
           <div className={styles.tool}>
-            {Tool && (
-              <Suspense fallback={null}>
-                <Tool key={game.id} game={game} color={cat.color} />
-              </Suspense>
-            )}
+            {Tool && <Tool key={game.id} game={game} color={cat.color} />}
           </div>
         )}
         <ol>

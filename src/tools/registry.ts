@@ -1,25 +1,37 @@
-import { lazy, type ComponentType, type LazyExoticComponent } from 'react'
+import type { ComponentType } from 'react'
 import type { ToolId } from './ids'
 import type { ToolProps } from './ToolProps'
+import ColorTool from './color/ColorTool'
+import NumberTool from './number/NumberTool'
+import LetterTool from './letter/LetterTool'
+import ShapeTool from './shape/ShapeTool'
+import AnimalTool from './animal/AnimalTool'
+import YogaTool from './yoga/YogaTool'
+import StoryTool from './story/StoryTool'
+import PantoTool from './panto/PantoTool'
+import DiceTool from './dice/DiceTool'
+import CommandsTool from './commands/CommandsTool'
+import DanceTool from './dance/DanceTool'
+import RhythmTool from './rhythm/RhythmTool'
+import BreathTool from './breath/BreathTool'
+import DrawTool from './draw/DrawTool'
+import TreasureTool from './treasure/TreasureTool'
 
-/** Lazy geladene Werkzeuge; ein fehlendes Werkzeug ist ein Typfehler. */
-export const TOOLS: Record<
-  ToolId,
-  LazyExoticComponent<ComponentType<ToolProps>>
-> = {
-  color: lazy(() => import('./color/ColorTool')),
-  number: lazy(() => import('./number/NumberTool')),
-  letter: lazy(() => import('./letter/LetterTool')),
-  shape: lazy(() => import('./shape/ShapeTool')),
-  animal: lazy(() => import('./animal/AnimalTool')),
-  yoga: lazy(() => import('./yoga/YogaTool')),
-  story: lazy(() => import('./story/StoryTool')),
-  panto: lazy(() => import('./panto/PantoTool')),
-  dice: lazy(() => import('./dice/DiceTool')),
-  commands: lazy(() => import('./commands/CommandsTool')),
-  dance: lazy(() => import('./dance/DanceTool')),
-  rhythm: lazy(() => import('./rhythm/RhythmTool')),
-  breath: lazy(() => import('./breath/BreathTool')),
-  draw: lazy(() => import('./draw/DrawTool')),
-  treasure: lazy(() => import('./treasure/TreasureTool')),
+/** Alle Werkzeuge statisch gebündelt (offline-sicher); ein fehlendes Werkzeug ist ein Typfehler. */
+export const TOOLS: Record<ToolId, ComponentType<ToolProps>> = {
+  color: ColorTool,
+  number: NumberTool,
+  letter: LetterTool,
+  shape: ShapeTool,
+  animal: AnimalTool,
+  yoga: YogaTool,
+  story: StoryTool,
+  panto: PantoTool,
+  dice: DiceTool,
+  commands: CommandsTool,
+  dance: DanceTool,
+  rhythm: RhythmTool,
+  breath: BreathTool,
+  draw: DrawTool,
+  treasure: TreasureTool,
 }

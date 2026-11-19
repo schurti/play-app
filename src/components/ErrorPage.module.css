@@ -1,0 +1,20 @@
+.wrap {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 48px 12px;
+  text-align: center;
+}
+.wrap h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: var(--ink);
+}
+.btn {
+  border: 0;
+  border-radius: 99px;
+  padding: 10px 18px;
+  font-weight: 700;
+  font-size: 17px;
+  color: #fff;
+  background: var(--ink);
+}

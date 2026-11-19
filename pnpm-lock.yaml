@@ -90,6 +90,9 @@ importers:
       vitest-canvas-mock:
         specifier: ^1.2.0
         version: 1.2.0(vitest@5.1.1(@types/node@24.19.2)(jsdom@31.0.1)(vite@8.3.8(@types/node@24.19.2)(jiti@2.7.0)(terser@5.51.2)))
+      workbox-window:
+        specifier: ^7.4.1
+        version: 7.4.1
 
 packages:
 
