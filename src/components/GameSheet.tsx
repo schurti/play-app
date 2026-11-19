@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type CSSProperties, type MouseEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react'
 import { useSearchParams } from 'react-router'
 import { CATEGORIES } from '../games/categories'
 import { GAMES, getGame } from '../games'
@@ -26,11 +26,18 @@ interface BodyProps {
 }
 
 function SheetBody({ game, onBurst }: BodyProps) {
-  const { closeGame } = useGameNav()
+  const { closeGame: navigateClose } = useGameNav()
+  const closing = useRef(false)
+  const closeGame = useCallback(() => {
+    if (closing.current) return
+    closing.current = true
+    navigateClose()
+  }, [navigateClose])
   const toast = useToast()
   const timers = useTimers()
   const fav = useProgress((s) => Boolean(s.fav[game.id]))
   const doneCount = useProgress((s) => s.done[game.id] ?? 0)
+  const [finished, setFinished] = useState(false)
   const [timer, setTimer] = useState<{ seconds: number; run: number } | null>(null)
   const cat = CATEGORIES[game.category]
   const Tool = game.tool ? TOOLS[game.tool] : undefined
@@ -44,9 +51,10 @@ function SheetBody({ game, onBurst }: BodyProps) {
     return () => {
       document.body.classList.remove('lock')
       document.removeEventListener('keydown', onKey)
-      stopSpeech()
     }
   }, [closeGame])
+
+  useEffect(() => stopSpeech, [])
 
   const onFav = () => {
     const now = useProgress.getState().toggleFav(game.id)
@@ -54,6 +62,8 @@ function SheetBody({ game, onBurst }: BodyProps) {
   }
 
   const onDone = (e: MouseEvent<HTMLButtonElement>) => {
+    if (finished) return
+    setFinished(true)
     const keys = useProgress.getState().markDone(game.id)
     const r = e.currentTarget.getBoundingClientRect()
     onBurst(r.left + r.width / 2, r.top)
@@ -133,7 +143,7 @@ function SheetBody({ game, onBurst }: BodyProps) {
           💡 <b>Das lernt ihr:</b> {game.learn}
         </div>
         <div className={styles.btns}>
-          <button className={styles.btn} onClick={onDone}>
+          <button className={styles.btn} onClick={onDone} disabled={finished}>
             Geschafft! ⭐
           </button>
           {doneCount > 0 && <span className="meta">schon {doneCount}× gespielt</span>}

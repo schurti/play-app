@@ -13,8 +13,11 @@ vi.mock('../lib/audio', async (orig) => ({
   fanfare: vi.fn(),
 }))
 
-function renderAt(path: string) {
-  const router = createMemoryRouter(routes, { initialEntries: [path] })
+function renderAt(path: string, state?: unknown) {
+  const router = createMemoryRouter(routes, {
+    initialEntries: state === undefined ? [path] : [{ pathname: '/' }, { pathname: '/', search: path.slice(1), state }],
+    initialIndex: state === undefined ? 0 : 1,
+  })
   render(<RouterProvider router={router} />)
   return router
 }
@@ -93,6 +96,34 @@ describe('GameSheet', () => {
       await vi.advanceTimersByTimeAsync(700)
     })
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+  })
+
+  it('doppeltes „Geschafft!“ zählt nur einmal und schliesst nur einmal', async () => {
+    const router = renderAt('/?spiel=farben', { fromApp: true })
+    const back = vi.spyOn(router, 'navigate')
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
+    const btn = screen.getByRole('button', { name: 'Geschafft! ⭐' })
+    await user.click(btn)
+    await user.click(btn)
+    expect(useProgress.getState().stars).toBe(1)
+    expect(useProgress.getState().done.farben).toBe(1)
+    expect(useProgress.getState().hist).toHaveLength(1)
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(1500)
+    })
+    expect(back.mock.calls.filter(([to]) => to === -1)).toHaveLength(1)
+    expect(router.state.location.pathname).toBe('/')
+    expect(router.state.location.search).toBe('')
+    expect(router.state.historyAction).toBe('POP')
+  })
+
+  it('✕ und Escape zusammen schliessen nur einmal', async () => {
+    const router = renderAt('/?spiel=farben', { fromApp: true })
+    const nav = vi.spyOn(router, 'navigate')
+    await userEvent.keyboard('{Escape}')
+    await userEvent.keyboard('{Escape}')
+    expect(nav.mock.calls.filter(([to]) => to === -1)).toHaveLength(1)
   })
 
   it('zählt den Countdown herunter bis „Zeit um!“ und piept', async () => {
