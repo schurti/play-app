@@ -14,7 +14,7 @@ Spiele-App für Kinder (Vite, React, TypeScript).
 
 ```sh
 pnpm install
-pnpm dev        # Dev-Server unter http://localhost:5173/play-app/
+pnpm dev        # Dev-Server unter http://localhost:5173/
 pnpm lint       # ESLint
 pnpm test       # Vitest (Unit- und Komponententests)
 pnpm e2e        # Playwright (baut die App und startet pnpm preview auf Port 4173)
@@ -28,15 +28,20 @@ PWA-Icons werden aus `public/icon.svg` erzeugt: `pnpm generate-pwa-assets` (die 
 
 ### Deployen (GitHub Pages)
 
-Die App läuft als Projektseite unter `https://<user>.github.io/play-app/`. Bei jedem Push auf `main` baut
+Die App läuft auf GitHub Pages mit einer eigenen Subdomain und liegt dort an der Wurzel (`/`). Bei jedem Push auf `main` baut
 `.github/workflows/deploy.yml` die App und veröffentlicht `dist`.
 
-Einmalig im Repository: **Settings → Pages → Source: GitHub Actions**.
+Einmalig einrichten:
 
-GitHub Pages kennt keinen SPA-Fallback; deshalb kopiert der Build `index.html` nach `404.html`, damit Direktaufrufe wie `/play-app/sticker` funktionieren.
+1. Im Repository: **Settings → Pages → Source: GitHub Actions**.
+2. Beim Domain-Anbieter einen `CNAME`-Eintrag anlegen: Subdomain (z. B. `spiele`) → `<user>.github.io`.
+3. Im Repository unter **Settings → Pages → Custom domain** die Subdomain eintragen und danach **Enforce HTTPS** aktivieren.
+4. Empfohlen: die Domain im GitHub-Profil unter **Settings → Pages** verifizieren (TXT-Eintrag `_github-pages-challenge-<user>`).
 
-Heisst das Repository anders, den Basis-Pfad beim Build überschreiben, z. B. `BASE_PATH=/mein-repo/ pnpm build`
-(in der CI als `env: BASE_PATH` am Build-Schritt setzen). Bei einer Seite auf der Wurzel einer Domain: `BASE_PATH=/`.
+GitHub Pages kennt keinen SPA-Fallback; deshalb kopiert der Build `index.html` nach `404.html`, damit Direktaufrufe wie `/sticker` funktionieren.
+
+Ohne eigene Domain läuft die App als Projektseite unter `https://<user>.github.io/play-app/`. Dafür den Basis-Pfad beim Build setzen:
+`BASE_PATH=/play-app/ pnpm build` (in der CI als `env: BASE_PATH` am Build-Schritt).
 
 ## Bildnachweis
 

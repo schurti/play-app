@@ -8,7 +8,7 @@ test('Spiel öffnen und mit Zurück wieder schliessen', async ({ page }) => {
   await expect(page).toHaveURL(/\?spiel=farben/)
   await page.goBack()
   await expect(page.getByRole('dialog')).toHaveCount(0)
-  expect(new URL(page.url()).pathname).toBe('/play-app/')
+  expect(new URL(page.url()).pathname).toBe('/')
 })
 
 test('Direktaufruf /sticker zeigt das Sticker-Album', async ({ page }) => {
@@ -43,7 +43,7 @@ test('Manifest und Build-Artefakte', async ({ request }) => {
   expect(res.ok()).toBe(true)
   const manifest = await res.json()
   expect(manifest.short_name).toBe('Spielplatz')
-  expect(manifest.scope).toBe('/play-app/')
+  expect(manifest.scope).toBe('/')
   expect(existsSync('dist/sw.js')).toBe(true)
   expect(existsSync('dist/404.html')).toBe(true)
   expect(readFileSync('dist/404.html', 'utf8')).toBe(
