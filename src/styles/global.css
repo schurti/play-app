@@ -1,0 +1,51 @@
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+html,
+body {
+  margin: 0;
+}
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 1.35;
+}
+body.lock {
+  overflow: hidden;
+}
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--bg);
+  padding: 12px 14px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+h1 {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.05;
+  font-weight: 800;
+}
+.pill {
+  background: #fff;
+  border-radius: 99px;
+  padding: 6px 12px;
+  font-weight: 700;
+  box-shadow: 0 2px 0 #0001;
+  white-space: nowrap;
+}
