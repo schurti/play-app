@@ -6,7 +6,7 @@ import type { Game } from '../games/types'
 import { useGameNav } from '../hooks/useGameNav'
 import { useTimers } from '../hooks/useTimers'
 import { fanfare, audioContext, stopSpeech } from '../lib/audio'
-import { badges, type StickerKey } from '../lib/progress'
+import { rewardMessage } from '../lib/reward'
 import { useProgress } from '../store/progress'
 import { TOOLS } from '../tools/registry'
 import Burst from './Burst'
@@ -19,17 +19,6 @@ const TIMERS = [
   { seconds: 300, label: '⏱ 5 Min.' },
   { seconds: 600, label: '⏱ 10 Min.' },
 ]
-
-function rewardMessage(key: StickerKey): string {
-  if (key.startsWith('b')) {
-    const min = Number(key.slice(1))
-    const b = badges(GAMES.length).find((x) => x.min === min)
-    return `🎖️ Neues Abzeichen: ${b?.emoji} ${b?.name}!`
-  }
-  const golden = key.endsWith('*')
-  const cat = CATEGORIES[key.replace('*', '') as keyof typeof CATEGORIES]
-  return `${golden ? '✨ Goldener Sticker: ' : '🏆 Neuer Sticker: '}${cat.emoji} ${cat.name}!`
-}
 
 interface BodyProps {
   game: Game
@@ -69,7 +58,7 @@ function SheetBody({ game, onBurst }: BodyProps) {
     const r = e.currentTarget.getBoundingClientRect()
     onBurst(r.left + r.width / 2, r.top)
     fanfare()
-    if (keys.length) timers.later(() => toast(rewardMessage(keys[0])), 300)
+    if (keys.length) timers.later(() => toast(rewardMessage(keys[0], GAMES.length)), 300)
     else toast('⭐ Super gemacht! +1 Stern')
     timers.later(closeGame, 650)
   }

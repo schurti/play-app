@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event'
 import { createMemoryRouter, RouterProvider } from 'react-router'
 import { routes } from '../router'
 import { tone } from '../lib/audio'
+import { GAMES } from '../games'
+import type { CategoryId } from '../games/categories'
 import { useProgress } from '../store/progress'
 
 vi.mock('../lib/audio', async (orig) => ({
@@ -31,6 +33,13 @@ afterEach(() => {
   vi.useRealTimers()
   vi.unstubAllGlobals()
 })
+
+function seedAndFinish(cat: CategoryId, n: number) {
+  const ids = GAMES.filter((g) => g.category === cat).map((g) => g.id)
+  const done = Object.fromEntries(ids.slice(0, n).map((id) => [id, 1]))
+  useProgress.setState({ done, stars: n })
+  return ids[n]
+}
 
 describe('GameSheet', () => {
   it('zeigt das Spiel aus ?spiel und sperrt das Scrollen', () => {
@@ -111,5 +120,46 @@ describe('GameSheet', () => {
     })
     expect(tone).not.toHaveBeenCalled()
     expect(cancel).toHaveBeenCalled()
+  })
+
+  it.each([
+    ['lernen', '🏆 Neuer Sticker: 🧠 Lernen!'],
+    ['bewegung', '🏆 Neuer Sticker: 🏃 Bewegung!'],
+  ] as const)('zeigt den Sticker-Toast für %s', async (cat, text) => {
+    const id = seedAndFinish(cat, 2)
+    renderAt('/?spiel=' + id)
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
+    await user.click(screen.getByRole('button', { name: 'Geschafft! ⭐' }))
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(300)
+    })
+    expect(screen.getByText(text)).toBeInTheDocument()
+  })
+
+  it('zeigt den goldenen Sticker, wenn alle Spiele einer Kategorie geschafft sind', async () => {
+    const all = GAMES.filter((g) => g.category === 'ruhe').map((g) => g.id)
+    const id = seedAndFinish('ruhe', all.length - 1)
+    renderAt('/?spiel=' + id)
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
+    await user.click(screen.getByRole('button', { name: 'Geschafft! ⭐' }))
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(300)
+    })
+    expect(screen.getByText('✨ Goldener Sticker: 🌙 Ruhe!')).toBeInTheDocument()
+  })
+
+  it('zeigt das Abzeichen beim fünften verschiedenen Spiel', async () => {
+    const [a, b, c, d, e] = ['ruhe', 'malen'].flatMap((cat) => GAMES.filter((g) => g.category === cat).map((g) => g.id)).slice(0, 5).concat()
+    useProgress.setState({ done: { [a]: 1, [b]: 1, [c]: 1, [d]: 1 }, stars: 4 })
+    renderAt('/?spiel=' + e)
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
+    await user.click(screen.getByRole('button', { name: 'Geschafft! ⭐' }))
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(300)
+    })
+    expect(screen.getByText('🎖️ Neues Abzeichen: 🥉 Entdecker!')).toBeInTheDocument()
   })
 })
