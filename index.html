@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Haushalts-Spielplatz</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFF8EC;--ink:#2b2a33;--muted:#6b6a75;--line:#0000000f}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Baloo 2",system-ui,sans-serif;font-weight:500;font-size:17px;line-height:1.35}
+body.lock{overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+header{position:sticky;top:0;z-index:3;background:var(--bg);padding:12px 14px 8px;display:flex;align-items:center;justify-content:space-between;gap:8px;max-width:680px;margin:0 auto}
+h1{margin:0;font-size:24px;line-height:1.05;font-weight:800}
+.pill{background:#fff;border-radius:99px;padding:6px 12px;font-weight:700;box-shadow:0 2px 0 #0001;white-space:nowrap}
+.wrap{max-width:680px;margin:0 auto;padding:0 12px calc(96px + env(safe-area-inset-bottom))}
+.view{display:none}.view.on{display:block}
+.search{display:flex;gap:8px;align-items:center;margin:4px 0 8px}
+.search input{flex:1;border:2px solid var(--line);border-radius:14px;padding:10px 12px;font:inherit;background:#fff;min-width:0}
+.fbtn{border:2px solid var(--line);background:#fff;border-radius:14px;padding:9px 12px;font-weight:700;white-space:nowrap}
+.fbtn.act{background:var(--ink);color:#fff;border-color:var(--ink)}
+.row{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px;scrollbar-width:none}
+.row::-webkit-scrollbar{display:none}
+.wraprow{display:flex;gap:6px;flex-wrap:wrap;padding:2px 0 6px}
+.chip{flex:0 0 auto;border:2px solid var(--line);background:#fff;border-radius:99px;padding:5px 12px;font-size:15px}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip.cat.on{background:var(--c);border-color:var(--c)}
+.panel{background:#fff;border-radius:18px;padding:10px 12px;margin:0 0 10px;display:none;box-shadow:0 2px 0 #0001}
+.panel.on{display:block}
+.lab{font-size:13px;font-weight:700;color:var(--muted);margin:6px 2px 2px;text-transform:uppercase;letter-spacing:.03em}
+.reset{border:0;background:none;color:#c2410c;font-weight:700;padding:4px 0}
+.today{display:flex;gap:12px;align-items:center;width:100%;text-align:left;border:0;border-radius:20px;padding:12px 14px;margin:2px 0 10px;background:linear-gradient(135deg,#fde68a,#fbcfe8);box-shadow:0 3px 0 #0002}
+.today .e{font-size:42px}
+.today small{display:block;font-size:13px;font-weight:700;color:#7c2d12;text-transform:uppercase;letter-spacing:.04em}
+.today b{font-size:20px;line-height:1.1}
+.count{font-size:14px;color:var(--muted);margin:2px 4px 6px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(min-width:560px){.grid{grid-template-columns:1fr 1fr 1fr}}
+.card{position:relative;background:#fff;border-radius:18px;padding:10px 11px 11px;border:0;text-align:left;box-shadow:0 3px 0 var(--c);border-top:6px solid var(--c);display:flex;flex-direction:column;gap:3px}
+.card:active{transform:translateY(2px);box-shadow:0 1px 0 var(--c)}
+.card .e{font-size:32px;line-height:1}
+.card b{font-size:16.5px;line-height:1.1}
+.card .badges{position:absolute;top:6px;right:8px;font-size:14px}
+.meta{font-size:13px;color:var(--muted)}
+.need{font-size:12px;display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
+.need span{background:#0000000c;border-radius:99px;padding:1px 8px}
+.empty{grid-column:1/-1;text-align:center;padding:28px 12px;color:var(--muted)}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:4;background:#fff;box-shadow:0 -2px 12px #0001;display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom)}
+nav .in{display:flex;width:100%;max-width:680px}
+nav button{flex:1;border:0;background:none;padding:8px 2px 10px;display:flex;flex-direction:column;align-items:center;font-size:12.5px;font-weight:700;color:var(--muted)}
+nav button span{font-size:24px;line-height:1.1}
+nav button.on{color:var(--ink)}
+nav button.dice span{background:var(--ink);color:#fff;border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;margin-top:-18px;box-shadow:0 3px 8px #0003}
+.sheet-bg{position:fixed;inset:0;background:#0006;display:none;align-items:flex-end;justify-content:center;z-index:10}
+.sheet-bg.show{display:flex}
+.sheet{background:#fff;width:100%;max-width:680px;max-height:93vh;overflow:auto;border-radius:26px 26px 0 0;padding:16px 16px calc(28px + env(safe-area-inset-bottom));border-top:8px solid var(--c);animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+.sheet h2{margin:0;font-size:26px;line-height:1.1}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.ico{border:0;background:#0000000d;border-radius:50%;width:40px;height:40px;font-size:19px;flex:0 0 auto}
+.sheet ol{padding-left:22px;margin:8px 0}
+.sheet li{margin:6px 0}
+.box{border-radius:14px;padding:10px 12px;margin:10px 0;font-size:15.5px}
+.learn{background:#0000000a}
+.vary{background:#eef6ff}
+.hint{color:#9a3412;background:#fff1dc}
+.tool{text-align:center;border-radius:18px;padding:14px;margin:12px 0;background:#f5f4fa}
+.big{font-size:27px;font-weight:800;line-height:1.15;margin:4px 0 8px}
+.huge{font-size:64px;line-height:1}
+.sw{height:72px;border-radius:14px;margin-bottom:8px;border:2px solid #0002}
+.btn{border:0;border-radius:99px;padding:10px 18px;font-weight:700;font-size:17px;color:#fff;background:var(--c,#2b2a33)}
+.btn.alt{background:#e7e6ef;color:var(--ink)}
+.btn.sm{padding:7px 13px;font-size:15px}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.btns.c{justify-content:center}
+.timer{font-size:22px;font-weight:800;min-width:70px}
+.dice{display:flex;gap:14px;justify-content:center;margin:6px 0 10px}
+.die{width:84px;height:84px;background:#fff;border-radius:16px;box-shadow:0 3px 0 #0002;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:10px}
+.die i{display:block;width:16px;height:16px;border-radius:50%;margin:auto;background:transparent}
+.die i.p{background:var(--ink)}
+.three{display:grid;gap:8px;text-align:left}
+.three div{background:#fff;border-radius:14px;padding:8px 12px}
+.three small{display:block;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase}
+.secret{background:var(--ink);color:#fff;border-radius:16px;padding:22px 12px;font-weight:700;font-size:20px;border:0;width:100%}
+.stage{border-radius:16px;padding:22px 10px;font-size:34px;font-weight:800;transition:background .2s;background:#fff}
+.stage.go{background:#bbf7d0}.stage.stop{background:#bfdbfe}
+.beat{display:inline-flex;width:54px;height:54px;align-items:center;justify-content:center;font-size:32px;background:#fff;border-radius:14px;margin:3px;transition:transform .1s}
+.beat.hit{transform:scale(1.25);background:#fde68a}
+.breath{width:180px;height:180px;margin:10px auto;border-radius:50%;background:radial-gradient(circle,#c7d2fe,#818cf8);transform:scale(.45);transition:transform 4s ease-in-out;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800}
+.riddles{text-align:left;padding-left:22px}
+.riddles details{font-size:14px;color:var(--muted)}
+canvas{width:100%;height:320px;background:#fff;border-radius:14px;touch-action:none;display:block;box-shadow:inset 0 0 0 2px #0001}
+.pal{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:8px 0}
+.pal button{width:34px;height:34px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #0002}
+.pal button.on{box-shadow:0 0 0 3px var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px 0 14px}
+.stat{background:#fff;border-radius:16px;padding:10px;text-align:center;box-shadow:0 2px 0 #0001}
+.stat b{display:block;font-size:26px;line-height:1}
+.stat span{font-size:13px;color:var(--muted)}
+.stickers{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:560px){.stickers{grid-template-columns:repeat(4,1fr)}}
+.st{background:#fff;border-radius:18px;padding:12px 8px;text-align:center;box-shadow:0 2px 0 #0001;border:3px dashed #0002}
+.st.got{border:3px solid var(--c);background:color-mix(in srgb,var(--c) 12%,#fff)}
+.st.gold{border-color:#f59e0b;box-shadow:0 0 0 3px #fde68a}
+.st .e{font-size:40px;filter:grayscale(1);opacity:.35}
+.st.got .e{filter:none;opacity:1}
+.st b{display:block;font-size:15px}
+.bar{height:8px;background:#0000000f;border-radius:99px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--c)}
+h3{margin:16px 4px 8px;font-size:19px}
+.toast{position:fixed;left:50%;top:16px;transform:translate(-50%,-140%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:99px;font-weight:700;z-index:20;transition:transform .3s;max-width:92vw;text-align:center}
+.toast.show{transform:translate(-50%,0)}
+.burst{position:fixed;z-index:30;pointer-events:none;font-size:28px;animation:fly 1s ease-out forwards}
+@keyframes fly{to{transform:translate(var(--x),var(--y)) rotate(360deg);opacity:0}}
+.note{font-size:13px;color:var(--muted);text-align:center;margin:18px 8px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏠 Haushalts-<br>Spielplatz</h1>
+  <div class="pill">⭐ <span id="stars">0</span></div>
+</header>
+
+<div class="wrap">
+  <!-- SPIELE -->
+  <section class="view on" id="v-spiele">
+    <div class="search">
+      <input id="q" type="search" placeholder="Suchen: Socken, Farben, leise …" autocomplete="off">
+      <button class="fbtn" id="fbtn">⚙️ Filter</button>
+    </div>
+    <div class="row" id="cats"></div>
+    <div class="panel" id="panel">
+      <div class="lab">Alter des Kindes</div><div class="wraprow" id="f-age"></div>
+      <div class="lab">Dauer</div><div class="wraprow" id="f-dur"></div>
+      <div class="lab">Situation</div><div class="wraprow" id="f-sit"></div>
+      <div class="lab">Was habt ihr gerade da?</div>
+      <div class="meta" style="margin:0 2px 4px">Leer lassen = alles zeigen. Sonst nur Spiele, für die ihr alles habt.</div>
+      <div class="wraprow" id="f-items"></div>
+      <button class="reset" id="freset">✕ Alle Filter zurücksetzen</button>
+    </div>
+    <div id="today"></div>
+    <div class="count" id="count"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- FAVORITEN -->
+  <section class="view" id="v-fav">
+    <h3>❤️ Eure Lieblingsspiele</h3>
+    <div class="grid" id="favgrid"></div>
+  </section>
+
+  <!-- STICKER -->
+  <section class="view" id="v-sticker">
+    <h3>🏆 Sticker-Album</h3>
+    <div class="stats" id="stats"></div>
+    <div class="meta" style="margin:0 4px 8px">Spielt 3 verschiedene Spiele einer Kategorie für einen Sticker. Alle Spiele einer Kategorie geschafft? Dann wird er golden!</div>
+    <div class="stickers" id="stickers"></div>
+    <h3>🎖️ Entdecker-Abzeichen</h3>
+    <div class="stickers" id="badges"></div>
+    <h3>📜 Zuletzt gespielt</h3>
+    <div id="history" class="meta" style="margin:0 4px"></div>
+    <div class="note"><button class="reset" id="wipe">Fortschritt zurücksetzen</button><br>Sterne und Favoriten werden nur in diesem Browser gespeichert.</div>
+  </section>
+</div>
+
+<nav><div class="in">
+  <button class="on" data-nav="spiele"><span>🏠</span>Spiele</button>
+  <button class="dice" data-nav="zufall"><span>🎲</span>Zufall</button>
+  <button data-nav="fav"><span>❤️</span>Favoriten</button>
+  <button data-nav="sticker"><span>🏆</span>Sticker</button>
+</div></nav>
+
+<div class="sheet-bg" id="bg"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- Kategorien ---------- */
+const CATS={
+  lernen:{n:'Lernen',e:'🧠',c:'#3B82F6'},
+  malen:{n:'Malen',e:'🎨',c:'#EC4899'},
+  bewegung:{n:'Bewegung',e:'🏃',c:'#10B981'},
+  basteln:{n:'Basteln',e:'✂️',c:'#F59E0B'},
+  musik:{n:'Musik',e:'🎵',c:'#A855F7'},
+  forschen:{n:'Forschen & Küche',e:'🔬',c:'#06B6D4'},
+  ruhe:{n:'Ruhe',e:'🌙',c:'#64748B'},
+  rollen:{n:'Rollenspiel',e:'🎭',c:'#EF4444'}
+};
+/* f-Flags: A = allein spielbar, P = Gruppe/Party, L = leise */
+const G=[
+/* ===== LERNEN ===== */
+{id:'farben',t:'Farben-Jagd',e:'🌈',c:'lernen',a:3,m:10,i:[],f:'AP',tool:'color',
+ s:['Die App zeigt eine Farbe.','Lauft los und bringt etwas in dieser Farbe zurück.','Wer zuerst zurück ist, bekommt einen Punkt. Allein spielt man gegen den Timer.'],
+ l:'Farben erkennen und benennen.',v:'Leichter: nur Rot, Blau und Gelb. Schwieriger: zwei Dinge in derselben Farbe bringen, eines gross, eines klein.'},
+{id:'zahlen',t:'Dinge-Sammler',e:'🔢',c:'lernen',a:4,m:10,i:[],f:'AP',tool:'number',
+ s:['Die App nennt eine Zahl und eine Eigenschaft.','Sammelt genau so viele passende Dinge.','Legt sie in eine Reihe und zählt laut nach.'],
+ l:'Zählen und Eigenschaften unterscheiden.',v:'Schwieriger: Die gesammelten Dinge danach der Grösse nach ordnen.'},
+{id:'buchstabe',t:'Buchstaben-Detektiv',e:'🔤',c:'lernen',a:5,m:10,i:[],f:'A',tool:'letter',
+ s:['Die App zeigt einen Buchstaben.','Findet Dinge im Haus, die mit diesem Laut beginnen.','Sagt jedes Wort laut und klatscht die Silben.'],
+ l:'Anlaute hören und Silben klatschen – wichtig fürs Lesenlernen.',v:'Leichter: Erwachsene sagen den Laut vor, z. B. „Mmm wie Maus“.'},
+{id:'formen',t:'Formen-Suche',e:'🔺',c:'lernen',a:3,m:10,i:[],f:'A',tool:'shape',
+ s:['Die App zeigt eine Form.','Sucht etwas im Haus mit dieser Form.','Fahrt mit dem Finger den Rand nach und zählt die Ecken.'],
+ l:'Formen erkennen und Ecken zählen.'},
+{id:'kim',t:'Was fehlt?',e:'🙈',c:'lernen',a:4,m:10,i:['Tuch'],f:'L',
+ s:['Legt 5 bis 8 Dinge auf den Tisch.','Das Kind schaut sie 30 Sekunden lang an.','Augen zu! Ein Ding verschwindet unter dem Tuch.','Augen auf: Was fehlt?'],
+ l:'Merkfähigkeit und genaues Hinschauen.',v:'Schwieriger: zwei Dinge wegnehmen oder heimlich die Reihenfolge vertauschen.'},
+{id:'fuehlsocke',t:'Fühl-Socke',e:'🧦',c:'lernen',a:3,m:10,i:['Socken'],f:'L',
+ s:['Steckt heimlich einen Gegenstand in eine grosse Socke.','Das Kind ertastet ihn, ohne hinzuschauen.','Zuerst beschreiben (rund, kalt, rau …), dann raten.'],
+ l:'Tastsinn und Wörter für Oberflächen.'},
+{id:'sortieren',t:'Sortier-Profi',e:'🧺',c:'lernen',a:3,m:15,i:['Socken'],f:'A',
+ s:['Schüttet frisch gewaschene Socken auf einen Haufen.','Findet alle Paare.','Sortiert danach: Wem gehört welche Socke?'],
+ l:'Gleiches erkennen und ordnen – und nebenbei im Haushalt helfen.',v:'Auch mit Besteck: Löffel und Gabeln in die richtigen Fächer sortieren.'},
+{id:'schaetzen',t:'Schätz-König',e:'🍝',c:'lernen',a:6,m:15,i:['Nudeln','Schüssel'],f:'AP',
+ s:['Jeder nimmt eine Handvoll Nudeln.','Schätzt, wie viele es sind, und merkt euch die Zahl.','Zählt sie in Zehner-Häufchen.','Wer am nächsten dran war, gewinnt.'],
+ l:'Schätzen und Zehner bündeln.'},
+{id:'reime',t:'Reim-Ball',e:'🔁',c:'lernen',a:5,m:10,i:['Socken'],f:'P',
+ s:['Rollt eine Socke zu einem Ball.','Wer wirft, sagt ein Wort, z. B. „Haus“.','Wer fängt, sagt ein Reimwort: „Maus“! Fantasiewörter gelten auch.'],
+ l:'Reime hören – eine wichtige Vorstufe zum Lesen.'},
+{id:'wuerfelklammer',t:'Würfel-Klammern',e:'🎲',c:'lernen',a:4,m:10,i:['Klammern','Becher'],f:'AP',tool:'dice',
+ s:['Würfelt mit dem Würfel in der App.','Klemmt so viele Wäscheklammern an den Becherrand.','Wer zuerst 20 Klammern am Becher hat, gewinnt.'],
+ l:'Würfelbilder erkennen, zählen und Kraft in den Fingern.',v:'Schwieriger: mit zwei Würfeln spielen und zusammenzählen.'},
+{id:'groesse',t:'Grössen-Reihe',e:'📏',c:'lernen',a:3,m:10,i:[],f:'A',
+ s:['Sammelt fünf Dinge, z. B. Löffel, Schuh, Buch, Ball, Becher.','Legt sie vom kleinsten zum grössten.','Dann je ein Ding in jede Hand: Was ist schwerer?'],
+ l:'Vergleichen: gross und klein, schwer und leicht.'},
+{id:'einkauf',t:'Bilder-Einkaufsliste',e:'📝',c:'lernen',a:4,m:15,i:['Papier','Stifte'],f:'A',
+ s:['Malt eine Einkaufsliste mit 5 Dingen aus dem Vorrat, z. B. Apfel, Nudeln, Milch.','Das Kind sucht alles in der Küche zusammen.','Abhaken – und danach alles wieder einräumen.'],
+ l:'Bilder lesen, planen und Ordnung halten.'},
+
+/* ===== MALEN ===== */
+{id:'faltmonster',t:'Falt-Monster',e:'👾',c:'malen',a:4,m:15,i:['Papier','Stifte'],f:'P',
+ s:['Faltet ein Blatt in drei Teile.','Malt oben einen Kopf und faltet ihn nach hinten.','Gebt das Blatt weiter: Der Nächste malt den Bauch, dann die Beine.','Auffalten und über euer Monster lachen.'],
+ l:'Fantasie und Zusammenarbeit.'},
+{id:'collage',t:'Zeitungs-Collage',e:'📰',c:'malen',a:3,m:20,i:['Zeitung','Papier','Klebeband'],f:'AL',
+ s:['Reisst Zeitungsstücke in verschiedenen Farben und Formen.','Legt daraus ein Tier, ein Haus oder ein Gesicht.','Klebt alles fest und malt Details dazu.'],
+ l:'Formen sehen und Feinmotorik.'},
+{id:'schatten',t:'Schatten-Zeichnen',e:'🔦',c:'malen',a:4,m:20,i:['Taschenlampe','Papier','Stifte'],f:'AL',ad:'Lampe nur gemeinsam mit Erwachsenen benutzen.',
+ s:['Klebt ein Papier an die Wand.','Stellt ein Spielzeug davor und leuchtet es an.','Zeichnet den Schatten mit dem Stift nach.','Malt den Schatten bunt aus.'],
+ l:'Licht, Schatten und Umrisse.'},
+{id:'blindmalen',t:'Blind-Malen',e:'🙈',c:'malen',a:5,m:10,i:['Papier','Stifte'],f:'P',
+ s:['Zu zweit: Eine Person beschreibt ein Bild, z. B. „ein Haus mit einem Baum“.','Die andere malt nur nach der Beschreibung.','Vergleicht danach mit dem Original.'],
+ l:'Zuhören und genau beschreiben.'},
+{id:'maltafel',t:'Mal-Tafel',e:'🖍️',c:'malen',a:3,m:10,i:[],f:'AL',tool:'draw',
+ s:['Wähle eine Farbe und male mit dem Finger auf der Tafel.','Mal-Idee: dein Lieblingstier, deine Familie oder ein Fantasie-Haus.','Danach das Gleiche auf Papier nachmalen!'],
+ l:'Feinmotorik und Farben. (Diese Idee spielt am Bildschirm – lieber kurz halten.)'},
+{id:'durchreiben',t:'Durchrubbel-Bilder',e:'🪙',c:'malen',a:4,m:10,i:['Papier','Stifte'],f:'AL',
+ s:['Legt Münzen, Blätter, Schlüssel oder eine Gabel unter ein Papier.','Rubbelt mit der Seite eines Stifts darüber.','Wie von Zauberhand erscheinen die Muster!','Ratet gegenseitig: Was lag darunter?'],
+ l:'Oberflächen und Muster entdecken.'},
+{id:'kritzel',t:'Kritzel-Zauber',e:'✏️',c:'malen',a:4,m:10,i:['Papier','Stifte'],f:'L',
+ s:['Eine Person macht ein wildes Kritzel aufs Papier.','Die andere zaubert daraus etwas: ein Tier, ein Auto, ein Monster.','Dann tauschen.'],
+ l:'Fantasie und Dinge in Formen erkennen.'},
+{id:'halbgesicht',t:'Halbes Gesicht',e:'🪞',c:'malen',a:5,m:15,i:['Zeitung','Papier','Stifte','Klebeband'],f:'AL',
+ s:['Schneidet ein grosses Gesicht aus einer Zeitschrift aus und halbiert es.','Klebt eine Hälfte aufs Papier.','Das Kind malt die fehlende Hälfte dazu – passend oder total verrückt.'],
+ l:'Symmetrie und genaues Beobachten.'},
+{id:'stempel',t:'Kartoffel-Stempel',e:'🥔',c:'malen',a:4,m:25,i:['Kartoffel','Farbe','Papier'],f:'AL',ad:'Das Schnitzen der Formen macht ein Erwachsener.',
+ s:['Ein Erwachsener halbiert eine Kartoffel und schnitzt eine einfache Form: Herz, Stern, Dreieck.','Form in Farbe tunken.','Stempelt Muster, Blumen oder Geschenkpapier.'],
+ l:'Muster erkennen und fortsetzen.'},
+{id:'wassermalen',t:'Wasser-Malerei',e:'💧',c:'malen',a:3,m:15,i:['Wasser','Pinsel'],f:'A',
+ s:['Nehmt einen Becher Wasser und einen Pinsel mit auf den Balkon oder vor die Tür.','Malt auf Steine, Platten oder eine Wandtafel.','Schaut zu, wie das Bild verschwindet – und malt ein neues.'],
+ l:'Verdunsten beobachten. Ganz ohne Putzen!'},
+{id:'finger',t:'Fingerabdruck-Tiere',e:'👆',c:'malen',a:3,m:15,i:['Farbe','Papier','Stifte'],f:'AL',
+ s:['Tunkt eine Fingerspitze in Farbe und drückt sie aufs Papier.','Macht viele Abdrücke.','Malt mit dem Stift Beine, Augen und Flügel dazu: Käfer, Mäuse, Vögel.'],
+ l:'Fantasie und Feinmotorik.'},
+
+/* ===== BEWEGUNG ===== */
+{id:'sockenwurf',t:'Socken-Wurf',e:'🧦',c:'bewegung',a:3,m:10,i:['Socken','Schüssel'],f:'AP',
+ s:['Rollt Socken zu Bällen.','Stellt eine Schüssel in einigem Abstand auf.','Jeder wirft fünf Mal. Wer trifft am meisten?','Nach jeder Runde einen Schritt weiter weg.'],
+ l:'Zielen und Körpergefühl.'},
+{id:'lava',t:'Der Boden ist Lava',e:'🌋',c:'bewegung',a:3,m:15,i:['Kissen'],f:'AP',
+ s:['Legt Kissen als Inseln durch den Raum.','Der Boden ist heisse Lava!','Springt von Insel zu Insel, ohne den Boden zu berühren.','Jede Runde die Inseln etwas weiter auseinanderlegen.'],
+ l:'Gleichgewicht und Planen.'},
+{id:'loeffellauf',t:'Löffel-Lauf',e:'🥄',c:'bewegung',a:4,m:10,i:['Löffel','Socken'],f:'AP',
+ s:['Legt einen Socken-Ball auf einen Löffel.','Geht einmal durch die Wohnung, ohne dass er herunterfällt.','Geschafft? Dann wird der Weg schwieriger: um Stühle, über Kissen.'],
+ l:'Konzentration und Balance.'},
+{id:'klammerfangen',t:'Klammer-Fangen',e:'🎀',c:'bewegung',a:5,m:10,i:['Klammern'],f:'P',
+ s:['Jeder klemmt drei Wäscheklammern an den Pullover.','Auf „Los!“ versucht ihr, einander Klammern abzunehmen.','Wer am Ende die meisten hat, gewinnt.'],
+ l:'Reaktion und faires Spielen.'},
+{id:'stopptanz',t:'Stopptanz',e:'💃',c:'bewegung',a:3,m:10,i:[],f:'AP',tool:'dance',
+ s:['Startet die Musik in der App.','Tanzt wild, solange die Musik spielt.','Hört die Musik auf: Sofort einfrieren!','Wer wackelt, macht eine lustige Grimasse.'],
+ l:'Zuhören, reagieren und Körperkontrolle.'},
+{id:'kommando',t:'Kommando-Spiel',e:'🫡',c:'bewegung',a:4,m:10,i:[],f:'P',tool:'commands',
+ s:['Die App ruft Befehle (auf Wunsch auch laut).','Nur wenn „Kommando“ davor steht, macht ihr mit!','Wer trotzdem mitmacht, bekommt einen Lachpunkt.'],
+ l:'Genau zuhören und sich bremsen können.'},
+{id:'tape',t:'Klebeband-Parcours',e:'🟨',c:'bewegung',a:3,m:15,i:['Klebeband'],f:'A',
+ s:['Klebt Linien, Zickzack und Kreise auf den Boden (Malerband löst sich gut).','Balanciert auf den Linien.','Dann hüpfen, rückwärts gehen oder auf allen Vieren.'],
+ l:'Gleichgewicht und Körperwahrnehmung.'},
+{id:'laser',t:'Laser-Tunnel',e:'🕸️',c:'bewegung',a:4,m:15,i:['Schnur','Klebeband'],f:'A',ad:'Schnur nie auf Halshöhe spannen und nach dem Spiel wegräumen.',
+ s:['Spannt Schnur kreuz und quer durch den Flur und klebt sie fest.','Klettert durch, ohne eine Schnur zu berühren.','Wer schafft es am schnellsten? Nutzt den Timer.'],
+ l:'Körpergefühl und Beweglichkeit.'},
+{id:'schneeball',t:'Zeitungs-Schneeballschlacht',e:'☃️',c:'bewegung',a:3,m:10,i:['Zeitung','Kissen'],f:'P',
+ s:['Knüllt Zeitungsseiten zu vielen Bällen.','Baut mit Kissen eine Mauer in der Mitte.','Eine Minute lang alle Bälle auf die andere Seite werfen!','Wer hat am Ende weniger Bälle auf seiner Seite?'],
+ l:'Austoben, Werfen und Zählen.'},
+{id:'bowling',t:'Becher-Bowling',e:'🎳',c:'bewegung',a:3,m:10,i:['Becher','Socken'],f:'AP',
+ s:['Stellt Becher als Pyramide oder Kegel auf.','Rollt einen Socken-Ball darauf zu.','Zählt, wie viele umfallen.'],
+ l:'Zielen und Zählen.'},
+{id:'tiergang',t:'Tier-Gang',e:'🐸',c:'bewegung',a:3,m:10,i:[],f:'AP',tool:'animal',
+ s:['Die App zeigt ein Tier.','Bewegt euch wie dieses Tier durch die Wohnung.','Die anderen dürfen mitmachen oder raten.'],
+ l:'Grobmotorik und Tiere kennenlernen.'},
+{id:'staffel',t:'Wäsche-Staffel',e:'👕',c:'bewegung',a:4,m:10,i:['Socken','Klammern','Schnur'],f:'P',
+ s:['Spannt eine Schnur als Wäscheleine.','Legt Socken in einen Korb auf der anderen Seite des Raums.','Holt einzeln eine Socke, rennt zur Leine und hängt sie mit einer Klammer auf.','Welches Team ist zuerst fertig?'],
+ l:'Fingerkraft, Tempo – und Hilfe beim Wäscheaufhängen.'},
+
+/* ===== BASTELN ===== */
+{id:'karton',t:'Karton-Auto',e:'📦',c:'basteln',a:4,m:30,i:['Karton','Klebeband','Stifte'],f:'A',ad:'Das Schneiden macht ein Erwachsener.',
+ s:['Nehmt einen grossen Karton und schneidet den Boden weg.','Klebt Träger aus Klebeband oder Schnur an.','Malt Scheinwerfer, Nummernschild und Lenkrad.','Losfahren!'],
+ l:'Planen und Gestalten.'},
+{id:'becherphone',t:'Becher-Telefon',e:'📞',c:'basteln',a:5,m:20,i:['Becher','Schnur'],f:'P',ad:'Die kleinen Löcher in den Bechern macht ein Erwachsener.',
+ s:['Macht ein kleines Loch in den Boden von zwei Bechern.','Zieht die Schnur durch und macht innen einen dicken Knoten.','Spannt die Schnur straff und flüstert hinein.'],
+ l:'Schall wandert durch die gespannte Schnur.'},
+{id:'zeitunghut',t:'Zeitungs-Hut',e:'🎩',c:'basteln',a:4,m:15,i:['Zeitung'],f:'A',
+ s:['Legt eine Doppelseite Zeitung mit dem Falz nach oben hin.','Faltet beide oberen Ecken zur Mitte, sodass ein Dreieck entsteht.','Klappt den unteren Rand vorne hoch, dreht um und klappt den hinteren Rand hoch.','Aufziehen, aufsetzen und mit Schnipseln verzieren!'],
+ l:'Falten und genaues Arbeiten.'},
+{id:'fernglas',t:'Rollen-Fernglas',e:'🔭',c:'basteln',a:3,m:15,i:['WC-Rollen','Klebeband','Stifte'],f:'A',
+ s:['Klebt zwei WC-Rollen nebeneinander zusammen.','Bemalt sie bunt.','Macht eine Schnur als Band dran.','Jetzt auf Expedition: „Ich sehe was, was du nicht siehst!“'],
+ l:'Basteln und genau beobachten.'},
+{id:'puppe',t:'Socken-Puppe',e:'🧦',c:'basteln',a:4,m:20,i:['Socken','Papier','Stifte','Klebeband'],f:'A',
+ s:['Zieht eine alte Socke über die Hand.','Malt Augen, Nase und Zunge auf Papier und klebt sie an.','Gebt der Puppe einen Namen und eine Stimme.','Spielt ein Theater hinter dem Sofa.'],
+ l:'Sprechen, Gefühle ausdrücken und Fantasie.'},
+{id:'kugelbahn',t:'Rollen-Kugelbahn',e:'🌀',c:'basteln',a:5,m:25,i:['WC-Rollen','Klebeband'],f:'A',ad:'Erwachsene helfen beim Längs-Aufschneiden der Rollen.',
+ s:['Schneidet einige WC-Rollen der Länge nach auf – so entstehen Rinnen.','Klebt sie schräg an eine Tür oder den Kühlschrank, eine unter die andere.','Lasst eine Murmel, Erbse oder Papierkugel durchrollen.','Baut um, bis die Kugel unten ankommt!'],
+ l:'Ausprobieren, Schräge und Schwerkraft.'},
+{id:'kuschelhaus',t:'Kuscheltier-Haus',e:'🏡',c:'basteln',a:4,m:30,i:['Karton','Stifte','Klebeband'],f:'A',
+ s:['Nehmt eine Schachtel als Haus.','Schneidet Fenster und Tür aus (Erwachsene helfen).','Malt Tapeten und Möbel, baut ein Bett aus einer kleinen Schachtel.','Zieht mit einem Kuscheltier ein!'],
+ l:'Räume planen und gestalten.'},
+{id:'flieger',t:'Papierflieger-Wettbewerb',e:'✈️',c:'basteln',a:5,m:15,i:['Papier'],f:'AP',
+ s:['Faltet ein A4-Blatt längs in der Mitte und öffnet es wieder.','Faltet die beiden oberen Ecken zur Mittellinie.','Faltet die neuen schrägen Kanten noch einmal zur Mitte.','Klappt den Flieger zusammen und faltet beide Flügel nach unten.','Wessen Flieger fliegt am weitesten?'],
+ l:'Falten, Ausprobieren und Messen.'},
+{id:'puzzle',t:'Karton-Puzzle',e:'🧩',c:'basteln',a:4,m:20,i:['Karton','Stifte'],f:'AL',
+ s:['Malt ein Bild auf ein Stück Karton, z. B. eine Müeslischachtel.','Schneidet es in 6 bis 12 Teile (Erwachsene helfen).','Mischen und puzzlen – dann tauschen.'],
+ l:'Teile und Ganzes erkennen.'},
+{id:'krone',t:'Krone & Maske',e:'👑',c:'basteln',a:3,m:20,i:['Karton','Stifte','Klebeband'],f:'A',
+ s:['Schneidet einen Kartonstreifen, der um den Kopf passt.','Schneidet oben Zacken hinein.','Bemalt und verziert die Krone, klebt sie zusammen.','Oder: eine Tiermaske mit Augenlöchern.'],
+ l:'Schneiden, Gestalten und danach Rollenspiel.'},
+{id:'nudelkette',t:'Nudel-Kette',e:'📿',c:'basteln',a:3,m:20,i:['Nudeln','Schnur'],f:'AL',
+ s:['Nehmt Röhrennudeln, z. B. Penne oder Rigatoni.','Fädelt sie auf eine Schnur.','Macht ein Muster: zwei grosse, eine kleine … oder bemalt sie vorher.'],
+ l:'Fingerfertigkeit, Muster und Ruhe.'},
+
+/* ===== MUSIK ===== */
+{id:'rhythmus',t:'Rhythmus-Echo',e:'👏',c:'musik',a:4,m:10,i:[],f:'AP',tool:'rhythm',
+ s:['Hört euch das Muster in der App an.','Macht es nach: 👏 klatschen, 🦶 stampfen, 🥁 auf den Tisch klopfen.','Gelingt es? Dann ein neues, längeres Muster.'],
+ l:'Takt, Rhythmus und Merkfähigkeit.'},
+{id:'topf',t:'Topf-Schlagzeug',e:'🥁',c:'musik',a:3,m:10,i:['Töpfe','Löffel'],f:'A',
+ s:['Stellt Töpfe und Schüsseln umgedreht hin.','Trommelt mit Holzlöffeln.','Spielt laut und leise, schnell und langsam.','Trommelt zu eurem Lieblingslied.'],
+ l:'Tempo und Lautstärke unterscheiden.'},
+{id:'rassel',t:'Reis-Rassel',e:'🎊',c:'musik',a:3,m:15,i:['Becher','Reis','Klebeband'],f:'A',
+ s:['Füllt etwas Reis in einen Becher.','Stülpt einen zweiten Becher darüber und klebt alles gut zu.','Baut mehrere Rasseln mit Reis, Nudeln oder Linsen.','Wie klingen sie unterschiedlich?'],
+ l:'Klänge vergleichen.'},
+{id:'glaeser',t:'Gläser-Xylofon',e:'🎼',c:'musik',a:5,m:15,i:['Gläser','Wasser','Löffel'],f:'A',ad:'Gläser können zerbrechen – nur mit Erwachsenen.',
+ s:['Stellt 4 bis 6 Gläser in eine Reihe.','Füllt sie unterschiedlich hoch mit Wasser.','Schlagt sanft mit einem Löffel an.','Sortiert die Gläser von tief nach hoch und spielt eine Melodie.'],
+ l:'Mehr Wasser macht einen tieferen Ton.'},
+{id:'geraeusche',t:'Geräusche-Raten',e:'👂',c:'musik',a:3,m:10,i:[],f:'P',
+ s:['Das Kind schliesst die Augen.','Jemand macht ein Geräusch: Schlüssel klimpern, Papier knüllen, Wasser giessen, Reissverschluss.','Was war das? Dann tauschen.'],
+ l:'Genaues Hinhören.'},
+{id:'gitarre',t:'Gummiband-Gitarre',e:'🎸',c:'musik',a:5,m:20,i:['Karton','Gummibänder'],f:'A',
+ s:['Nehmt eine kleine offene Schachtel.','Spannt Gummibänder in verschiedenen Dicken darüber.','Zupft daran: Welches klingt hoch, welches tief?'],
+ l:'Dünne, straffe Bänder klingen höher.'},
+{id:'summen',t:'Lieder-Summen',e:'🎶',c:'musik',a:4,m:10,i:[],f:'PL',
+ s:['Eine Person summt ein bekanntes Lied – ohne Worte.','Die anderen raten.','Wer es errät, summt das nächste.'],
+ l:'Melodien erkennen und Gedächtnis.'},
+
+/* ===== FORSCHEN & KÜCHE ===== */
+{id:'schwimmen',t:'Sinken oder Schwimmen?',e:'🛟',c:'forschen',a:4,m:15,i:['Schüssel','Wasser'],f:'A',ad:'Mit Erwachsenen machen, wegen des Wassers.',
+ s:['Füllt eine Schüssel mit Wasser.','Sucht kleine Dinge: Löffel, Korken, Radiergummi, Blatt, Münze.','Raten: Sinkt es oder schwimmt es?','Ausprobieren und in zwei Gruppen sortieren.'],
+ l:'Vermuten, ausprobieren, Ergebnisse vergleichen.'},
+{id:'farbmischen',t:'Farben-Zauber',e:'🧪',c:'forschen',a:4,m:15,i:['Gläser','Wasser','Farbe'],f:'A',
+ s:['Färbt drei Gläser Wasser rot, gelb und blau (Wasser- oder Lebensmittelfarbe).','Raten: Was passiert, wenn man Gelb und Blau mischt?','Mischt in einem leeren Glas und schaut.','Probiert alle Kombinationen aus.'],
+ l:'Grundfarben ergeben neue Farben.'},
+{id:'wandern',t:'Wandernde Farben',e:'🌈',c:'forschen',a:4,m:15,i:['Gläser','Wasser','Farbe','Küchenpapier'],f:'AL',
+ s:['Stellt drei Gläser nebeneinander. Das erste und dritte mit Farbwasser füllen, das mittlere leer lassen.','Rollt Küchenpapier-Streifen und hängt sie als Brücken zwischen die Gläser.','Wartet eine Stunde: Das Wasser wandert ins mittlere Glas und mischt sich!'],
+ l:'Wasser kann im Papier nach oben „klettern“.'},
+{id:'vulkan',t:'Mini-Vulkan',e:'🌋',c:'forschen',a:5,m:15,i:['Essig & Natron','Gläser','Farbe'],f:'P',ad:'Nur mit Erwachsenen. Nicht in die Augen bringen.',
+ s:['Stellt ein Glas auf einen Teller oder ins Spülbecken.','Gebt zwei Löffel Natron, einen Spritzer Spülmittel und etwas Farbe hinein.','Giesst Essig dazu – und der Vulkan bricht aus!'],
+ l:'Bei der Mischung entsteht ein Gas, das schäumt.'},
+{id:'eisschatz',t:'Eis-Schatz',e:'🧊',c:'forschen',a:3,m:20,i:['Becher','Wasser','Salz'],f:'A',
+ s:['Am Vorabend: Ein kleines Spielzeug in einen Becher mit Wasser legen und einfrieren.','Am nächsten Tag den Eisblock in eine Schüssel geben.','Befreit den Schatz mit warmem Wasser, Salz und Löffeln.','Was geht am schnellsten?'],
+ l:'Schmelzen: Wärme und Salz helfen.'},
+{id:'pfeffer',t:'Pfeffer-Flucht',e:'🧂',c:'forschen',a:4,m:5,i:['Schüssel','Wasser','Pfeffer','Spülmittel'],f:'AL',
+ s:['Füllt eine flache Schüssel mit Wasser.','Streut Pfeffer darüber.','Tunkt einen Finger mit etwas Spülmittel ins Wasser.','Schaut, wie der Pfeffer flieht!'],
+ l:'Spülmittel verändert die „Haut“ des Wassers.'},
+{id:'kresse',t:'Kresse-Garten',e:'🌱',c:'forschen',a:3,m:10,i:['Kresse-Samen','Küchenpapier','Becher'],f:'AL',
+ s:['Malt ein Gesicht auf einen Becher.','Legt nasses Küchenpapier hinein und streut Kresse-Samen darauf.','Jeden Tag ein bisschen giessen.','Nach etwa einer Woche hat das Gesicht Haare – ernten und aufs Butterbrot!'],
+ l:'Pflanzen brauchen Wasser und Licht.'},
+{id:'schnuppern',t:'Riech-Memory',e:'👃',c:'forschen',a:4,m:15,i:['Becher','Gewürze'],f:'L',
+ s:['Füllt Gewürze und Duftendes in Becher: Zimt, Kaffee, Zitrone, Kakao, Basilikum.','Das Kind schliesst die Augen und riecht.','Was ist es? Wer errät am meisten?'],
+ l:'Geruchssinn und Wörter für Gerüche.'},
+{id:'obst',t:'Obst-Gesichter',e:'🍎',c:'forschen',a:3,m:15,i:['Obst','Teller'],f:'A',ad:'Schneiden macht ein Erwachsener – oder das Kind mit einem Kindermesser.',
+ s:['Schneidet verschiedene Früchte und Gemüse in Stücke.','Legt auf dem Teller Gesichter, Tiere oder ein Haus.','Foto machen – und dann aufessen!'],
+ l:'Gesund essen und kreativ sein.'},
+{id:'rampe',t:'Rampen-Rennen',e:'🛝',c:'forschen',a:5,m:15,i:['Karton'],f:'AP',
+ s:['Legt einen Karton oder ein Brett schräg auf ein paar Bücher.','Lasst verschiedene Dinge herunterrollen: Korken, Apfel, Stift, Becher.','Raten: Was ist am schnellsten? Was rollt gar nicht?','Macht die Rampe steiler und testet noch einmal.'],
+ l:'Schräge, Form und Geschwindigkeit.'},
+
+/* ===== RUHE ===== */
+{id:'atem',t:'Atem-Ballon',e:'🎈',c:'ruhe',a:3,m:5,i:[],f:'AL',tool:'breath',
+ s:['Setzt euch bequem hin.','Atmet ein, wenn der Kreis grösser wird – wie ein Ballon.','Atmet aus, wenn er kleiner wird.','Fünf Runden schaffen!'],
+ l:'Ruhig werden und den eigenen Atem spüren.'},
+{id:'kuschelschaukel',t:'Kuscheltier-Schaukel',e:'🧸',c:'ruhe',a:3,m:5,i:['Kuscheltier'],f:'AL',
+ s:['Legt euch auf den Rücken.','Setzt ein Kuscheltier auf den Bauch.','Atmet langsam, sodass das Kuscheltier sanft schaukelt.','Zählt zehn Atemzüge.'],
+ l:'Bauchatmung und Entspannung.'},
+{id:'pizza',t:'Rücken-Pizza',e:'🍕',c:'ruhe',a:3,m:10,i:[],f:'L',
+ s:['Das Kind liegt auf dem Bauch.','Teig kneten: den Rücken sanft massieren.','Ausrollen: mit dem Unterarm darüberrollen. Tomatensauce: streichen. Käse: mit den Fingern tippen.','Ofen: die Hände warm reiben und auflegen. Dann tauschen!'],
+ l:'Berührung, Nähe und Entspannung.'},
+{id:'hoerminute',t:'Hör-Minute',e:'🤫',c:'ruhe',a:4,m:5,i:[],f:'AL',
+ s:['Startet unten den Timer mit 1 Minute.','Augen zu und ganz still sein.','Zählt an den Fingern jedes Geräusch, das ihr hört.','Danach erzählen: Was habt ihr gehört?'],
+ l:'Stille aushalten und genau hinhören.'},
+{id:'ichsehe',t:'Ich sehe was …',e:'👀',c:'ruhe',a:3,m:10,i:[],f:'L',
+ s:['Eine Person sucht sich heimlich etwas im Raum aus.','Sie sagt: „Ich sehe was, was du nicht siehst, und das ist … rot.“','Die anderen raten.'],
+ l:'Genau hinschauen und Farben benennen.',v:'Schwieriger: statt der Farbe den Anfangsbuchstaben sagen.'},
+{id:'tieryoga',t:'Tier-Yoga',e:'🧘',c:'ruhe',a:4,m:10,i:[],f:'AL',tool:'yoga',
+ s:['Die App zeigt eine Yoga-Figur.','Macht sie nach und haltet sie fünf Atemzüge lang.','Zum Schluss: die Kind-Haltung zum Ausruhen.'],
+ l:'Beweglichkeit, Gleichgewicht und Ruhe.'},
+
+/* ===== ROLLENSPIEL ===== */
+{id:'pantomime',t:'Pantomime',e:'🎭',c:'rollen',a:4,m:10,i:[],f:'P',tool:'panto',
+ s:['Nur wer dran ist, schaut auf die geheime Karte.','Stellt das Wort dar – ohne zu sprechen!','Die anderen raten. Wer es errät, ist als Nächstes dran.'],
+ l:'Körpersprache und Fantasie.'},
+{id:'restaurant',t:'Restaurant spielen',e:'🍽️',c:'rollen',a:3,m:25,i:['Papier','Stifte','Teller'],f:'P',
+ s:['Malt eine Speisekarte mit Preisen.','Eine Person ist Kellner, eine Koch, der Rest sind Gäste.','Bestellen, servieren – echte Brotstücke oder Fantasie-Essen.','Am Ende wird mit Knöpfen oder Papiergeld bezahlt.'],
+ l:'Sprechen, Höflichkeit und erstes Rechnen.'},
+{id:'kaufladen',t:'Kaufladen',e:'🛒',c:'rollen',a:3,m:25,i:['Verpackungen','Papier','Stifte'],f:'P',
+ s:['Sammelt leere Verpackungen: Müeslischachteln, Joghurtbecher, Eierkarton.','Macht Preisschilder von 1 bis 10.','Bastelt Geld aus Papier.','Einkaufen, bezahlen, Rückgeld geben!'],
+ l:'Zahlen, Geld und Rollen wechseln.'},
+{id:'hoehle',t:'Höhlen-Bau',e:'⛺',c:'rollen',a:3,m:30,i:['Decke','Kissen','Klammern'],f:'A',
+ s:['Legt eine Decke über Stühle oder Sofa.','Haltet sie mit Wäscheklammern fest.','Polstert den Boden mit Kissen.','Taschenlampe rein – Bücher, Picknick oder Geschichten!'],
+ l:'Bauen, Planen und Geborgenheit.'},
+{id:'schatzsuche',t:'Schatzsuche',e:'🗺️',c:'rollen',a:4,m:20,i:['Papier','Stifte'],f:'P',tool:'treasure',
+ s:['Erwachsene wählen in der App Hinweise aus und schreiben sie auf Zettel.','Hinweis 1 bekommt das Kind. Hinweis 2 liegt am Ort von Hinweis 1, und so weiter.','Am letzten Ort wartet der Schatz: ein Snack, ein Spielzeug oder eine Urkunde.'],
+ l:'Rätsel lösen und die Wohnung kennen.'},
+{id:'geschichte',t:'Geschichten-Würfel',e:'📖',c:'rollen',a:4,m:10,i:[],f:'AL',tool:'story',
+ s:['Würfelt eine Figur, einen Ort und ein Problem.','Erzählt daraus zusammen eine Geschichte: Jeder sagt abwechselnd einen Satz.','Wie geht sie gut aus?'],
+ l:'Erzählen, Wortschatz und Fantasie.'},
+{id:'modenschau',t:'Modenschau',e:'👗',c:'rollen',a:3,m:20,i:['Kleider','Klebeband'],f:'P',
+ s:['Klebt einen Laufsteg auf den Boden.','Verkleidet euch mit Kleidern, Tüchern und Hüten.','Musik an und über den Laufsteg laufen.','Das Publikum klatscht und macht Fotos.'],
+ l:'Selbstvertrauen und Fantasie.'},
+{id:'doktor',t:'Kuscheltier-Doktor',e:'🩺',c:'rollen',a:3,m:20,i:['Kuscheltier','WC-Rollen','Tuch'],f:'A',
+ s:['Ein Kuscheltier ist krank.','Untersucht es: WC-Rolle als Hörrohr, Löffel als Spatel.','Macht einen Verband aus einem Tuch.','Erklärt dem Kuscheltier, was ihm fehlt.'],
+ l:'Körperteile benennen und Angst vor dem Arzt abbauen.'},
+{id:'post',t:'Post spielen',e:'✉️',c:'rollen',a:4,m:20,i:['Papier','Stifte','Karton'],f:'P',
+ s:['Bastelt einen Briefkasten aus einem Karton.','Malt oder schreibt Briefe an Familienmitglieder.','Die Postbotin verteilt alles an die richtigen Personen.'],
+ l:'Erste Buchstaben, Namen und Freude schenken.'}
+];
+
+/* ---------- Werkzeug-Daten ---------- */
+const COLORS=[['Rot','#e53935'],['Blau','#1e88e5'],['Gelb','#fdd835'],['Grün','#43a047'],['Orange','#fb8c00'],['Lila','#8e24aa'],['Rosa','#f48fb1'],['Braun','#795548'],['Weiss','#ffffff'],['Schwarz','#212121'],['Grau','#9e9e9e']];
+const PROPS=['rund','weich','eckig','schwer','leicht','glänzend','aus Holz','aus Stoff','aus Plastik','kleiner als deine Hand','zum Essen','gestreift','durchsichtig'];
+const LETTERS='A B D E F G H K L M N O P R S T U W Z'.split(' ');
+const SHAPES={
+ Kreis:'<circle cx="60" cy="60" r="46"/>',
+ Dreieck:'<polygon points="60,12 110,104 10,104"/>',
+ Quadrat:'<rect x="16" y="16" width="88" height="88"/>',
+ Rechteck:'<rect x="6" y="32" width="108" height="56"/>',
+ Oval:'<ellipse cx="60" cy="60" rx="54" ry="34"/>',
+ Herz:'<path d="M60 104 C10 70 6 36 30 24 C46 16 58 28 60 36 C62 28 74 16 90 24 C114 36 110 70 60 104Z"/>'
+};
+const ANIMALS=[['🐸','Frosch','In die Hocke und weit hüpfen.'],['🦀','Krabbe','Auf Händen und Füssen seitwärts laufen, Bauch nach oben.'],['🐻','Bär','Auf allen Vieren, Po hoch, langsam stapfen.'],['🦩','Flamingo','Auf einem Bein stehen – wie lange schaffst du es?'],['🐍','Schlange','Auf dem Bauch über den Boden kriechen.'],['🦘','Känguru','Mit beiden Füssen zusammen hüpfen.'],['🐧','Pinguin','Arme an den Körper und mit kleinen Schritten watscheln.'],['🐘','Elefant','Einen Arm als Rüssel schwingen und schwer stampfen.'],['🐆','Gepard','Auf der Stelle ganz schnell rennen.'],['🐌','Schnecke','Sooo langsam wie möglich bewegen.'],['🦅','Adler','Arme weit ausbreiten und durch den Raum gleiten.'],['🐒','Affe','Hüpfen, kratzen und „uh-uh-ah-ah“ rufen.']];
+const YOGA=[['🌳','Baum','Auf einem Bein stehen, den anderen Fuss ans Bein legen, Arme wie Äste nach oben.'],['🐱','Katze','Auf allen Vieren den Rücken rund machen wie eine fauchende Katze.'],['🐶','Hund','Hände und Füsse auf den Boden, Po hoch – wie ein umgedrehtes V.'],['🐍','Kobra','Auf dem Bauch liegen, Oberkörper mit den Händen hochdrücken und leise zischen.'],['🦋','Schmetterling','Sitzen, Fusssohlen zusammen, Knie wie Flügel auf und ab flattern.'],['🐸','Frosch','Tief in die Hocke gehen, Hände zwischen die Füsse.'],['⛰️','Berg','Ganz gerade stehen, Füsse fest am Boden, Arme nach oben strecken.'],['🧒','Kind','Auf die Fersen setzen, Stirn auf den Boden, Arme nach hinten – ausruhen.'],['🐢','Schildkröte','Im Sitzen die Beine öffnen, Arme darunter schieben, Rücken rund.'],['🌙','Mond','Stehen, Arme über dem Kopf zusammen und zur Seite biegen wie eine Mondsichel.']];
+const COMMANDS=['Hüpf auf einem Bein','Fass dir an die Nase','Dreh dich im Kreis','Klatsch dreimal','Setz dich auf den Boden','Streck die Arme hoch','Mach dich ganz klein','Wackel mit dem Po','Stampf mit den Füssen','Zeig deine Zunge','Berühr deine Zehen','Lach wie eine Hexe','Mach eine Grimasse','Spring wie ein Frosch','Lauf auf der Stelle','Halt dir die Ohren zu','Mach ein Kussmund'];
+const PANTO=[['Tier','🐘','Elefant'],['Tier','🐱','Katze'],['Tier','🐶','Hund'],['Tier','🐦','Vogel'],['Tier','🐟','Fisch'],['Tier','🐰','Hase'],['Tier','🦁','Löwe'],['Tier','🐴','Pferd'],['Tier','🐵','Affe'],['Beruf','👨‍🍳','Koch'],['Beruf','🚒','Feuerwehr'],['Beruf','👩‍⚕️','Ärztin'],['Beruf','👮','Polizist'],['Beruf','💇','Coiffeuse'],['Beruf','👨‍✈️','Pilot'],['Beruf','👩‍🌾','Bäuerin'],['Beruf','🧑‍🎨','Maler'],['Alltag','🪥','Zähne putzen'],['Alltag','👟','Schuhe binden'],['Alltag','🍕','Pizza essen'],['Alltag','🚲','Velo fahren'],['Alltag','😴','Schlafen'],['Alltag','🎁','Geschenk auspacken'],['Alltag','🍦','Glace schlecken'],['Alltag','🏊','Schwimmen'],['Alltag','⚽','Fussball spielen'],['Alltag','🧹','Staubsaugen'],['Alltag','☔','Im Regen stehen']];
+const STORY={
+ wer:['🦔 ein mutiger Igel','🧙 eine kleine Hexe','🤖 ein Roboter','🐉 ein Drache, der Angst im Dunkeln hat','👸 eine Prinzessin mit Velo','🐭 eine Maus','🧑‍🚀 eine Astronautin','🦖 ein Dino','🐻 ein müder Bär','👻 ein freundliches Gespenst'],
+ wo:['🧊 im Kühlschrank','🌙 auf dem Mond','🛏️ unter dem Bett','🌲 im Zauberwald','🏴‍☠️ auf einem Piratenschiff','🛁 in der Badewanne','🐄 auf dem Bauernhof','❄️ in einer Schneehöhle','🦒 im Zoo','🥐 in einer Bäckerei'],
+ was:['verliert seinen Schuh','findet eine Schatzkarte','will einen Kuchen backen','hat Schluckauf','sucht einen Freund','kann plötzlich fliegen','muss ein Geschenk verstecken','trifft ein sprechendes Tier','wird ganz klein','hat Geburtstag, und niemand weiss es']
+};
+const TREASURE=[['Hier ist es kalt und hell, wenn man die Tür aufmacht.','Kühlschrank'],['Ich habe vier Beine, aber laufen kann ich nicht.','Stuhl oder Tisch'],['Hier legst du jede Nacht deinen Kopf hin.','Kopfkissen'],['Hier sammelt sich die schmutzige Wäsche.','Wäschekorb'],['Schau hinein, und du siehst dich selbst.','Spiegel'],['Hier warten die Schuhe, bis ihr rausgeht.','Schuhregal'],['Ich habe viele Seiten, bin aber kein Würfel.','Bücherregal'],['Hier wird geplanscht und gebadet.','Badewanne'],['In mir wohnen Töpfe und Pfannen.','Küchenschrank'],['Auf mir sitzt die ganze Familie zusammen.','Sofa'],['Ich bin aus Stoff und halte morgens die Sonne draussen.','Vorhang'],['Ich mache Licht, wenn es dunkel ist.','Lampe'],['Hier hängen die Jacken.','Garderobe'],['Hier wird das Geschirr wieder sauber.','Spülbecken oder Abwaschmaschine'],['Ich bin grün und brauche Wasser.','Zimmerpflanze'],['Ich tick-tacke den ganzen Tag.','Uhr'],['Hier wohnen die Kuscheltiere.','Kuscheltier-Ecke']];
+
+/* ---------- Zustand ---------- */
+const KEY='hs2';
+let S={stars:0,done:{},fav:{},hist:[]};
+try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(S,JSON.parse(raw));else{const old=parseInt(localStorage.getItem('hs_stars')||'0',10);if(old)S.stars=old}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const F={cat:'alle',age:0,dur:0,sit:{},have:{},q:''};
+let view='spiele',cur=null,timers=[],countdown=null,ac=null;
+
+const $=id=>document.getElementById(id);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const byId=id=>G.find(g=>g.id===id);
+
+/* Alle Gegenstände, nach Häufigkeit sortiert */
+const ITEMS=(()=>{const n={};G.forEach(g=>g.i.forEach(i=>n[i]=(n[i]||0)+1));return Object.keys(n).sort((a,b)=>n[b]-n[a]||a.localeCompare(b))})();
+const SIT=[['A','🧍 Allein spielbar'],['P','👫 Für Gruppen & Partys'],['L','🤫 Leise'],['0','⚡ Ohne Material']];
+const AGES=[[0,'Alle'],[3,'3 J.'],[4,'4 J.'],[5,'5 J.'],[6,'6+ J.']];
+const DURS=[[0,'Alle'],[10,'bis 10 Min.'],[20,'bis 20 Min.'],[99,'länger']];
+
+function activeFilters(){return (F.age?1:0)+(F.dur?1:0)+Object.keys(F.sit).length+Object.keys(F.have).length}
+function match(g){
+  if(F.cat!=='alle'&&g.c!==F.cat)return false;
+  if(F.age&&g.a>F.age)return false;
+  if(F.dur===10&&g.m>10)return false;
+  if(F.dur===20&&g.m>20)return false;
+  if(F.dur===99&&g.m<=20)return false;
+  for(const k in F.sit){if(k==='0'){if(g.i.length)return false}else if(!g.f.includes(k))return false}
+  const h=Object.keys(F.have);
+  if(h.length&&!g.i.every(i=>F.have[i]))return false;
+  if(F.q){const q=F.q.toLowerCase();const hay=(g.t+' '+g.l+' '+g.i.join(' ')+' '+CATS[g.c].n+' '+(g.f.includes('L')?'leise ruhig':'')+' '+(g.f.includes('P')?'party gruppe':'')).toLowerCase();if(!hay.includes(q))return false}
+  return true;
+}
+const visible=()=>G.filter(match);
+
+/* ---------- Rendering ---------- */
+function card(g){
+  const c=CATS[g.c];
+  const items=g.i.length?g.i.slice(0,3).map(i=>'<span>'+esc(i)+'</span>').join('')+(g.i.length>3?'<span>+'+(g.i.length-3)+'</span>':''):'<span>nichts nötig</span>';
+  const b=(S.fav[g.id]?'❤️':'')+(S.done[g.id]?'✅':'');
+  return '<button class="card" data-id="'+g.id+'" style="--c:'+c.c+'"><span class="badges">'+b+'</span><span class="e">'+g.e+'</span><b>'+esc(g.t)+'</b><span class="meta">ab '+g.a+' J. · '+g.m+' Min.</span><span class="need">'+items+'</span></button>';
+}
+function chips(el,list,isOn,attr){el.innerHTML=list.map(([v,l])=>'<button class="chip'+(isOn(v)?' on':'')+'" data-'+attr+'="'+v+'">'+l+'</button>').join('')}
+function renderSpiele(){
+  $('cats').innerHTML='<button class="chip cat'+(F.cat==='alle'?' on':'')+'" data-cat="alle" style="--c:#2b2a33">Alle</button>'+
+    Object.keys(CATS).map(k=>'<button class="chip cat'+(F.cat===k?' on':'')+'" data-cat="'+k+'" style="--c:'+CATS[k].c+'">'+CATS[k].e+' '+CATS[k].n+'</button>').join('');
+  chips($('f-age'),AGES,v=>F.age===v,'age');
+  chips($('f-dur'),DURS,v=>F.dur===v,'dur');
+  chips($('f-sit'),SIT,v=>!!F.sit[v],'sit');
+  chips($('f-items'),ITEMS.map(i=>[i,i]),v=>!!F.have[v],'item');
+  const n=activeFilters();
+  $('fbtn').textContent='⚙️ Filter'+(n?' ('+n+')':'');
+  $('fbtn').classList.toggle('act',n>0);
+  const plain=!n&&!F.q&&F.cat==='alle';
+  if(plain){
+    const d=new Date();const idx=Math.floor((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()))/864e5)%G.length;const g=G[idx];
+    $('today').innerHTML='<button class="today" data-id="'+g.id+'"><span class="e">'+g.e+'</span><span><small>⭐ Spiel des Tages</small><b>'+esc(g.t)+'</b><br><span class="meta">'+CATS[g.c].n+' · ab '+g.a+' J. · '+g.m+' Min.</span></span></button>';
+  }else $('today').innerHTML='';
+  const v=visible();
+  $('count').textContent=v.length+(v.length===1?' Spiel':' Spiele');
+  $('grid').innerHTML=v.length?v.map(card).join(''):'<div class="empty">😮 Keine Spiele passen.<br>Wählt mehr Dinge aus, die ihr habt, oder setzt die Filter zurück.</div>';
+}
+function renderFav(){
+  const v=G.filter(g=>S.fav[g.id]);
+  $('favgrid').innerHTML=v.length?v.map(card).join(''):'<div class="empty">Noch keine Favoriten.<br>Tippt bei einem Spiel auf 🤍, um es hier zu speichern.</div>';
+}
+function catProgress(k){const all=G.filter(g=>g.c===k);const d=all.filter(g=>S.done[g.id]).length;return {d,all:all.length}}
+const BADGES=[[5,'🥉','Entdecker'],[15,'🥈','Spiel-Profi'],[30,'🥇','Spiel-Meister'],[G.length,'🏆','Legende']];
+function stickerSet(){const s=[];Object.keys(CATS).forEach(k=>{const p=catProgress(k);if(p.d>=3)s.push(k);if(p.d===p.all)s.push(k+'*')});const n=Object.keys(S.done).length;BADGES.forEach(b=>{if(n>=b[0])s.push('b'+b[0])});return s}
+function renderSticker(){
+  const distinct=Object.keys(S.done).length;
+  const total=Object.values(S.done).reduce((a,b)=>a+b,0);
+  $('stats').innerHTML='<div class="stat"><b>⭐ '+S.stars+'</b><span>Sterne</span></div><div class="stat"><b>'+distinct+'/'+G.length+'</b><span>Spiele entdeckt</span></div><div class="stat"><b>'+total+'</b><span>Mal gespielt</span></div>';
+  $('stickers').innerHTML=Object.keys(CATS).map(k=>{const c=CATS[k],p=catProgress(k),got=p.d>=3,gold=p.d===p.all;
+    return '<div class="st'+(got?' got':'')+(gold?' gold':'')+'" style="--c:'+c.c+'"><div class="e">'+c.e+'</div><b>'+c.n+'</b><span class="meta">'+(gold?'Gold! ✨':got?'Sticker erhalten':Math.min(p.d,3)+' / 3')+' · '+p.d+'/'+p.all+'</span><div class="bar"><i style="width:'+Math.round(p.d/p.all*100)+'%"></i></div></div>'}).join('');
+  $('badges').innerHTML=BADGES.map(b=>{const got=distinct>=b[0];return '<div class="st'+(got?' got':'')+'" style="--c:#f59e0b"><div class="e">'+b[1]+'</div><b>'+b[2]+'</b><span class="meta">'+Math.min(distinct,b[0])+' / '+b[0]+' Spiele</span></div>'}).join('');
+  $('history').innerHTML=S.hist.length?S.hist.slice(0,10).map(h=>{const g=byId(h.id);if(!g)return '';const d=new Date(h.t);return g.e+' '+esc(g.t)+' <span style="opacity:.6">· '+d.toLocaleDateString('de-CH',{day:'numeric',month:'short'})+'</span>'}).join('<br>'):'Noch nichts gespielt – los geht’s!';
+}
+function render(){
+  $('stars').textContent=S.stars;
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  $('v-'+view).classList.add('on');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.nav===view));
+  if(view==='spiele')renderSpiele();
+  if(view==='fav')renderFav();
+  if(view==='sticker')renderSticker();
+}
+
+/* ---------- Audio ---------- */
+function AC(){if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)()}catch(e){ac=null}}if(ac&&ac.state==='suspended'){try{ac.resume()}catch(e){}}return ac}
+function tone(f,d,type,vol,when){const a=AC();if(!a)return;const t=(when||0)+a.currentTime;const o=a.createOscillator(),g=a.createGain();o.type=type||'triangle';o.frequency.value=f;g.gain.setValueAtTime(vol||.18,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+d+.05)}
+function noise(d,vol){const a=AC();if(!a)return;const len=Math.floor(a.sampleRate*d);const b=a.createBuffer(1,len,a.sampleRate);const ch=b.getChannelData(0);for(let i=0;i<len;i++)ch[i]=(Math.random()*2-1)*Math.pow(1-i/len,3);const s=a.createBufferSource();s.buffer=b;const g=a.createGain();g.gain.value=vol||.5;s.connect(g);g.connect(a.destination);s.start()}
+function speak(t){try{const u=new SpeechSynthesisUtterance(t);u.lang='de-DE';u.rate=1;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function fanfare(){[523,659,784,1047].forEach((f,i)=>tone(f,.25,'triangle',.15,i*.12))}
+
+/* ---------- Werkzeuge ---------- */
+const every=(fn,ms)=>{const id=setInterval(fn,ms);timers.push(id);return id};
+const later=(fn,ms)=>{const id=setTimeout(fn,ms);timers.push(id);return id};
+function clearTool(){timers.forEach(id=>{clearInterval(id);clearTimeout(id)});timers=[];try{speechSynthesis.cancel()}catch(e){}}
+function dieHTML(n){const P={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]}[n];let h='<div class="die">';for(let i=0;i<9;i++)h+='<i class="'+(P.includes(i)?'p':'')+'"></i>';return h+'</div>'}
+
+function runTool(g){
+  const el=$('tool');if(!el)return;const T=g.tool;
+  const simple={
+    color:()=>{const c=pick(COLORS);return '<div class="sw" style="background:'+c[1]+'"></div><div class="big">Finde etwas in '+c[0]+'!</div>'},
+    number:()=>'<div class="big">Finde <span style="font-size:46px">'+(1+Math.floor(Math.random()*8))+'</span> Dinge, die '+pick(PROPS)+' sind!</div>',
+    letter:()=>'<div class="big">Finde etwas mit</div><div class="huge" style="font-weight:800">'+pick(LETTERS)+'</div>',
+    shape:()=>{const k=pick(Object.keys(SHAPES));return '<svg viewBox="0 0 120 120" width="120" height="120" style="fill:'+CATS[g.c].c+'">'+SHAPES[k]+'</svg><div class="big">Finde etwas mit der Form: '+k+'!</div>'},
+    animal:()=>{const a=pick(ANIMALS);return '<div class="huge">'+a[0]+'</div><div class="big">Bewegt euch wie ein'+(['Krabbe','Schlange','Schnecke'].includes(a[1])?'e':'')+' '+a[1]+'!</div><div class="meta">'+a[2]+'</div>'},
+    yoga:()=>{const y=pick(YOGA);return '<div class="huge">'+y[0]+'</div><div class="big">'+y[1]+'</div><div>'+y[2]+'</div><div class="meta" style="margin-top:6px">5 Atemzüge halten</div>'},
+    story:()=>'<div class="three"><div><small>Wer?</small>'+pick(STORY.wer)+'</div><div><small>Wo?</small>'+pick(STORY.wo)+'</div><div><small>Was passiert?</small>… '+pick(STORY.was)+'</div></div>'
+  };
+  if(simple[T]){
+    const label={animal:'Neues Tier',yoga:'Neue Figur',story:'Neu würfeln'}[T]||'Neue Aufgabe';
+    const draw=()=>{el.innerHTML=simple[T]()+'<div class="btns c"><button class="btn" id="tnew">🔄 '+label+'</button></div>';$('tnew').onclick=()=>{tone(880,.08);draw()}};
+    draw();return;
+  }
+  if(T==='panto'){
+    let shown=false,cardv=pick(PANTO);
+    const draw=()=>{el.innerHTML=(shown?'<div class="meta">'+cardv[0]+'</div><div class="huge">'+cardv[1]+'</div><div class="big">'+cardv[2]+'</div>':'<button class="secret" id="reveal">🤫 Nur wer dran ist: hier tippen</button>')+'<div class="btns c"><button class="btn" id="tnew">🔄 Neue Karte</button></div>';
+      if(!shown)$('reveal').onclick=()=>{shown=true;draw()};
+      $('tnew').onclick=()=>{shown=false;cardv=pick(PANTO);draw()}};
+    draw();return;
+  }
+  if(T==='dice'){
+    let two=false;
+    const draw=(a,b)=>{el.innerHTML='<div class="dice">'+dieHTML(a)+(two?dieHTML(b):'')+'</div><div class="big" id="dsum">'+(two?a+' + '+b+' = '+(a+b):a)+'</div><div class="btns c"><button class="btn" id="roll">🎲 Würfeln</button><button class="btn alt sm" id="two">'+(two?'1 Würfel':'2 Würfel')+'</button></div>';
+      $('roll').onclick=roll;$('two').onclick=()=>{two=!two;draw(1+Math.floor(Math.random()*6),1+Math.floor(Math.random()*6))}};
+    const roll=()=>{let k=0;const id=every(()=>{k++;const a=1+Math.floor(Math.random()*6),b=1+Math.floor(Math.random()*6);tone(300+Math.random()*300,.04,'square',.06);draw(a,b);if(k>=9){clearInterval(id);tone(660,.15)}},70)};
+    draw(1,1);return;
+  }
+  if(T==='commands'){
+    let auto=null,voice=false;
+    const next=()=>{const isK=Math.random()<.65,c=pick(COMMANDS);const txt=(isK?'Kommando: ':'')+c+'!';$('cmd').innerHTML=(isK?'<span style="color:#16a34a">✅ Kommando:</span><br>':'<span style="color:#dc2626">❌ (ohne Kommando)</span><br>')+c+'!';if(voice)speak(txt);else tone(isK?880:330,.12)};
+    el.innerHTML='<div class="stage" id="cmd" style="font-size:26px">Bereit? 🫡</div><div class="btns c"><button class="btn" id="nx">➡️ Nächster Befehl</button><button class="btn alt sm" id="au">▶ Automatisch</button><button class="btn alt sm" id="vo">🔇 Vorlesen aus</button></div>';
+    $('nx').onclick=next;
+    $('au').onclick=()=>{if(auto){clearInterval(auto);auto=null;$('au').textContent='▶ Automatisch'}else{next();auto=every(next,4500);$('au').textContent='⏸ Pause'}};
+    $('vo').onclick=()=>{voice=!voice;$('vo').textContent=voice?'🔊 Vorlesen an':'🔇 Vorlesen aus';if(voice)speak('Los geht’s!')};
+    return;
+  }
+  if(T==='dance'){
+    const notes=[392,440,523,587,659,784,880];let on=false,step=0,phaseEnd=0,dancing=true,beat=null,idx=3;
+    const st=()=>$('stg');
+    const tick=()=>{const now=Date.now();
+      if(now>phaseEnd){dancing=!dancing;phaseEnd=now+(dancing?3000+Math.random()*6000:2500+Math.random()*1500);st().className='stage '+(dancing?'go':'stop');st().textContent=dancing?'💃 TANZEN! 🕺':'🧊 STOPP! Einfrieren!';if(!dancing)tone(196,.4,'sawtooth',.12)}
+      if(dancing){idx=Math.max(0,Math.min(notes.length-1,idx+pick([-2,-1,1,1,2])));tone(notes[idx],.18,'square',.07);if(step%4===0)tone(notes[0]/2,.25,'triangle',.18);if(step%2===1)noise(.03,.15);step++}};
+    el.innerHTML='<div class="stage" id="stg">Bereit zum Tanzen?</div><div class="btns c"><button class="btn" id="go">▶ Musik starten</button></div><div class="meta" style="margin-top:6px">Ton am Handy einschalten! Die Musik stoppt zufällig.</div>';
+    $('go').onclick=()=>{if(on){clearInterval(beat);on=false;$('go').textContent='▶ Musik starten';st().className='stage';st().textContent='Pause'}else{AC();on=true;dancing=false;phaseEnd=0;beat=every(tick,230);$('go').textContent='■ Stopp'}};
+    return;
+  }
+  if(T==='rhythm'){
+    const SND={'👏':()=>noise(.09,.6),'🦶':()=>tone(70,.25,'sine',.5),'🥁':()=>tone(180,.12,'triangle',.35)};
+    let pat=[];
+    const make=()=>{const n=3+Math.floor(Math.random()*4);pat=[];for(let i=0;i<n;i++)pat.push(pick(Object.keys(SND)));$('pat').innerHTML=pat.map((p,i)=>'<span class="beat" id="b'+i+'">'+p+'</span>').join('')};
+    const play=()=>{pat.forEach((p,i)=>later(()=>{SND[p]();const b=$('b'+i);if(b){b.classList.add('hit');later(()=>b.classList.remove('hit'),250)}},i*520))};
+    el.innerHTML='<div id="pat" style="margin:6px 0"></div><div class="btns c"><button class="btn" id="pl">▶ Vorspielen</button><button class="btn alt sm" id="nw">🔄 Neues Muster</button></div><div class="meta" style="margin-top:6px">👏 klatschen · 🦶 stampfen · 🥁 auf den Tisch klopfen</div>';
+    make();$('pl').onclick=()=>{AC();play()};$('nw').onclick=()=>{make();AC();play()};
+    return;
+  }
+  if(T==='breath'){
+    let on=false,round=0,inhale=false,loop=null;
+    el.innerHTML='<div class="breath" id="ball">Bereit?</div><div class="big" id="btxt">Tippe auf Start</div><div class="btns c"><button class="btn" id="bs">▶ Start</button></div>';
+    const step=()=>{const b=$('ball');if(!b)return;inhale=!inhale;if(inhale){round++;if(round>5){clearInterval(loop);on=false;$('btxt').textContent='Super entspannt! 🌟';b.style.transform='scale(.45)';b.textContent='✨';$('bs').textContent='▶ Nochmal';return}}
+      b.style.transform=inhale?'scale(1)':'scale(.45)';b.textContent=inhale?'einatmen':'ausatmen';$('btxt').textContent=(inhale?'Einatmen … ':'Ausatmen … ')+'('+round+'/5)';tone(inhale?392:294,1.2,'sine',.05)};
+    $('bs').onclick=()=>{if(on){clearInterval(loop);on=false;$('bs').textContent='▶ Start';return}on=true;round=0;inhale=false;$('bs').textContent='⏸ Stopp';step();loop=every(step,4000)};
+    return;
+  }
+  if(T==='treasure'){
+    const draw=()=>{const list=TREASURE.slice().sort(()=>Math.random()-.5).slice(0,5);
+      el.innerHTML='<div class="big" style="font-size:20px">🗺️ Eure 5 Hinweise</div><ol class="riddles">'+list.map(r=>'<li>'+r[0]+'<details><summary>Lösung für Erwachsene</summary>'+r[1]+'</details></li>').join('')+'</ol><div class="btns c"><button class="btn" id="tnew">🔄 Neue Hinweise</button></div>';
+      $('tnew').onclick=draw};
+    draw();return;
+  }
+  if(T==='draw'){
+    const cols=['#2b2a33','#e53935','#fb8c00','#fdd835','#43a047','#1e88e5','#8e24aa','#f48fb1','#795548','#ffffff'];
+    let col=cols[1],size=8;
+    el.innerHTML='<canvas id="cv"></canvas><div class="pal" id="pal">'+cols.map(c=>'<button style="background:'+c+'" data-col="'+c+'" class="'+(c===col?'on':'')+'" aria-label="Farbe"></button>').join('')+'</div><div class="btns c"><button class="btn alt sm" data-size="4">dünn</button><button class="btn alt sm" data-size="10">mittel</button><button class="btn alt sm" data-size="22">dick</button><button class="btn sm" id="clr">🗑️ Neu</button></div><div class="meta">Weiss = Radiergummi</div>';
+    const cv=$('cv'),ctx=cv.getContext('2d');const dpr=window.devicePixelRatio||1;
+    const fit=()=>{const r=cv.getBoundingClientRect();cv.width=r.width*dpr;cv.height=r.height*dpr;ctx.scale(dpr,dpr);ctx.fillStyle='#fff';ctx.fillRect(0,0,r.width,r.height);ctx.lineCap='round';ctx.lineJoin='round'};
+    fit();
+    let down=false,last=null;
+    const pos=e=>{const r=cv.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top]};
+    cv.onpointerdown=e=>{down=true;last=pos(e);cv.setPointerCapture(e.pointerId);ctx.fillStyle=col;ctx.beginPath();ctx.arc(last[0],last[1],size/2,0,7);ctx.fill()};
+    cv.onpointermove=e=>{if(!down)return;const p=pos(e);ctx.strokeStyle=col;ctx.lineWidth=size;ctx.beginPath();ctx.moveTo(last[0],last[1]);ctx.lineTo(p[0],p[1]);ctx.stroke();last=p};
+    cv.onpointerup=cv.onpointercancel=()=>{down=false};
+    $('pal').onclick=e=>{const b=e.target.closest('button');if(!b)return;col=b.dataset.col;$('pal').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))};
+    el.querySelectorAll('[data-size]').forEach(b=>b.onclick=()=>{size=+b.dataset.size});
+    $('clr').onclick=()=>{ctx.setTransform(1,0,0,1,0,0);fit()};
+    return;
+  }
+}
+
+/* ---------- Detailansicht ---------- */
+function openG(id){
+  const g=byId(id);if(!g)return;cur=g;clearTool();stopCountdown();
+  const c=CATS[g.c];
+  let h='<div class="top"><div><div style="font-size:46px;line-height:1">'+g.e+'</div><h2>'+esc(g.t)+'</h2><div class="meta">'+c.e+' '+c.n+' · ab '+g.a+' J. · ca. '+g.m+' Min.'+(g.f.includes('A')?' · allein spielbar':'')+(g.f.includes('P')?' · gut für Gruppen':'')+'</div></div>'+
+    '<div style="display:flex;gap:6px"><button class="ico" id="favbtn" aria-label="Favorit">'+(S.fav[g.id]?'❤️':'🤍')+'</button><button class="ico" data-close="1" aria-label="Schliessen">✕</button></div></div>';
+  h+='<div class="need" style="margin-top:8px">'+(g.i.length?'<b style="font-size:13px;margin-right:2px">Ihr braucht:</b>'+g.i.map(i=>'<span>'+esc(i)+'</span>').join(''):'<span>Kein Material nötig</span>')+'</div>';
+  if(g.ad)h+='<div class="box hint">👩‍👧 '+esc(g.ad)+'</div>';
+  if(g.tool)h+='<div class="tool" id="tool"></div>';
+  h+='<ol>'+g.s.map(s=>'<li>'+esc(s)+'</li>').join('')+'</ol>';
+  if(g.v)h+='<div class="box vary">🔀 <b>Varianten:</b> '+esc(g.v)+'</div>';
+  h+='<div class="box learn">💡 <b>Das lernt ihr:</b> '+esc(g.l)+'</div>';
+  h+='<div class="btns"><button class="btn" data-done="1">Geschafft! ⭐</button>'+(S.done[g.id]?'<span class="meta">schon '+S.done[g.id]+'× gespielt</span>':'')+'</div>';
+  h+='<div class="btns"><button class="btn alt sm" data-timer="60">⏱ 1 Min.</button><button class="btn alt sm" data-timer="300">⏱ 5 Min.</button><button class="btn alt sm" data-timer="600">⏱ 10 Min.</button><span class="timer" id="tm"></span></div>';
+  const sh=$('sheet');sh.style.setProperty('--c',c.c);sh.innerHTML=h;sh.scrollTop=0;
+  $('bg').classList.add('show');document.body.classList.add('lock');
+  $('favbtn').onclick=()=>{if(S.fav[g.id])delete S.fav[g.id];else S.fav[g.id]=1;save();$('favbtn').textContent=S.fav[g.id]?'❤️':'🤍';toast(S.fav[g.id]?'❤️ Zu Favoriten hinzugefügt':'Aus Favoriten entfernt');render()};
+  runTool(g);
+}
+function closeG(){$('bg').classList.remove('show');document.body.classList.remove('lock');clearTool();stopCountdown();cur=null}
+function stopCountdown(){if(countdown){clearInterval(countdown);countdown=null}}
+function startTimer(s){
+  stopCountdown();AC();let t=s;
+  const show=()=>{const m=Math.floor(t/60),r=t%60;const el=$('tm');if(el)el.textContent=t>0?m+':'+(r<10?'0':'')+r:'Zeit um! 🎉'};
+  show();
+  countdown=setInterval(()=>{t--;show();if(t<=0){stopCountdown();[0,.3,.6].forEach(w=>tone(880,.2,'square',.12,w));try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}}},1000);
+}
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('show'),2600)}
+function burst(x,y){const em=['⭐','✨','🎉','🌟','💫'];for(let i=0;i<14;i++){const s=document.createElement('span');s.className='burst';s.textContent=pick(em);s.style.left=x+'px';s.style.top=y+'px';const a=Math.random()*Math.PI*2,d=80+Math.random()*120;s.style.setProperty('--x',Math.cos(a)*d+'px');s.style.setProperty('--y',Math.sin(a)*d-60+'px');document.body.appendChild(s);setTimeout(()=>s.remove(),1000)}}
+function done(btn){
+  const g=cur;if(!g)return;
+  const before=stickerSet();
+  S.stars++;S.done[g.id]=(S.done[g.id]||0)+1;S.hist.unshift({id:g.id,t:Date.now()});S.hist=S.hist.slice(0,30);save();
+  const after=stickerSet().filter(x=>!before.includes(x));
+  const r=btn.getBoundingClientRect();burst(r.left+r.width/2,r.top);fanfare();
+  if(after.length){const k=after[0];let msg;
+    if(k[0]==='b'){const b=BADGES.find(b=>'b'+b[0]===k);msg='🎖️ Neues Abzeichen: '+b[1]+' '+b[2]+'!'}
+    else{const key=k.replace('*','');msg=(k.endsWith('*')?'✨ Goldener Sticker: ':'🏆 Neuer Sticker: ')+CATS[key].e+' '+CATS[key].n+'!'}
+    setTimeout(()=>toast(msg),300)}
+  else toast('⭐ Super gemacht! +1 Stern');
+  setTimeout(()=>{closeG();render()},650);
+}
+
+/* ---------- Ereignisse ---------- */
+document.addEventListener('click',ev=>{
+  const el=ev.target.closest('button');if(!el)return;const d=el.dataset;
+  if(d.cat){F.cat=d.cat;render()}
+  else if(d.age!==undefined){F.age=+d.age;render()}
+  else if(d.dur!==undefined){F.dur=+d.dur;render()}
+  else if(d.sit){if(F.sit[d.sit])delete F.sit[d.sit];else F.sit[d.sit]=1;render()}
+  else if(d.item){if(F.have[d.item])delete F.have[d.item];else F.have[d.item]=1;render()}
+  else if(d.id){openG(d.id)}
+  else if(d.close){closeG()}
+  else if(d.timer){startTimer(+d.timer)}
+  else if(d.done){done(el)}
+  else if(d.nav){
+    if(d.nav==='zufall'){const v=view==='fav'?G.filter(g=>S.fav[g.id]):visible();const pool=v.length?v:G;openG(pick(pool).id)}
+    else{view=d.nav;render();window.scrollTo(0,0)}
+  }
+});
+$('fbtn').onclick=()=>$('panel').classList.toggle('on');
+$('freset').onclick=()=>{F.age=0;F.dur=0;F.sit={};F.have={};render()};
+$('q').addEventListener('input',e=>{F.q=e.target.value.trim();renderSpiele()});
+$('bg').addEventListener('click',ev=>{if(ev.target===$('bg'))closeG()});
+let wipeArmed=false;
+$('wipe').onclick=()=>{if(!wipeArmed){wipeArmed=true;$('wipe').textContent='Wirklich alles löschen? Nochmal tippen';setTimeout(()=>{wipeArmed=false;$('wipe').textContent='Fortschritt zurücksetzen'},4000);return}
+  S={stars:0,done:{},fav:{},hist:[]};save();wipeArmed=false;$('wipe').textContent='Fortschritt zurücksetzen';render();toast('Fortschritt zurückgesetzt')};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeG()});
+render();
+</script>
+</body>
+</html>
