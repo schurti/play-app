@@ -1,0 +1,43 @@
+.card {
+  position: relative;
+  background: #fff;
+  border-radius: 18px;
+  padding: 10px 11px 11px;
+  border: 0;
+  text-align: left;
+  box-shadow: 0 3px 0 var(--c);
+  border-top: 6px solid var(--c);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.card:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 var(--c);
+}
+.e {
+  font-size: 32px;
+  line-height: 1;
+}
+.card b {
+  font-size: 16.5px;
+  line-height: 1.1;
+}
+.badges {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 14px;
+}
+.need {
+  font-size: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+}
+.need span {
+  background: #0000000c;
+  border-radius: 99px;
+  padding: 1px 8px;
+}

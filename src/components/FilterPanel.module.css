@@ -1,0 +1,37 @@
+.panel {
+  background: #fff;
+  border-radius: 18px;
+  padding: 10px 12px;
+  margin: 0 0 10px;
+  box-shadow: 0 2px 0 #0001;
+}
+.lab {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  margin: 6px 2px 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.hint {
+  margin: 0 2px 4px;
+}
+.wraprow {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 2px 0 6px;
+}
+.chip {
+  flex: 0 0 auto;
+  border: 2px solid var(--line);
+  background: #fff;
+  border-radius: 99px;
+  padding: 5px 12px;
+  font-size: 15px;
+}
+.on {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}

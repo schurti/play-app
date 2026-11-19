@@ -1,14 +1,6 @@
+import { RouterProvider } from 'react-router'
+import { router } from './router'
+
 export default function App() {
-  return (
-    <header>
-      <h1>
-        🏠 Haushalts-
-        <br />
-        Spielplatz
-      </h1>
-      <div className="pill">
-        ⭐ <span id="stars">0</span>
-      </div>
-    </header>
-  )
+  return <RouterProvider router={router} />
 }

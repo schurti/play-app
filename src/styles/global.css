@@ -49,3 +49,14 @@ h1 {
   box-shadow: 0 2px 0 #0001;
   white-space: nowrap;
 }
+.meta {
+  font-size: 13px;
+  color: var(--muted);
+}
+.reset {
+  border: 0;
+  background: none;
+  color: #c2410c;
+  font-weight: 700;
+  padding: 4px 0;
+}

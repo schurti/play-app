@@ -1,11 +1,12 @@
 import { render, screen } from '@testing-library/react'
-import App from './App'
+import { createMemoryRouter, RouterProvider } from 'react-router'
+import { routes } from './router'
 
 describe('App', () => {
   it('zeigt den Titel', () => {
-    render(<App />)
+    render(<RouterProvider router={createMemoryRouter(routes)} />)
     expect(
-      screen.getByRole('heading', { name: /Haushalts-\s*Spielplatz/ }),
+      screen.getByRole('heading', { level: 1, name: /Haushalts-\s*Spielplatz/ }),
     ).toBeInTheDocument()
   })
 })

@@ -1,0 +1,33 @@
+.search {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 4px 0 8px;
+}
+.search input {
+  flex: 1;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  padding: 10px 12px;
+  font: inherit;
+  background: #fff;
+  min-width: 0;
+}
+.fbtn {
+  border: 2px solid var(--line);
+  background: #fff;
+  border-radius: 14px;
+  padding: 9px 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.act {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+.count {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 2px 4px 6px;
+}
