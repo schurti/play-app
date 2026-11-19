@@ -111,13 +111,38 @@ describe('Kategorie-Seite', () => {
 describe('Suchen', () => {
   const input = () => screen.getByRole('searchbox', { name: 'Spiele suchen' })
 
-  it('zeigt ohne Eingabe alle Spiele nach Kategorie gruppiert', () => {
+  it('zeigt ohne Eingabe nur die Startansicht, keine Spieleliste', () => {
     renderAt('/suche')
-    expect(screen.getByTestId('treffer')).toHaveTextContent('483 Spiele')
-    expect(
-      screen.getByRole('heading', { level: 2, name: /Ruhe/ }),
-    ).toBeVisible()
     expect(screen.getByText('Spiele mit …')).toBeVisible()
+    expect(screen.queryByTestId('treffer')).toBeNull()
+    expect(screen.queryByRole('button', { name: /Farben-Jagd/ })).toBeNull()
+  })
+
+  it('gruppiert Filter-Treffer nach Kategorie und lädt schrittweise nach', async () => {
+    renderAt('/suche?ort=drinnen')
+    const total = GAMES.filter((g) =>
+      matchGame(g, { ...EMPTY_FILTERS, place: 'drinnen' }),
+    ).length
+    expect(screen.getByTestId('treffer')).toHaveTextContent(`${total} Spiele`)
+    expect(
+      screen.getByRole('heading', { level: 2, name: /Bewegung/ }),
+    ).toBeVisible()
+    const cards = () =>
+      screen.getAllByRole('button').filter((b) => b.closest('section'))
+    expect(cards()).toHaveLength(30)
+    await userEvent.click(
+      screen.getByRole('button', {
+        name: `Weitere Spiele anzeigen (${total - 30})`,
+      }),
+    )
+    expect(cards()).toHaveLength(60)
+  })
+
+  it('erneutes Tippen auf „Suchen“ fokussiert das Suchfeld und behält die Suche', async () => {
+    const router = renderAt('/suche?q=ballon&spiel=ballonhoch')
+    await userEvent.click(nav().getByRole('link', { name: /Suchen/ }))
+    expect(input()).toHaveFocus()
+    expect(router.state.location.search).toBe('?q=ballon')
   })
 
   it('sucht tolerant, schreibt die Suche in die URL und schlägt Kategorien vor', async () => {

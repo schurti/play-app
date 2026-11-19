@@ -17,3 +17,17 @@
   border-radius: var(--r-lg);
   box-shadow: var(--lift);
 }
+.more {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0 4px;
+}
+.more button {
+  border: 0;
+  border-radius: 99px;
+  padding: 10px 18px;
+  font-weight: 800;
+  color: var(--ink);
+  background: var(--surface);
+  box-shadow: var(--lift-sm);
+}

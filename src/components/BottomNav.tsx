@@ -38,7 +38,7 @@ const TABS = [
 ] as const
 
 export default function BottomNav() {
-  const { pathname } = useLocation()
+  const { pathname, search } = useLocation()
   const navigate = useNavigate()
   const { openGame } = useGameNav()
   const visible = useVisibleGames()
@@ -71,6 +71,18 @@ export default function BottomNav() {
       <Link
         key={t.to}
         to={t.to}
+        onClick={(e) => {
+          // Schon auf der Suche: Suchfeld fokussieren statt neu laden (Suche bleibt)
+          if (t.to !== '/suche' || pathname !== '/suche') return
+          e.preventDefault()
+          const p = new URLSearchParams(search)
+          if (p.has('spiel')) {
+            p.delete('spiel')
+            navigate({ search: p.size ? '?' + p : '' }, { replace: true })
+          }
+          window.scrollTo({ top: 0 })
+          document.getElementById('suche-eingabe')?.focus()
+        }}
         aria-current={on ? 'page' : undefined}
         className={on ? `${styles.btn} ${styles.on}` : styles.btn}
       >

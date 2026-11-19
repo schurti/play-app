@@ -70,7 +70,11 @@
   animation: pop 0.25s ease-out;
 }
 .card {
-  width: min(100%, 260px);
+  /* feste Breite, sonst richtet sich die Kachel nach dem Titel */
+  width: min(100%, 240px);
+}
+.card > button {
+  width: 100%;
 }
 .play {
   border: 0;

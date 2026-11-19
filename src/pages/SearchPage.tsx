@@ -4,11 +4,13 @@ import Art from '../components/Art'
 import FilterPills from '../components/FilterPills'
 import FilterSheet from '../components/FilterSheet'
 import GameGrid from '../components/GameGrid'
+import MoreButton from '../components/MoreButton'
 import QuickFilters from '../components/QuickFilters'
 import { GAMES } from '../games'
 import { CATEGORIES, WORLDS, catVars } from '../games/categories'
 import type { Game } from '../games/types'
 import { useFilterParams } from '../hooks/useFilterParams'
+import { useProgressive } from '../hooks/useProgressive'
 import {
   activeFilterCount,
   activeFilters,
@@ -41,20 +43,29 @@ function relaxations(f: Filters) {
 }
 
 function Grouped({ games }: { games: readonly Game[] }) {
-  return WORLD_CATS.map((id) => {
-    const list = games.filter((g) => g.category === id)
+  // Schrittweise, sonst dauert das Anzeigen vieler Treffer spürbar
+  const { shown, more, rest, showMore, sentinel } = useProgressive(games)
+  const groups = WORLD_CATS.map((id) => {
+    const list = shown.filter((g) => g.category === id)
     if (!list.length) return null
+    const total = games.filter((g) => g.category === id).length
     return (
       <section key={id} aria-label={CATEGORIES[id].name}>
         <h2 className={styles.group} style={catVars(id)}>
           <Art emoji={CATEGORIES[id].emoji} size={24} />
           <Link to={'/k/' + id}>{CATEGORIES[id].name}</Link>
-          <small>{list.length}</small>
+          <small>{total}</small>
         </h2>
-        <GameGrid games={list} empty={null} />
+        <GameGrid games={list} empty={null} paged={false} />
       </section>
     )
   })
+  return (
+    <>
+      {groups}
+      {more && <MoreButton rest={rest} onMore={showMore} sentinel={sentinel} />}
+    </>
+  )
 }
 
 export default function SearchPage() {
@@ -66,6 +77,8 @@ export default function SearchPage() {
   const q = f.q.trim()
   const n = activeFilterCount(f)
   const focus = Boolean((location.state as { focus?: boolean } | null)?.focus)
+  // Ohne Suchwort und Filter: Startansicht statt aller Spiele
+  const idle = !q && !n && f.sort === 'passend'
 
   const tokens = tokenize(q)
   const catHits = q
@@ -79,8 +92,10 @@ export default function SearchPage() {
     if (q) setRecent(saveSearch(q))
   }
 
-  let list: ReactNode
-  if (!results.length) {
+  let list: ReactNode = null
+  if (idle) {
+    // nichts – Startansicht
+  } else if (!results.length) {
     const relax = relaxations(f)
     list = (
       <div className={s.empty}>
@@ -115,6 +130,7 @@ export default function SearchPage() {
           }}
         >
           <input
+            id="suche-eingabe"
             type="search"
             aria-label="Spiele suchen"
             placeholder="Ballon, leise, Würfel …"
@@ -137,8 +153,12 @@ export default function SearchPage() {
         <FilterPills filters={f} onChange={(next) => setFilters(next)} />
       </div>
 
-      {!q && !n && (
+      {idle && (
         <div className={s.start}>
+          <p className="meta">
+            Sucht nach Namen, Material oder Stichworten – oder wählt oben einen
+            Filter. Zum Stöbern gibt es <Link to="/">Entdecken</Link>.
+          </p>
           {recent.length > 0 && (
             <>
               <div className={s.lab}>Zuletzt gesucht</div>
@@ -178,7 +198,7 @@ export default function SearchPage() {
         </div>
       )}
 
-      {results.length > 0 && (
+      {!idle && results.length > 0 && (
         <div className={s.meta}>
           <span
             className={styles.count}

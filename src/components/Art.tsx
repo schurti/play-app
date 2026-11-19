@@ -36,6 +36,7 @@ export default function Art({
       alt=""
       draggable={false}
       decoding="async"
+      loading="lazy"
     />
   )
 }
