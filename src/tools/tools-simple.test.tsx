@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event'
 import type { ComponentType } from 'react'
 import { GAMES } from '../games'
 import { ANIMALS } from './animal/animals'
+import { MONSTER_PARTS } from './monster/parts'
+import { YOGA } from './yoga/poses'
 import { TREASURE } from './treasure/riddles'
 import { PANTO } from './panto/cards'
 import type { ToolId } from './ids'
@@ -76,6 +78,43 @@ describe('einfache Werkzeuge', () => {
       await screen.findByRole('button', { name: '🔄 Neue Figur' }),
     ).toBeInTheDocument()
     expect(screen.getByText('5 Atemzüge halten')).toBeInTheDocument()
+  })
+
+  it('animal und yoga haben viele Varianten mit gültigem Artikel', () => {
+    expect(ANIMALS.length).toBeGreaterThanOrEqual(30)
+    expect(YOGA.length).toBeGreaterThanOrEqual(28)
+    expect(new Set(ANIMALS.map((a) => a.name)).size).toBe(ANIMALS.length)
+    expect(new Set(YOGA.map((y) => y.name)).size).toBe(YOGA.length)
+    expect(ANIMALS.find((a) => a.name === 'Ente')?.article).toBe('eine')
+    expect(ANIMALS.find((a) => a.name === 'Hase')?.article).toBe('ein')
+  })
+
+  it('monster würfelt alle Bauteile und einzelne Zeilen neu', async () => {
+    await renderTool('monster')
+    expect(await screen.findByText('Grummelbert')).toBeInTheDocument()
+    for (const part of MONSTER_PARTS) {
+      expect(screen.getByText(part.label)).toBeInTheDocument()
+      expect(part.options.length).toBeGreaterThanOrEqual(10)
+    }
+    expect(screen.getByText('rund wie ein Ball')).toBeInTheDocument()
+    expect(screen.getByText('2 gebogene Hörner')).toBeInTheDocument()
+
+    vi.spyOn(Math, 'random').mockReturnValue(0.99)
+    await userEvent.click(
+      screen.getByRole('button', { name: /^Schwanz: .* – neu würfeln$/ }),
+    )
+    expect(
+      screen.getByText('ein Schwanz so lang wie das ganze Blatt'),
+    ).toBeInTheDocument()
+    // Die anderen Teile bleiben gleich
+    expect(screen.getByText('rund wie ein Ball')).toBeInTheDocument()
+    expect(screen.getByText('Grummelbert')).toBeInTheDocument()
+
+    await userEvent.click(
+      screen.getByRole('button', { name: '🔄 Neues Monster' }),
+    )
+    expect(screen.getByText('Pupsizaus')).toBeInTheDocument()
+    expect(screen.queryByText('rund wie ein Ball')).not.toBeInTheDocument()
   })
 
   it('story zeigt Wer, Wo, Was', async () => {

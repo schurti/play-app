@@ -192,3 +192,46 @@
 .pal button.on {
   box-shadow: 0 0 0 3px var(--ink);
 }
+.monster {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+  text-align: left;
+}
+.monster button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0 8px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: var(--r-md);
+  background: var(--bg);
+  box-shadow: 0 2px 0 var(--edge);
+  text-align: left;
+}
+.monster button:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 var(--edge);
+}
+.monster small {
+  grid-column: 1;
+  font-size: 11.5px;
+  font-weight: 900;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.monster span:first-of-type {
+  grid-column: 1;
+  font-weight: 800;
+}
+.monster span:last-of-type {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  font-size: 15px;
+  opacity: 0.55;
+}

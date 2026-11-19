@@ -16,6 +16,7 @@ import RhythmTool from './rhythm/RhythmTool'
 import BreathTool from './breath/BreathTool'
 import DrawTool from './draw/DrawTool'
 import TreasureTool from './treasure/TreasureTool'
+import MonsterTool from './monster/MonsterTool'
 
 /** Alle Werkzeuge statisch gebündelt (offline-sicher); ein fehlendes Werkzeug ist ein Typfehler. */
 export const TOOLS: Record<ToolId, ComponentType<ToolProps>> = {
@@ -34,4 +35,5 @@ export const TOOLS: Record<ToolId, ComponentType<ToolProps>> = {
   breath: BreathTool,
   draw: DrawTool,
   treasure: TreasureTool,
+  monster: MonsterTool,
 }
