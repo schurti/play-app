@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: [],
   tags: ['gruppe', 'leise'],
+  place: 'beides',
   order: 170,
   steps: [
     'Stellt euch zu zweit gegenüber.',

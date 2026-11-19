@@ -30,3 +30,7 @@
 .icon {
   margin: -4px 0;
 }
+.chip {
+  color: var(--ink);
+  text-decoration: none;
+}

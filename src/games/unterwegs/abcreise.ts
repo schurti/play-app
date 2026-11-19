@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 20,
   items: [],
   tags: ['gruppe', 'leise'],
+  place: 'beides',
   order: 50,
   steps: [
     'Sucht auf Schildern, Plakaten und Lastwagen ein A.',

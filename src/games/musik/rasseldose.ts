@@ -6,6 +6,7 @@ export default defineGame({
   emoji: '🥫',
   category: 'musik',
   minAge: 1,
+  maxAge: 4,
   minutes: 10,
   items: ['PET-Flasche', 'Reis', 'Klebeband'],
   tags: ['allein'],

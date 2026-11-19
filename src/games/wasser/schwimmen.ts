@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 15,
   items: ['Schüssel', 'Wasser'],
   tags: ['allein'],
+  place: 'beides',
   order: 10,
   steps: [
     'Füllt eine Schüssel mit Wasser.',

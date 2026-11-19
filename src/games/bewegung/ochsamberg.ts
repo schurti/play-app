@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: [],
   tags: ['gruppe'],
+  place: 'beides',
   order: 230,
   steps: [
     'Eine Person steht mit dem Gesicht zur Wand und ruft: „Eins, zwei, drei – Ochs am Berg!“',

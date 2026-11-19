@@ -6,6 +6,7 @@ export default defineGame({
   emoji: '🥣',
   category: 'malen',
   minAge: 1,
+  maxAge: 4,
   minutes: 15,
   items: ['Teller', 'Papier'],
   tags: ['allein'],

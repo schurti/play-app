@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: [],
   tags: ['gruppe', 'leise'],
+  place: 'beides',
   order: 20,
   steps: [
     'Die erste Person sagt: „Ich packe meinen Koffer und nehme mit: eine Zahnbürste.“',

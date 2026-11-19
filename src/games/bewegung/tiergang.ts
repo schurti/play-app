@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: [],
   tags: ['allein', 'gruppe'],
+  place: 'beides',
   order: 110,
   steps: [
     'Die App zeigt ein Tier.',

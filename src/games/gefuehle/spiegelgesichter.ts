@@ -6,6 +6,7 @@ export default defineGame({
   emoji: '🪞',
   category: 'gefuehle',
   minAge: 1,
+  maxAge: 4,
   minutes: 5,
   items: ['Spiegel'],
   tags: ['leise'],

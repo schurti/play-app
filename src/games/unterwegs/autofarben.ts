@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: [],
   tags: ['gruppe', 'leise'],
+  place: 'beides',
   order: 40,
   steps: [
     'Jeder wählt eine Farbe: rot, blau, weiss, schwarz …',

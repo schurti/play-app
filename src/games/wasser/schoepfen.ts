@@ -6,9 +6,11 @@ export default defineGame({
   emoji: '🫗',
   category: 'wasser',
   minAge: 1,
+  maxAge: 4,
   minutes: 15,
   items: ['Wasser', 'Becher', 'Schüssel'],
   tags: ['allein'],
+  place: 'beides',
   order: 140,
   steps: [
     'Stellt eine Schüssel mit Wasser auf ein Handtuch.',

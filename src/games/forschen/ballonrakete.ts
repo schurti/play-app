@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 15,
   items: ['Ballon', 'Schnur', 'Strohhalme', 'Klebeband'],
   tags: ['gruppe'],
+  place: 'beides',
   order: 120,
   steps: [
     'Fädelt einen Strohhalm auf eine lange Schnur und spannt sie durch den Raum.',

@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: ['Klammern'],
   tags: ['gruppe'],
+  place: 'beides',
   order: 40,
   steps: [
     'Jeder klemmt drei Wäscheklammern an den Pullover.',

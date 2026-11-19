@@ -6,6 +6,7 @@ export default defineGame({
   emoji: '🦆',
   category: 'wasser',
   minAge: 1,
+  maxAge: 4,
   minutes: 10,
   items: ['Wasser', 'Schüssel', 'Löffel'],
   tags: ['allein'],

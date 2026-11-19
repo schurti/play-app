@@ -6,6 +6,7 @@ export default defineGame({
   emoji: '🚇',
   category: 'bewegung',
   minAge: 1,
+  maxAge: 4,
   minutes: 10,
   items: ['Karton', 'Decke'],
   tags: ['allein'],

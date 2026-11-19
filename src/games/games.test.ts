@@ -73,7 +73,7 @@ describe('Spiele', () => {
   })
 
   it('behält die Reihenfolge (Spiel des Tages)', () => {
-    expect(GAMES[28].id).toBe('luftzahlen')
+    expect(GAMES[28].id).toBe('rollenrennen')
   })
 
   it('findet Spiele über getGame', () => {

@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 15,
   items: ['Essig & Natron', 'Gläser', 'Farbe'],
   tags: ['gruppe'],
+  place: 'beides',
   order: 40,
   steps: [
     'Stellt ein Glas auf einen Teller oder ins Spülbecken.',

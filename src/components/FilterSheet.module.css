@@ -1,0 +1,137 @@
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: #2a245366;
+}
+.sheet {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  max-height: 88vh;
+  overflow: auto;
+  overscroll-behavior: none;
+  padding: 0 16px;
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  background: var(--bg);
+  animation: up 0.22s ease-out;
+}
+@keyframes up {
+  from {
+    transform: translateY(40px);
+    opacity: 0.4;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.handle {
+  width: 44px;
+  height: 5px;
+  margin: 8px auto 0;
+  border-radius: 99px;
+  background: #2a245340;
+}
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 6px 0 2px;
+}
+.head h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 900;
+}
+.close {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  font-weight: 900;
+  background: var(--surface);
+  box-shadow: var(--lift-sm);
+}
+.section {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.lab {
+  padding: 0;
+  margin: 12px 2px 6px;
+  font-size: 12.5px;
+  font-weight: 900;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.hint {
+  margin: -2px 2px 8px;
+}
+.group {
+  margin: 8px 2px 4px;
+  font-size: 14px;
+  font-weight: 900;
+}
+.wraprow {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 2px 0 4px;
+}
+.chip {
+  flex: 0 0 auto;
+  border: 2px solid var(--line);
+  background: var(--surface);
+  border-radius: 99px;
+  padding: 5px 12px;
+  font-size: 14.5px;
+  font-weight: 700;
+}
+.on {
+  background: var(--lavender);
+  border-color: var(--ink);
+}
+.itemSearch {
+  width: 100%;
+  border: 2px solid var(--line);
+  border-radius: 99px;
+  padding: 8px 14px;
+  font: inherit;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--surface);
+}
+.itemSearch:focus {
+  outline: none;
+  border-color: var(--coral);
+}
+.foot {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 14px -16px 0;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  background: var(--bg);
+  box-shadow: 0 -6px 12px -10px #2a245340;
+}
+.show {
+  flex: 1;
+  border: 0;
+  border-radius: 99px;
+  padding: 13px 18px;
+  font-size: 17px;
+  font-weight: 900;
+  color: #fff;
+  background: var(--coral);
+  box-shadow: 0 4px 0 var(--coral-edge);
+}

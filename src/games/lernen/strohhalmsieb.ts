@@ -6,6 +6,7 @@ export default defineGame({
   emoji: '🥢',
   category: 'lernen',
   minAge: 1,
+  maxAge: 4,
   minutes: 10,
   items: ['Strohhalme'],
   tags: ['allein', 'leise'],

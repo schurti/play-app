@@ -12,10 +12,14 @@ export function useGameNav(): {
     (location.state as { fromApp?: boolean } | null)?.fromApp,
   )
 
+  // Andere Parameter (Suche, Filter) bleiben erhalten.
   const openGame = useCallback(
-    (id: string) =>
-      navigate({ search: '?spiel=' + id }, { state: { fromApp: true } }),
-    [navigate],
+    (id: string) => {
+      const params = new URLSearchParams(location.search)
+      params.set('spiel', id)
+      navigate({ search: '?' + params }, { state: { fromApp: true } })
+    },
+    [navigate, location.search],
   )
 
   const closeGame = useCallback(() => {

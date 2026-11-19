@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 5,
   items: [],
   tags: ['gruppe'],
+  place: 'beides',
   order: 70,
   steps: [
     'Beide ballen eine Faust und zählen: „Schnick – Schnack – Schnuck!“',

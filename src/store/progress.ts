@@ -8,15 +8,21 @@ import { loadLegacy } from './legacy'
 
 export interface Progress {
   fav: Record<string, true>
+  /** Zuletzt angesehene Spiele, neuestes zuerst */
+  recent: string[]
 }
+
+export const RECENT_MAX = 12
 
 interface ProgressActions {
   toggleFav(id: string): boolean
+  addRecent(id: string): void
   reset(): void
 }
 
 const KEY = 'play-app:progress'
-const EMPTY: Progress = { fav: {} }
+const VERSION = 3
+const EMPTY: Progress = { fav: {}, recent: [] }
 
 // Privater Modus: Zugriffe können werfen. Fehlt der Key, werden alte Daten übernommen.
 const storage: StateStorage = {
@@ -25,7 +31,9 @@ const storage: StateStorage = {
       const raw = localStorage.getItem(name)
       if (raw !== null) return raw
       const legacy = loadLegacy(localStorage)
-      return legacy ? JSON.stringify({ state: legacy, version: 2 }) : null
+      return legacy
+        ? JSON.stringify({ state: { ...legacy, recent: [] }, version: VERSION })
+        : null
     } catch {
       return null
     }
@@ -58,18 +66,29 @@ export const useProgress = create<Progress & ProgressActions>()(
         set({ fav })
         return now
       },
-      reset: () => set({ fav: {} }),
+      addRecent(id) {
+        const recent = [id, ...get().recent.filter((x) => x !== id)]
+        set({ recent: recent.slice(0, RECENT_MAX) })
+      },
+      reset: () => set({ fav: {}, recent: [] }),
     }),
     {
       name: KEY,
       // v2: nur noch Favoriten (Sterne, Spielzähler und Verlauf entfernt)
-      version: 2,
+      // v3: zuletzt angesehene Spiele
+      version: VERSION,
       migrate: (persisted) => {
-        const fav = (persisted as Partial<Progress> | null)?.fav
-        return { fav: fav && typeof fav === 'object' ? fav : {} }
+        const p = persisted as Partial<Progress> | null
+        const fav = p?.fav
+        return {
+          fav: fav && typeof fav === 'object' ? fav : {},
+          recent: Array.isArray(p?.recent)
+            ? p.recent.filter((x) => typeof x === 'string')
+            : [],
+        }
       },
       storage: createJSONStorage(() => storage),
-      partialize: ({ fav }) => ({ fav }),
+      partialize: ({ fav, recent }) => ({ fav, recent }),
     },
   ),
 )

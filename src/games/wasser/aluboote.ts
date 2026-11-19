@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 20,
   items: ['Alufolie', 'Münzen', 'Schüssel', 'Wasser'],
   tags: ['allein', 'gruppe'],
+  place: 'beides',
   order: 130,
   steps: [
     'Faltet aus einem Stück Alufolie ein Boot.',

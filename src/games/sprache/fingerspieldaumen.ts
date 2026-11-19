@@ -6,6 +6,7 @@ export default defineGame({
   emoji: '👍',
   category: 'sprache',
   minAge: 1,
+  maxAge: 4,
   minutes: 5,
   items: [],
   tags: ['leise'],

@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: [],
   tags: ['gruppe', 'leise'],
+  place: 'beides',
   order: 110,
   steps: [
     'Eine Person denkt sich eine Zahl zwischen 1 und 20.',

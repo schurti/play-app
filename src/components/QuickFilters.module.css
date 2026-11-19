@@ -1,0 +1,31 @@
+.row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin: 10px -16px 0;
+  padding: 2px 16px 4px;
+  scrollbar-width: none;
+}
+.row::-webkit-scrollbar {
+  display: none;
+}
+.chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 2px solid transparent;
+  background: var(--surface);
+  border-radius: 99px;
+  padding: 6px 12px;
+  font-size: 14.5px;
+  font-weight: 800;
+  box-shadow: var(--lift-sm);
+}
+.on {
+  background: var(--lavender);
+  border-color: var(--ink);
+}
+.icon {
+  margin: -3px 0;
+}

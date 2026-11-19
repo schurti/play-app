@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: ['Löffel', 'Socken'],
   tags: ['allein', 'gruppe'],
+  place: 'beides',
   order: 30,
   steps: [
     'Legt einen Socken-Ball auf einen Löffel.',

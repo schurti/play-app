@@ -1,25 +1,35 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { loadLegacy } from './legacy'
 import { useProgress } from './progress'
-import { useFilters } from './filters'
 
 const initialProgress = useProgress.getState()
-const initialFilters = useFilters.getState()
 
 beforeEach(() => {
   localStorage.clear()
   useProgress.setState(initialProgress, true)
   useProgress.getState().reset()
-  useFilters.setState(initialFilters, true)
 })
 
 describe('useProgress', () => {
-  it('kennt nur noch Favoriten', () => {
+  it('kennt Favoriten und zuletzt angesehene Spiele', () => {
     expect(Object.keys(useProgress.getState()).sort()).toEqual([
+      'addRecent',
       'fav',
+      'recent',
       'reset',
       'toggleFav',
     ])
+  })
+
+  it('addRecent setzt das neueste nach vorne, ohne Doppelte, höchstens 12', () => {
+    const { addRecent } = useProgress.getState()
+    addRecent('a')
+    addRecent('b')
+    addRecent('a')
+    expect(useProgress.getState().recent).toEqual(['a', 'b'])
+    for (let i = 0; i < 20; i++) addRecent('x' + i)
+    expect(useProgress.getState().recent).toHaveLength(12)
+    expect(useProgress.getState().recent[0]).toBe('x19')
   })
 
   it('toggleFav schaltet um', () => {
@@ -35,11 +45,12 @@ describe('useProgress', () => {
     expect(useProgress.getState().fav).toEqual({})
   })
 
-  it('speichert nur Favoriten unter play-app:progress (Version 2)', () => {
+  it('speichert Favoriten und Verlauf unter play-app:progress (Version 3)', () => {
     useProgress.getState().toggleFav('farben')
+    useProgress.getState().addRecent('kim')
     const raw = JSON.parse(localStorage.getItem('play-app:progress') ?? 'null')
-    expect(raw.version).toBe(2)
-    expect(raw.state).toEqual({ fav: { farben: true } })
+    expect(raw.version).toBe(3)
+    expect(raw.state).toEqual({ fav: { farben: true }, recent: ['kim'] })
   })
 })
 
@@ -77,25 +88,5 @@ describe('loadLegacy', () => {
         },
       }),
     ).toBeNull()
-  })
-})
-
-describe('useFilters', () => {
-  it('set, toggleSit, toggleHave und resetFilters', () => {
-    const f = useFilters.getState()
-    f.set({ age: 4, q: 'ball' })
-    f.toggleSit('leise')
-    f.toggleHave('Küchenpapier')
-    expect(useFilters.getState()).toMatchObject({
-      age: 4,
-      q: 'ball',
-      sit: { leise: true },
-      have: { Küchenpapier: true },
-    })
-    useFilters.getState().toggleSit('leise')
-    expect(useFilters.getState().sit).toEqual({})
-    useFilters.getState().resetFilters()
-    expect(useFilters.getState().age).toBe(0)
-    expect(useFilters.getState().have).toEqual({})
   })
 })

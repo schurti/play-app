@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 15,
   items: ['Kuscheltier'],
   tags: ['gruppe'],
+  place: 'beides',
   order: 290,
   steps: [
     'Legt einen Haufen Spielzeug und Kuscheltiere auf eine Seite des Raums.',

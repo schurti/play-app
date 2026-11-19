@@ -1,7 +1,9 @@
 import type { Progress } from './progress'
 
 /** Übernimmt die Favoriten aus der alten Einzeldatei-App (Schlüssel `hs2`). */
-export function loadLegacy(storage: Pick<Storage, 'getItem'>): Progress | null {
+export function loadLegacy(
+  storage: Pick<Storage, 'getItem'>,
+): Pick<Progress, 'fav'> | null {
   try {
     const raw = storage.getItem('hs2')
     if (!raw) return null

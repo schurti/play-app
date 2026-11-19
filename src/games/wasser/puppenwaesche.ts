@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 20,
   items: ['Schüssel', 'Wasser', 'Klammern', 'Schnur'],
   tags: ['allein'],
+  place: 'beides',
   order: 110,
   steps: [
     'Füllt eine Schüssel mit Seifenwasser.',

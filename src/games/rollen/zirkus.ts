@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 30,
   items: ['Klebeband', 'Tuch', 'Kleider'],
   tags: ['gruppe'],
+  place: 'beides',
   order: 130,
   steps: [
     'Plant ein Programm: Seiltanz auf einer Klebebandlinie, Zauberei, wilde Löwen, Clowns.',

@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: [],
   tags: ['gruppe'],
+  place: 'beides',
   order: 240,
   steps: [
     'Das Kind stützt sich auf die Hände.',

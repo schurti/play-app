@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 15,
   items: [],
   tags: ['allein'],
+  place: 'beides',
   order: 160,
   steps: [
     'Sucht in der Wohnung Dinge, die klingen: etwas, das klirrt, raschelt, quietscht, brummt und klopft.',

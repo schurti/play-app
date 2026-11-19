@@ -4,8 +4,8 @@ import { createMemoryRouter, RouterProvider } from 'react-router'
 import { routes } from '../router'
 import { tone } from '../lib/audio'
 import { useProgress } from '../store/progress'
-import { useFilters } from '../store/filters'
-import { GAMES } from '../games'
+import { GAMES, getGame } from '../games'
+import { EMPTY_FILTERS, searchGames } from '../lib/filter'
 import { swipe } from '../test/touch'
 
 vi.mock('../lib/audio', async (orig) => ({
@@ -49,6 +49,11 @@ describe('GameSheet', () => {
       screen.getByRole('heading', { name: 'Farben-Jagd' }),
     ).toBeInTheDocument()
     expect(document.body).toHaveClass('lock')
+  })
+
+  it('merkt sich das Spiel unter „zuletzt angesehen“', () => {
+    renderAt('/?spiel=farben')
+    expect(useProgress.getState().recent[0]).toBe('farben')
   })
 
   it('rendert bei unbekannter ID nichts', () => {
@@ -129,8 +134,6 @@ describe('GameSheet', () => {
   })
 
   describe('Gesten', () => {
-    beforeEach(() => useFilters.getState().resetFilters())
-
     it('schliesst erst nach weitem Ziehen und gleitet dabei hinaus', async () => {
       renderAt('/?spiel=farben')
       const dialog = screen.getByRole('dialog')
@@ -184,6 +187,23 @@ describe('GameSheet', () => {
       expect(router.state.location.search).toBe('?spiel=' + GAMES.at(-1)!.id)
       await userEvent.keyboard('{ArrowRight}')
       expect(router.state.location.search).toBe('?spiel=' + GAMES[0].id)
+    })
+
+    it('blättert in der Trefferliste der Suche und behält die Suche', async () => {
+      const router = renderAt('/suche?q=ballon&spiel=ballonhoch')
+      const params = () => new URLSearchParams(router.state.location.search)
+      await userEvent.keyboard('{ArrowRight}')
+      expect(params().get('q')).toBe('ballon')
+      const hits = searchGames(GAMES, { ...EMPTY_FILTERS, q: 'ballon' })
+      const i = hits.findIndex((g) => g.id === 'ballonhoch')
+      expect(params().get('spiel')).toBe(hits[(i + 1) % hits.length].id)
+    })
+
+    it('blättert in einer Kategorie nur innerhalb der Kategorie', async () => {
+      const router = renderAt('/k/karten?spiel=kartenhaus')
+      for (let i = 0; i < 3; i++) await userEvent.keyboard('{ArrowRight}')
+      const id = new URLSearchParams(router.state.location.search).get('spiel')
+      expect(getGame(id!)?.category).toBe('karten')
     })
 
     it('ignoriert Wischen auf der Zeichenfläche', () => {

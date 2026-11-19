@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 15,
   items: ['Schwamm', 'Papier'],
   tags: ['allein'],
+  place: 'beides',
   order: 50,
   steps: [
     'Schneidet einen Schwamm zu einem Boot.',

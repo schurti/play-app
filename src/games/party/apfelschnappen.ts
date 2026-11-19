@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: ['Obst', 'Schnur'],
   tags: ['gruppe'],
+  place: 'beides',
   order: 100,
   steps: [
     'Hängt Äpfel oder Brötchen an Schnüren an eine Stange oder Wäscheleine.',

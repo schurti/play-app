@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: [],
   tags: ['gruppe'],
+  place: 'beides',
   order: 370,
   steps: [
     'Zwei Personen stehen sich gegenüber. Eine hält die Hände mit den Handflächen nach oben.',

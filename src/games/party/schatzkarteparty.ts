@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 30,
   items: ['Papier', 'Stifte'],
   tags: ['gruppe'],
+  place: 'beides',
   order: 130,
   steps: [
     'Versteckt für jedes Kind einen kleinen Schatz.',

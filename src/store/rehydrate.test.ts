@@ -35,6 +35,16 @@ describe('rehydrate', () => {
     expect(s.fav).toEqual({ lava: true })
     expect(s.stars).toBeUndefined()
     expect(s.done).toBeUndefined()
+    expect(s.recent).toEqual([])
+  })
+  it('migriert Version 2 und behält die Favoriten', async () => {
+    localStorage.setItem(
+      'play-app:progress',
+      JSON.stringify({ version: 2, state: { fav: { kim: true } } }),
+    )
+    const { useProgress } = await import(P)
+    expect(useProgress.getState().fav).toEqual({ kim: true })
+    expect(useProgress.getState().recent).toEqual([])
   })
   it('hs2 mit kaputten Feldern', async () => {
     localStorage.setItem('hs2', '{"stars":"x","done":null,"fav":null}')

@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: ['Besen'],
   tags: ['gruppe'],
+  place: 'beides',
   order: 430,
   steps: [
     'Stellt euch zu zweit gegenüber, etwa einen Meter auseinander. Jede Person hält einen Besen senkrecht auf den Boden.',

@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 15,
   items: ['PET-Flasche', 'Wasser'],
   tags: ['allein'],
+  place: 'beides',
   order: 90,
   steps: [
     'Stecht drei Löcher übereinander in eine Plastikflasche.',

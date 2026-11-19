@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 5,
   items: [],
   tags: ['gruppe'],
+  place: 'beides',
   order: 130,
   steps: [
     'Haltet euch mit den Fingern so, dass die Daumen oben frei sind.',

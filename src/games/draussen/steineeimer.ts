@@ -6,6 +6,7 @@ export default defineGame({
   emoji: '🪣',
   category: 'draussen',
   minAge: 1,
+  maxAge: 4,
   minutes: 10,
   items: ['Eimer'],
   tags: ['allein'],

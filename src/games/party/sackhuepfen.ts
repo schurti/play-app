@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: ['Kissen'],
   tags: ['gruppe'],
+  place: 'beides',
   order: 20,
   steps: [
     'Steigt mit beiden Beinen in einen Kissenbezug.',

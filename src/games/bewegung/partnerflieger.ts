@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: [],
   tags: ['gruppe'],
+  place: 'beides',
   order: 420,
   steps: [
     'Ein Erwachsener liegt auf dem Rücken und stellt die Füsse an den Bauch des Kindes.',

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router'
 import { CATEGORIES, catVars } from '../games/categories'
-import { GAMES, getGame } from '../games'
-import type { Game } from '../games/types'
+import { getGame } from '../games'
+import { ageLabel, type Game } from '../games/types'
 import { useGameNav } from '../hooks/useGameNav'
 import { useTimers } from '../hooks/useTimers'
 import { useTouchGestures } from '../hooks/useTouchGestures'
@@ -124,6 +124,11 @@ function SheetBody({ game, onStep }: BodyProps) {
 
   useEffect(() => stopSpeech, [])
 
+  // Für „Zuletzt angesehen“ merken
+  useEffect(() => {
+    useProgress.getState().addRecent(game.id)
+  }, [game.id])
+
   const onFav = () => {
     const now = useProgress.getState().toggleFav(game.id)
     toast(now ? '❤️ Zu Favoriten hinzugefügt' : 'Aus Favoriten entfernt')
@@ -210,7 +215,7 @@ function SheetBody({ game, onStep }: BodyProps) {
         </div>
         <h2 id="sheet-title">{game.title}</h2>
         <div className="meta">
-          {cat.emoji} {cat.name} · ab {game.minAge} J. · ca. {game.minutes} Min.
+          {cat.emoji} {cat.name} · {ageLabel(game)} · ca. {game.minutes} Min.
           {game.tags.includes('allein') && ' · allein spielbar'}
           {game.tags.includes('gruppe') && ' · gut für Gruppen'}
         </div>
@@ -260,25 +265,21 @@ export default function GameSheet() {
   const game = id ? getGame(id) : undefined
   const navigate = useNavigate()
   const location = useLocation()
-  const fav = useProgress((s) => s.fav)
-  const visible = useVisibleGames()
-
-  // Blätter-Reihenfolge: Favoriten auf der Favoriten-Seite, sonst die gefilterte Liste.
-  const list =
-    location.pathname === '/favoriten'
-      ? GAMES.filter((g) => fav[g.id])
-      : visible
+  // Blätter-Reihenfolge: die Liste der aktuellen Seite
+  const list = useVisibleGames()
   const index = game ? list.findIndex((g) => g.id === game.id) : -1
   const step = useCallback(
     (delta: 1 | -1) => {
       if (index < 0 || list.length < 2) return
       const next = list[(index + delta + list.length) % list.length]
+      const params = new URLSearchParams(location.search)
+      params.set('spiel', next.id)
       navigate(
-        { search: '?spiel=' + next.id },
+        { search: '?' + params },
         { replace: true, state: location.state },
       )
     },
-    [index, list, navigate, location.state],
+    [index, list, navigate, location.state, location.search],
   )
 
   useEffect(() => {

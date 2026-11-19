@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: [],
   tags: ['gruppe'],
+  place: 'beides',
   order: 120,
   steps: [
     'Alle sitzen im Stuhlkreis, ein Kind steht in der Mitte. Es gibt einen Stuhl zu wenig.',

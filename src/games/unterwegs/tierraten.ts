@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: [],
   tags: ['gruppe', 'leise'],
+  place: 'beides',
   order: 60,
   steps: [
     'Eine Person denkt sich ein Tier aus.',

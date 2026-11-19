@@ -176,6 +176,7 @@ export const EMOJI_IMAGES: Readonly<Record<string, string>> = {
   '💇': 'person-getting-haircut',
   '💎': 'gem-stone',
   '💛': 'yellow-heart',
+  '💡': 'light-bulb',
   '💧': 'droplet',
   '💨': 'dashing-away',
   '💬': 'speech-balloon',

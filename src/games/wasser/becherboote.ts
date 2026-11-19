@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 15,
   items: ['Becher', 'Strohhalme'],
   tags: ['gruppe'],
+  place: 'beides',
   order: 20,
   steps: [
     'Lasst Plastikbecher als Boote in der Badewanne schwimmen.',

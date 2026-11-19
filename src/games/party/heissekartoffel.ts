@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: ['Ball'],
   tags: ['gruppe'],
+  place: 'beides',
   order: 110,
   steps: [
     'Setzt euch in einen Kreis.',

@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 15,
   items: ['Becher', 'Wasser', 'Schüssel'],
   tags: ['allein'],
+  place: 'beides',
   order: 40,
   steps: [
     'Stellt Becher und Gefässe in verschiedenen Grössen bereit.',

@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: [],
   tags: ['leise'],
+  place: 'beides',
   order: 10,
   steps: [
     'Eine Person sucht sich heimlich etwas im Raum aus.',

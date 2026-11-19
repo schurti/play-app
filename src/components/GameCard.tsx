@@ -1,5 +1,5 @@
 import { catVars } from '../games/categories'
-import type { Game } from '../games/types'
+import { ageLabel, type Game } from '../games/types'
 import { useGameNav } from '../hooks/useGameNav'
 import { useProgress } from '../store/progress'
 import Art from './Art'
@@ -25,7 +25,7 @@ export default function GameCard({ game }: { game: Game }) {
       <span className={styles.body}>
         <b>{game.title}</b>
         <span className="meta">
-          ab {game.minAge} J. · {game.minutes} Min.
+          {ageLabel(game)} · {game.minutes} Min.
         </span>
         <span className={styles.need}>
           {game.items.length ? items + more : 'nichts nötig'}

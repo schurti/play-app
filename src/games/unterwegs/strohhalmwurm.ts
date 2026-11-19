@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 5,
   items: ['Strohhalme', 'Wasser'],
   tags: ['allein'],
+  place: 'beides',
   order: 140,
   steps: [
     'Schiebt die Papierhülle eines Strohhalms ganz zusammen, sodass ein kleiner „Wurm“ entsteht.',

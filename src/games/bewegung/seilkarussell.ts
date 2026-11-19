@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: ['Schnur', 'Socken'],
   tags: ['gruppe'],
+  place: 'beides',
   order: 360,
   steps: [
     'Bindet eine zusammengerollte Socke an ein Seil.',

@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: ['Stifte'],
   tags: ['allein'],
+  place: 'beides',
   order: 160,
   steps: [
     'Malt mit einem abwaschbaren Stift kleine Gesichter auf eure Fingerkuppen.',

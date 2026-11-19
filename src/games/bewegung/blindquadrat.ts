@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: ['Klebeband', 'Tuch'],
   tags: ['gruppe'],
+  place: 'beides',
   order: 440,
   steps: [
     'Klebt für jede Person ein kleines Quadrat auf den Boden.',

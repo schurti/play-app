@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: [],
   tags: ['gruppe'],
+  place: 'beides',
   order: 60,
   steps: [
     'Die App ruft Befehle (auf Wunsch auch laut).',

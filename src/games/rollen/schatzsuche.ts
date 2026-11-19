@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 20,
   items: ['Papier', 'Stifte'],
   tags: ['gruppe'],
+  place: 'beides',
   order: 50,
   steps: [
     'Erwachsene wählen in der App Hinweise aus und schreiben sie auf Zettel.',

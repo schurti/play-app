@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 15,
   items: ['Tuch'],
   tags: ['gruppe'],
+  place: 'beides',
   order: 50,
   steps: [
     'Einer Person werden die Augen verbunden.',

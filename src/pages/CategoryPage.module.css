@@ -1,0 +1,67 @@
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 0;
+}
+.bar > div {
+  flex: 1;
+  min-width: 0;
+  margin: 0 -16px 0 0;
+  padding-left: 2px;
+}
+.back {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 10px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--ink);
+  text-decoration: none;
+  background: var(--surface);
+  box-shadow: var(--lift-sm);
+}
+.head {
+  position: relative;
+  height: 128px;
+  margin: 2px 0 14px;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--soft);
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--soft), #2a2453 14%);
+}
+.scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.75;
+}
+.icon {
+  position: absolute;
+  right: 18px;
+  bottom: 14px;
+  filter: drop-shadow(0 6px 5px #2a245333);
+}
+.text {
+  position: absolute;
+  left: 16px;
+  bottom: 12px;
+  right: 110px;
+}
+.text small {
+  font-size: 12.5px;
+  font-weight: 800;
+}
+.text h2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.1;
+}

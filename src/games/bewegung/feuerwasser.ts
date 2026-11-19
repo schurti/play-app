@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: [],
   tags: ['gruppe'],
+  place: 'beides',
   order: 130,
   steps: [
     'Alle laufen oder tanzen durch den Raum.',

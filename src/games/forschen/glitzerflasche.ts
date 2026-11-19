@@ -6,6 +6,7 @@ export default defineGame({
   emoji: '✨',
   category: 'forschen',
   minAge: 1,
+  maxAge: 4,
   minutes: 10,
   items: ['PET-Flasche', 'Wasser', 'Öl', 'Klebeband'],
   tags: ['allein', 'leise'],

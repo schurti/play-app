@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 20,
   items: ['Decke', 'Teller', 'Kuscheltier', 'Obst'],
   tags: ['allein', 'leise'],
+  place: 'beides',
   order: 200,
   steps: [
     'Breitet eine Decke am Boden aus.',

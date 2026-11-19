@@ -1,6 +1,7 @@
 import { GAMES } from '../games'
 import { CATEGORIES, catVars } from '../games/categories'
 import { useGameNav } from '../hooks/useGameNav'
+import { ageLabel } from '../games/types'
 import { gameOfTheDay } from '../lib/daily'
 import Art from './Art'
 import Scene from './Scene'
@@ -35,8 +36,7 @@ export default function TodayCard() {
           <span className={styles.text}>
             <b>{g.title}</b>
             <span className="meta">
-              {CATEGORIES[g.category].name} · ab {g.minAge} J. · {g.minutes}{' '}
-              Min.
+              {CATEGORIES[g.category].name} · {ageLabel(g)} · {g.minutes} Min.
             </span>
           </span>
           <span className={styles.play} aria-hidden="true">

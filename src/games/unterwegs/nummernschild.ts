@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 15,
   items: [],
   tags: ['gruppe', 'leise'],
+  place: 'beides',
   order: 30,
   steps: [
     'Sucht auf den Nummernschildern der Autos die Zahl 1.',

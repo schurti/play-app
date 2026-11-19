@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: [],
   tags: ['gruppe', 'leise'],
+  place: 'beides',
   order: 120,
   steps: [
     'Sucht ein Wort mit zwei Bedeutungen, z. B. „Bank“ (zum Sitzen und fürs Geld).',

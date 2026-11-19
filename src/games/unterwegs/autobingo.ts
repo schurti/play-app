@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 30,
   items: ['Papier', 'Stifte'],
   tags: ['gruppe', 'leise'],
+  place: 'beides',
   order: 90,
   steps: [
     'Zeichnet vor der Fahrt ein Gitter mit 3 × 3 Feldern.',
