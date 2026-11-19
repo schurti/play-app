@@ -56,18 +56,6 @@ h1 span {
   display: block;
   font-size: 32px;
 }
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--surface);
-  border-radius: 99px;
-  padding: 7px 14px;
-  font-weight: 900;
-  font-size: 18px;
-  box-shadow: var(--lift-sm);
-  white-space: nowrap;
-}
 .meta {
   font-size: 13.5px;
   color: var(--muted);

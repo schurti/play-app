@@ -4,38 +4,41 @@ describe('rehydrate', () => {
     localStorage.clear()
     vi.resetModules()
   })
-  it('übernimmt hs2 beim ersten Laden', async () => {
+  it('übernimmt die Favoriten aus hs2 beim ersten Laden', async () => {
     localStorage.setItem(
       'hs2',
       '{"stars":7,"done":{"farben":2},"fav":{"kim":1},"hist":[{"id":"farben","t":5}]}',
     )
     const { useProgress } = await import(P)
-    const s = useProgress.getState()
-    expect(s.stars).toBe(7)
-    expect(s.fav).toEqual({ kim: true })
-    expect(s.done.farben).toBe(2)
+    expect(useProgress.getState().fav).toEqual({ kim: true })
+    expect(useProgress.getState().stars).toBeUndefined()
     expect(localStorage.getItem('play-app:progress')).toBeNull()
-    s.markDone('kim')
-    expect(
-      JSON.parse(localStorage.getItem('play-app:progress')!).state.stars,
-    ).toBe(8)
   })
   it('reset holt Legacy nicht zurück', async () => {
-    localStorage.setItem('hs2', '{"stars":7,"done":{},"fav":{},"hist":[]}')
+    localStorage.setItem('hs2', '{"fav":{"kim":1}}')
     let { useProgress } = await import(P)
     useProgress.getState().reset()
     vi.resetModules()
     ;({ useProgress } = await import(P))
-    expect(useProgress.getState().stars).toBe(0)
+    expect(useProgress.getState().fav).toEqual({})
   })
-  it('hs_stars', async () => {
-    localStorage.setItem('hs_stars', '4')
+  it('migriert gespeicherte Version 1 auf nur Favoriten', async () => {
+    localStorage.setItem(
+      'play-app:progress',
+      JSON.stringify({
+        version: 1,
+        state: { stars: 9, done: { farben: 3 }, fav: { lava: true }, hist: [] },
+      }),
+    )
     const { useProgress } = await import(P)
-    expect(useProgress.getState().stars).toBe(4)
+    const s = useProgress.getState()
+    expect(s.fav).toEqual({ lava: true })
+    expect(s.stars).toBeUndefined()
+    expect(s.done).toBeUndefined()
   })
-  it('hs2 mit done als Array / null-Feldern', async () => {
+  it('hs2 mit kaputten Feldern', async () => {
     localStorage.setItem('hs2', '{"stars":"x","done":null,"fav":null}')
     const { useProgress } = await import(P)
-    expect(useProgress.getState().stars).toBe(0)
+    expect(useProgress.getState().fav).toEqual({})
   })
 })

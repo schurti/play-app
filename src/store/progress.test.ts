@@ -14,19 +14,12 @@ beforeEach(() => {
 })
 
 describe('useProgress', () => {
-  it('markDone zählt Stern, Spiel und Verlauf', () => {
-    useProgress.getState().markDone('farben', 1000)
-    const s = useProgress.getState()
-    expect(s.stars).toBe(1)
-    expect(s.done.farben).toBe(1)
-    expect(s.hist[0]).toEqual({ id: 'farben', t: 1000 })
-  })
-
-  it('kappt den Verlauf auf 30 Einträge', () => {
-    for (let i = 0; i < 35; i++) useProgress.getState().markDone('farben', i)
-    const { hist } = useProgress.getState()
-    expect(hist).toHaveLength(30)
-    expect(hist[0].t).toBe(34)
+  it('kennt nur noch Favoriten', () => {
+    expect(Object.keys(useProgress.getState()).sort()).toEqual([
+      'fav',
+      'reset',
+      'toggleFav',
+    ])
   })
 
   it('toggleFav schaltet um', () => {
@@ -36,18 +29,17 @@ describe('useProgress', () => {
     expect(useProgress.getState().fav).toEqual({})
   })
 
-  it('reset leert alles', () => {
-    useProgress.getState().markDone('farben')
+  it('reset leert die Favoriten', () => {
+    useProgress.getState().toggleFav('farben')
     useProgress.getState().reset()
-    expect(useProgress.getState().stars).toBe(0)
-    expect(useProgress.getState().done).toEqual({})
+    expect(useProgress.getState().fav).toEqual({})
   })
 
-  it('speichert unter play-app:progress', () => {
-    useProgress.getState().markDone('farben', 5)
+  it('speichert nur Favoriten unter play-app:progress (Version 2)', () => {
+    useProgress.getState().toggleFav('farben')
     const raw = JSON.parse(localStorage.getItem('play-app:progress') ?? 'null')
-    expect(raw.version).toBe(1)
-    expect(raw.state.stars).toBe(1)
+    expect(raw.version).toBe(2)
+    expect(raw.state).toEqual({ fav: { farben: true } })
   })
 })
 
@@ -56,19 +48,17 @@ describe('loadLegacy', () => {
     getItem: (k: string) => data[k] ?? null,
   })
 
-  it('liest hs2 und normalisiert fav', () => {
+  it('übernimmt aus hs2 nur die Favoriten', () => {
     const p = loadLegacy(
       store({
         hs2: '{"stars":7,"done":{"farben":2},"fav":{"kim":1},"hist":[]}',
       }),
     )
-    expect(p?.stars).toBe(7)
-    expect(p?.done.farben).toBe(2)
-    expect(p?.fav.kim).toBe(true)
+    expect(p).toEqual({ fav: { kim: true } })
   })
 
-  it('fällt auf hs_stars zurück', () => {
-    expect(loadLegacy(store({ hs_stars: '4' }))?.stars).toBe(4)
+  it('ignoriert alte Sterne aus hs_stars', () => {
+    expect(loadLegacy(store({ hs_stars: '4' }))).toBeNull()
   })
 
   it('gibt bei kaputtem JSON null zurück', () => {

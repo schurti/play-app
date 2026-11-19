@@ -94,7 +94,8 @@ describe('einfache Werkzeuge', () => {
     expect(await screen.findByText('Grummelbert')).toBeInTheDocument()
     for (const part of MONSTER_PARTS) {
       expect(screen.getByText(part.label)).toBeInTheDocument()
-      expect(part.options.length).toBeGreaterThanOrEqual(10)
+      expect(part.options.length).toBeGreaterThanOrEqual(25)
+      expect(new Set(part.options).size).toBe(part.options.length)
     }
     expect(screen.getByText('rund wie ein Ball')).toBeInTheDocument()
     expect(screen.getByText('2 gebogene Hörner')).toBeInTheDocument()

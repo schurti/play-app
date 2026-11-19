@@ -7,20 +7,16 @@ import {
 import { loadLegacy } from './legacy'
 
 export interface Progress {
-  stars: number
-  done: Record<string, number>
   fav: Record<string, true>
-  hist: { id: string; t: number }[]
 }
 
 interface ProgressActions {
-  markDone(id: string, now?: number): void
   toggleFav(id: string): boolean
   reset(): void
 }
 
 const KEY = 'play-app:progress'
-const EMPTY: Progress = { stars: 0, done: {}, fav: {}, hist: [] }
+const EMPTY: Progress = { fav: {} }
 
 // Privater Modus: Zugriffe können werfen. Fehlt der Key, werden alte Daten übernommen.
 const storage: StateStorage = {
@@ -29,7 +25,7 @@ const storage: StateStorage = {
       const raw = localStorage.getItem(name)
       if (raw !== null) return raw
       const legacy = loadLegacy(localStorage)
-      return legacy ? JSON.stringify({ state: legacy, version: 1 }) : null
+      return legacy ? JSON.stringify({ state: legacy, version: 2 }) : null
     } catch {
       return null
     }
@@ -54,14 +50,6 @@ export const useProgress = create<Progress & ProgressActions>()(
   persist(
     (set, get) => ({
       ...EMPTY,
-      markDone(id, now = Date.now()) {
-        const s = get()
-        set({
-          stars: s.stars + 1,
-          done: { ...s.done, [id]: (s.done[id] ?? 0) + 1 },
-          hist: [{ id, t: now }, ...s.hist].slice(0, 30),
-        })
-      },
       toggleFav(id) {
         const fav = { ...get().fav }
         const now = !fav[id]
@@ -70,13 +58,18 @@ export const useProgress = create<Progress & ProgressActions>()(
         set({ fav })
         return now
       },
-      reset: () => set({ ...EMPTY, done: {}, fav: {}, hist: [] }),
+      reset: () => set({ fav: {} }),
     }),
     {
       name: KEY,
-      version: 1,
+      // v2: nur noch Favoriten (Sterne, Spielzähler und Verlauf entfernt)
+      version: 2,
+      migrate: (persisted) => {
+        const fav = (persisted as Partial<Progress> | null)?.fav
+        return { fav: fav && typeof fav === 'object' ? fav : {} }
+      },
       storage: createJSONStorage(() => storage),
-      partialize: ({ stars, done, fav, hist }) => ({ stars, done, fav, hist }),
+      partialize: ({ fav }) => ({ fav }),
     },
   ),
 )

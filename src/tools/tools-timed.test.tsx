@@ -15,7 +15,6 @@ vi.mock('../lib/audio', () => ({
   speak: vi.fn(),
   stopSpeech: vi.fn(),
   audioContext: vi.fn(),
-  fanfare: vi.fn(),
 }))
 
 function renderTool(id: ToolId, random = 0) {

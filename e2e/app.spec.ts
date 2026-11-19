@@ -18,18 +18,21 @@ test('Direktaufruf /favoriten zeigt die Favoriten', async ({ page }) => {
   ).toBeVisible()
 })
 
-test('Stern bleibt nach dem Neuladen erhalten', async ({ page }) => {
-  await page.goto('')
-  await page.getByRole('button', { name: /Farben-Jagd/ }).click()
-  await page.getByRole('button', { name: /Geschafft! ⭐/ }).click()
-  await expect(page.getByRole('dialog')).toHaveCount(0)
-  await expect(page.getByRole('banner')).toContainText('⭐ 1')
+test('Favorit bleibt nach dem Neuladen erhalten', async ({ page }) => {
+  await page.goto('?spiel=farben')
+  await page.getByRole('button', { name: 'Favorit' }).click()
+  await expect(page.getByRole('status')).toContainText(
+    'Zu Favoriten hinzugefügt',
+  )
   await page.reload()
-  await expect(page.getByRole('banner')).toContainText('⭐ 1')
+  await page.goto('favoriten')
+  await expect(page.getByRole('button', { name: /Farben-Jagd/ })).toBeVisible()
   const stored = await page.evaluate(() =>
     localStorage.getItem('play-app:progress'),
   )
-  expect(stored).not.toBeNull()
+  expect(JSON.parse(stored ?? 'null')?.state).toEqual({
+    fav: { farben: true },
+  })
 })
 
 test('Zufall öffnet ein Spiel', async ({ page }) => {

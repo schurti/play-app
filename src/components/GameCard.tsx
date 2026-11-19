@@ -9,7 +9,6 @@ import Scene from './Scene'
 export default function GameCard({ game }: { game: Game }) {
   const { openGame } = useGameNav()
   const fav = useProgress((s) => s.fav[game.id])
-  const done = useProgress((s) => s.done[game.id])
   const items = game.items.slice(0, 2).join(', ')
   const more = game.items.length > 2 ? ` +${game.items.length - 2}` : ''
   return (
@@ -21,12 +20,7 @@ export default function GameCard({ game }: { game: Game }) {
       <span className={styles.art}>
         <Scene category={game.category} className={styles.scene} />
         <Art emoji={game.emoji} size={64} className={styles.e} />
-        {(fav || done) && (
-          <span className={styles.badges}>
-            {fav ? '❤️' : ''}
-            {done ? '✅' : ''}
-          </span>
-        )}
+        {fav && <span className={styles.badges}>❤️</span>}
       </span>
       <span className={styles.body}>
         <b>{game.title}</b>

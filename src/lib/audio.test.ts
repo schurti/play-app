@@ -1,4 +1,4 @@
-import { audioContext, fanfare, noise, speak, stopSpeech, tone } from './audio'
+import { audioContext, noise, speak, stopSpeech, tone } from './audio'
 
 describe('audio ohne Browser-Support', () => {
   it('sind No-ops und werfen nicht', () => {
@@ -8,7 +8,6 @@ describe('audio ohne Browser-Support', () => {
       noise(0.1)
       speak('Hallo')
       stopSpeech()
-      fanfare()
     }).not.toThrow()
   })
 })

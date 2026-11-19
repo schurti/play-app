@@ -82,9 +82,3 @@ export function stopSpeech(): void {
     /* kein Sprachsupport */
   }
 }
-
-export function fanfare(): void {
-  ;[523, 659, 784, 1047].forEach((f, i) =>
-    tone(f, 0.25, 'triangle', 0.15, i * 0.12),
-  )
-}

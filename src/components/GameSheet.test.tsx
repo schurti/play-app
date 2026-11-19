@@ -1,15 +1,13 @@
-import { act, render, screen, within } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryRouter, RouterProvider } from 'react-router'
 import { routes } from '../router'
 import { tone } from '../lib/audio'
-import { GAMES } from '../games'
 import { useProgress } from '../store/progress'
 
 vi.mock('../lib/audio', async (orig) => ({
   ...(await orig<typeof import('../lib/audio')>()),
   tone: vi.fn(),
-  fanfare: vi.fn(),
 }))
 
 function renderAt(path: string, state?: unknown) {
@@ -86,41 +84,6 @@ describe('GameSheet', () => {
     )
   })
 
-  it('„Geschafft!“ vergibt einen Stern, zeigt den Toast und schliesst', async () => {
-    renderAt('/?spiel=farben')
-    vi.useFakeTimers({ shouldAdvanceTime: true })
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
-    await user.click(screen.getByRole('button', { name: 'Geschafft! ⭐' }))
-    expect(screen.getByText('⭐ Super gemacht! +1 Stern')).toBeInTheDocument()
-    expect(screen.getByText('⭐ 1')).toBeInTheDocument()
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(700)
-    })
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-  })
-
-  it('doppeltes „Geschafft!“ zählt nur einmal und schliesst nur einmal', async () => {
-    const router = renderAt('/?spiel=farben', { fromApp: true })
-    const back = vi.spyOn(router, 'navigate')
-    vi.useFakeTimers({ shouldAdvanceTime: true })
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
-    const btn = screen.getByRole('button', { name: 'Geschafft! ⭐' })
-    await user.click(btn)
-    await user.click(btn)
-    expect(useProgress.getState().stars).toBe(1)
-    expect(useProgress.getState().done.farben).toBe(1)
-    expect(useProgress.getState().hist).toHaveLength(1)
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(1500)
-    })
-    expect(
-      back.mock.calls.filter(([to]) => (to as unknown) === -1),
-    ).toHaveLength(1)
-    expect(router.state.location.pathname).toBe('/')
-    expect(router.state.location.search).toBe('')
-    expect(router.state.historyAction).toBe('POP')
-  })
-
   it('✕ und Escape zusammen schliessen nur einmal', async () => {
     const router = renderAt('/?spiel=farben', { fromApp: true })
     const nav = vi.spyOn(router, 'navigate')
@@ -129,6 +92,13 @@ describe('GameSheet', () => {
     expect(
       nav.mock.calls.filter(([to]) => (to as unknown) === -1),
     ).toHaveLength(1)
+  })
+
+  it('zeigt weder „Geschafft!“ noch Sterne', () => {
+    renderAt('/?spiel=farben')
+    expect(screen.queryByRole('button', { name: /Geschafft/ })).toBeNull()
+    expect(screen.queryByText(/⭐ \d/)).toBeNull()
+    expect(screen.queryByText(/gespielt/)).toBeNull()
   })
 
   it('zeigt keine Timer-Knöpfe mehr', () => {
@@ -144,16 +114,5 @@ describe('GameSheet', () => {
     renderAt('/?spiel=sternenhimmel')
     const dialog = screen.getByRole('dialog')
     expect(dialog.style.getPropertyValue('--soft')).toBe('#E5E9F2')
-  })
-
-  it('zeigt nach „Geschafft!“ nie einen Sticker-Toast', async () => {
-    const ids = GAMES.filter((g) => g.category === 'lernen')
-      .slice(0, 2)
-      .map((g) => g.id)
-    useProgress.setState({ done: { [ids[0]]: 1, [ids[1]]: 1 }, stars: 2 })
-    renderAt('/?spiel=' + GAMES.filter((g) => g.category === 'lernen')[2].id)
-    await userEvent.click(screen.getByRole('button', { name: 'Geschafft! ⭐' }))
-    expect(screen.getByText('⭐ Super gemacht! +1 Stern')).toBeInTheDocument()
-    expect(screen.queryByText(/Sticker|Abzeichen/)).toBeNull()
   })
 })

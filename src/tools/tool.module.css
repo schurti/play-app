@@ -23,12 +23,12 @@
   box-shadow: 0 2px 0 color-mix(in srgb, var(--c, #2a2453) 65%, #000);
 }
 .alt {
-  background: var(--bg);
+  background: var(--tint, var(--bg));
   color: var(--ink);
-  box-shadow: 0 3px 0 var(--edge);
+  box-shadow: 0 3px 0 var(--tint-edge, var(--edge));
 }
 .alt:active {
-  box-shadow: 0 1px 0 var(--edge);
+  box-shadow: 0 1px 0 var(--tint-edge, var(--edge));
 }
 .sm {
   padding: 7px 13px;
@@ -55,7 +55,7 @@
   text-align: left;
 }
 .three div {
-  background: var(--bg);
+  background: var(--tint, var(--bg));
   border-radius: var(--r-md);
   padding: 8px 12px;
 }
@@ -86,9 +86,9 @@
 .die {
   width: 84px;
   height: 84px;
-  background: var(--bg);
+  background: var(--tint, var(--bg));
   border-radius: 18px;
-  box-shadow: 0 4px 0 var(--edge);
+  box-shadow: 0 4px 0 var(--tint-edge, var(--edge));
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
@@ -119,7 +119,7 @@
   font-size: 34px;
   font-weight: 900;
   transition: background 0.2s;
-  background: var(--bg);
+  background: var(--tint, var(--bg));
 }
 .stage.go {
   background: var(--mint);
@@ -143,7 +143,7 @@
   align-items: center;
   justify-content: center;
   font-size: 32px;
-  background: var(--bg);
+  background: var(--tint, var(--bg));
   border-radius: var(--r-md);
   margin: 3px;
   transition: transform 0.1s;
@@ -209,13 +209,13 @@
   padding: 8px 12px;
   border: 0;
   border-radius: var(--r-md);
-  background: var(--bg);
-  box-shadow: 0 2px 0 var(--edge);
+  background: var(--tint, var(--bg));
+  box-shadow: 0 2px 0 var(--tint-edge, var(--edge));
   text-align: left;
 }
 .monster button:active {
   transform: translateY(1px);
-  box-shadow: 0 1px 0 var(--edge);
+  box-shadow: 0 1px 0 var(--tint-edge, var(--edge));
 }
 .monster small {
   grid-column: 1;

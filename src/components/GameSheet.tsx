@@ -1,31 +1,18 @@
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type MouseEvent,
-} from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router'
 import { CATEGORIES, catVars } from '../games/categories'
 import { getGame } from '../games'
 import type { Game } from '../games/types'
 import { useGameNav } from '../hooks/useGameNav'
-import { useTimers } from '../hooks/useTimers'
-import { fanfare, stopSpeech } from '../lib/audio'
+import { stopSpeech } from '../lib/audio'
 import { useProgress } from '../store/progress'
 import { TOOLS } from '../tools/registry'
 import Art from './Art'
-import Burst from './Burst'
 import styles from './GameSheet.module.css'
 import Scene from './Scene'
 import { useToast } from './Toast'
 
-interface BodyProps {
-  game: Game
-  onBurst: (x: number, y: number) => void
-}
-
-function SheetBody({ game, onBurst }: BodyProps) {
+function SheetBody({ game }: { game: Game }) {
   const { closeGame: navigateClose } = useGameNav()
   const closing = useRef(false)
   const closeGame = useCallback(() => {
@@ -34,10 +21,7 @@ function SheetBody({ game, onBurst }: BodyProps) {
     navigateClose()
   }, [navigateClose])
   const toast = useToast()
-  const timers = useTimers()
   const fav = useProgress((s) => Boolean(s.fav[game.id]))
-  const doneCount = useProgress((s) => s.done[game.id] ?? 0)
-  const [finished, setFinished] = useState(false)
   const cat = CATEGORIES[game.category]
   const Tool = game.tool ? TOOLS[game.tool] : undefined
 
@@ -58,17 +42,6 @@ function SheetBody({ game, onBurst }: BodyProps) {
   const onFav = () => {
     const now = useProgress.getState().toggleFav(game.id)
     toast(now ? '❤️ Zu Favoriten hinzugefügt' : 'Aus Favoriten entfernt')
-  }
-
-  const onDone = (e: MouseEvent<HTMLButtonElement>) => {
-    if (finished) return
-    setFinished(true)
-    useProgress.getState().markDone(game.id)
-    const r = e.currentTarget.getBoundingClientRect()
-    onBurst(r.left + r.width / 2, r.top)
-    fanfare()
-    toast('⭐ Super gemacht! +1 Stern')
-    timers.later(closeGame, 650)
   }
 
   return (
@@ -142,18 +115,6 @@ function SheetBody({ game, onBurst }: BodyProps) {
         <div className={`${styles.box} ${styles.learn}`}>
           💡 <b>Das lernt ihr:</b> {game.learn}
         </div>
-        <div className={styles.btns}>
-          <button
-            className={`${styles.btn} ${styles.done}`}
-            onClick={onDone}
-            disabled={finished}
-          >
-            Geschafft! ⭐
-          </button>
-          {doneCount > 0 && (
-            <span className="meta">schon {doneCount}× gespielt</span>
-          )}
-        </div>
       </div>
     </div>
   )
@@ -161,11 +122,6 @@ function SheetBody({ game, onBurst }: BodyProps) {
 
 export default function GameSheet() {
   const [params, setParams] = useSearchParams()
-  const [burst, setBurst] = useState<{
-    x: number
-    y: number
-    run: number
-  } | null>(null)
   const id = params.get('spiel')
   const game = id ? getGame(id) : undefined
 
@@ -182,19 +138,5 @@ export default function GameSheet() {
     }
   }, [id, game, setParams])
 
-  const onBurst = useCallback(
-    (x: number, y: number) =>
-      setBurst((b) => ({ x, y, run: (b?.run ?? 0) + 1 })),
-    [],
-  )
-  const endBurst = useCallback(() => setBurst(null), [])
-
-  return (
-    <>
-      {game && <SheetBody key={game.id} game={game} onBurst={onBurst} />}
-      {burst && (
-        <Burst key={burst.run} x={burst.x} y={burst.y} onDone={endBurst} />
-      )}
-    </>
-  )
+  return game ? <SheetBody key={game.id} game={game} /> : null
 }
