@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#FFF8EC"/>
+  <!-- Haus -->
+  <path d="M256 120 L96 258 H136 V388 H376 V258 H416 Z" fill="#F59E0B"/>
+  <path d="M256 120 L96 258 H416 Z" fill="#EF4444"/>
+  <rect x="226" y="298" width="60" height="90" rx="12" fill="#FFF8EC"/>
+  <rect x="150" y="286" width="50" height="50" rx="8" fill="#06B6D4"/>
+  <rect x="312" y="286" width="50" height="50" rx="8" fill="#06B6D4"/>
+  <!-- Kategorie-Punkte -->
+  <circle cx="136" cy="432" r="14" fill="#3B82F6"/>
+  <circle cx="186" cy="432" r="14" fill="#EC4899"/>
+  <circle cx="236" cy="432" r="14" fill="#10B981"/>
+  <circle cx="286" cy="432" r="14" fill="#A855F7"/>
+  <circle cx="336" cy="432" r="14" fill="#64748B"/>
+  <circle cx="386" cy="432" r="14" fill="#EF4444"/>
+</svg>
