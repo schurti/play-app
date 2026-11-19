@@ -87,6 +87,41 @@ const SCENES: Record<CategoryId, ReactNode> = {
       <rect x="264" y="98" width="4" height="10" rx="2" fill="#9C6B3F" />
     </>
   ),
+  draussen: (
+    <>
+      <defs>
+        <linearGradient id="scene-wald" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#DDF1FB" />
+          <stop offset="1" stopColor="#F3F8E6" />
+        </linearGradient>
+      </defs>
+      <rect width="320" height="140" fill="url(#scene-wald)" />
+      <circle cx="96" cy="30" r="14" fill="#FFE08A" />
+      <path d="M-10 112 Q80 92 160 104 T330 100 V150 H-10Z" fill="#B9D77E" />
+      <path
+        d="M120 140 Q150 118 176 112 Q196 110 214 116 Q190 124 176 140Z"
+        fill="#E8D3A8"
+      />
+      <g fill="#4E7A2A">
+        <path d="M54 104 L70 64 L86 104Z" />
+        <path d="M58 82 L70 50 L82 82Z" />
+        <path d="M232 106 L250 60 L268 106Z" />
+        <path d="M237 82 L250 46 L263 82Z" />
+        <path d="M268 108 L280 80 L292 108Z" />
+      </g>
+      <rect x="68" y="102" width="4" height="8" fill="#7A5230" />
+      <rect x="248" y="104" width="4" height="8" fill="#7A5230" />
+      <path d="M100 118 a9 7 0 0 1 18 0Z" fill="#E5583A" />
+      <rect x="107" y="117" width="4" height="7" rx="1.5" fill="#F7EBDD" />
+      <circle cx="105" cy="114" r="1.6" fill="#fff" />
+      <circle cx="112" cy="112" r="1.4" fill="#fff" />
+      <path
+        d="M204 30 q8 -8 16 0 q8 -6 14 2 q-14 4 -30 -2Z"
+        fill="#fff"
+        opacity="0.9"
+      />
+    </>
+  ),
   basteln: (
     <>
       <rect width="320" height="140" fill="#FDEBB5" />

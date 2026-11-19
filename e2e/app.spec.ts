@@ -45,7 +45,7 @@ test('Manifest und Build-Artefakte', async ({ request }) => {
   const res = await request.get('manifest.webmanifest')
   expect(res.ok()).toBe(true)
   const manifest = await res.json()
-  expect(manifest.short_name).toBe('Spielplatz')
+  expect(manifest.short_name).toBe('Pömpgeck')
   expect(manifest.scope).toBe('/')
   expect(existsSync('dist/sw.js')).toBe(true)
   expect(existsSync('dist/404.html')).toBe(true)

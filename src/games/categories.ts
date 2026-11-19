@@ -5,6 +5,7 @@ export type CategoryId =
   | 'malen'
   | 'papier'
   | 'bewegung'
+  | 'draussen'
   | 'basteln'
   | 'musik'
   | 'forschen'
@@ -35,6 +36,12 @@ export const CATEGORIES: Record<CategoryId, Category> = {
     color: '#2F9E5B',
     soft: '#DCF2D9',
   },
+  draussen: {
+    name: 'Draussen',
+    emoji: '🌳',
+    color: '#5F7F1F',
+    soft: '#E8F1D4',
+  },
   basteln: { name: 'Basteln', emoji: '✂️', color: '#C47A00', soft: '#FDEBB5' },
   musik: { name: 'Musik', emoji: '🎵', color: '#8B5CF6', soft: '#EDE4FF' },
   forschen: {
@@ -57,6 +64,7 @@ export const CATEGORY_IDS: readonly CategoryId[] = [
   'malen',
   'papier',
   'bewegung',
+  'draussen',
   'basteln',
   'musik',
   'forschen',

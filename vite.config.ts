@@ -15,8 +15,8 @@ export default defineConfig({
       injectRegister: false,
       includeAssets: ['favicon.ico', 'apple-touch-icon-180x180.png'],
       manifest: {
-        name: 'Haushalts-Spielplatz',
-        short_name: 'Spielplatz',
+        name: 'Pömpgeck',
+        short_name: 'Pömpgeck',
         lang: 'de',
         display: 'standalone',
         start_url: base,

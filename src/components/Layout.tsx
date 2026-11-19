@@ -14,8 +14,8 @@ export default function Layout() {
     <ToastProvider>
       <header>
         <h1>
-          <small>Haushalts-</small>
-          <span>Spielplatz</span>
+          <small>Spielideen</small>
+          <span>Pömpgeck</span>
         </h1>
       </header>
       <main className={styles.wrap}>

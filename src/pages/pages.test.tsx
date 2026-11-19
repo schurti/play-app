@@ -23,14 +23,14 @@ beforeEach(() => {
 describe('Spiele-Seite', () => {
   it('zeigt alle Spiele und die Tageskarte', () => {
     renderAt('/')
-    expect(screen.getByText('287 Spiele')).toBeInTheDocument()
+    expect(screen.getByText('338 Spiele')).toBeInTheDocument()
     expect(screen.getByText('⭐ Spiel des Tages')).toBeInTheDocument()
   })
 
   it('filtert per Kategorie-Chip und blendet die Tageskarte aus', async () => {
     renderAt('/')
     await userEvent.click(screen.getByRole('button', { name: 'Ruhe' }))
-    expect(screen.getByText('27 Spiele')).toBeInTheDocument()
+    expect(screen.getByText('33 Spiele')).toBeInTheDocument()
     expect(screen.queryByText('⭐ Spiel des Tages')).not.toBeInTheDocument()
   })
 
@@ -42,7 +42,7 @@ describe('Spiele-Seite', () => {
       matchGame(g, { ...EMPTY_FILTERS, q: 'socken' }),
     )
     expect(expected.length).toBeGreaterThan(0)
-    expect(expected.length).toBeLessThan(287)
+    expect(expected.length).toBeLessThan(338)
     expect(
       screen.getByText(
         `${expected.length} Spiel${expected.length === 1 ? '' : 'e'}`,

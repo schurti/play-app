@@ -1,4 +1,4 @@
-# Play App
+# Pömpgeck
 
 Spiele-App für Kinder (Vite, React, TypeScript).
 
