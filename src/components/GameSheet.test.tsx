@@ -112,7 +112,7 @@ describe('GameSheet', () => {
     await act(async () => {
       await vi.advanceTimersByTimeAsync(1500)
     })
-    expect(back.mock.calls.filter(([to]) => to === -1)).toHaveLength(1)
+    expect(back.mock.calls.filter(([to]) => (to as unknown) === -1)).toHaveLength(1)
     expect(router.state.location.pathname).toBe('/')
     expect(router.state.location.search).toBe('')
     expect(router.state.historyAction).toBe('POP')
@@ -123,7 +123,7 @@ describe('GameSheet', () => {
     const nav = vi.spyOn(router, 'navigate')
     await userEvent.keyboard('{Escape}')
     await userEvent.keyboard('{Escape}')
-    expect(nav.mock.calls.filter(([to]) => to === -1)).toHaveLength(1)
+    expect(nav.mock.calls.filter(([to]) => (to as unknown) === -1)).toHaveLength(1)
   })
 
   it('zählt den Countdown herunter bis „Zeit um!“ und piept', async () => {

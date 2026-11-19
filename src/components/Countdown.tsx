@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTimers } from '../hooks/useTimers'
 import { tone } from '../lib/audio'
 import styles from './GameSheet.module.css'
 
@@ -11,14 +12,15 @@ function format(t: number): string {
 /** Zählt von `seconds` herunter; stoppt beim Unmount. Neu starten über `key`. */
 export default function Countdown({ seconds }: { seconds: number }) {
   const [left, setLeft] = useState(seconds)
+  const timers = useTimers()
 
   useEffect(() => {
     let t = seconds
-    const id = setInterval(() => {
+    const id = timers.every(() => {
       t--
       setLeft(t)
       if (t <= 0) {
-        clearInterval(id)
+        timers.clear(id)
         ;[0, 0.3, 0.6].forEach((w) => tone(880, 0.2, 'square', 0.12, w))
         try {
           navigator.vibrate?.([200, 100, 200])
@@ -27,8 +29,8 @@ export default function Countdown({ seconds }: { seconds: number }) {
         }
       }
     }, 1000)
-    return () => clearInterval(id)
-  }, [seconds])
+    return () => timers.clear(id)
+  }, [seconds, timers])
 
   return <span className={styles.timer}>{format(left)}</span>
 }
