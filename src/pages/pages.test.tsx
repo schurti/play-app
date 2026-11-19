@@ -7,6 +7,7 @@ import { routes } from '../router'
 import { useFilters } from '../store/filters'
 import { useProgress } from '../store/progress'
 import { useGameNav } from '../hooks/useGameNav'
+import { swipe } from '../test/touch'
 
 function renderAt(path: string | { pathname: string; state: unknown }) {
   const router = createMemoryRouter(routes, { initialEntries: [path] })
@@ -21,6 +22,34 @@ beforeEach(() => {
 })
 
 describe('Spiele-Seite', () => {
+  it('zeigt keinen sichtbaren Titel, nur einen für Screenreader', () => {
+    renderAt('/')
+    expect(screen.queryByText('Spielideen')).toBeNull()
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Pömpgeck' }),
+    ).toHaveClass('sr-only')
+  })
+
+  it('wechselt die Kategorie per Wisch über die Liste', () => {
+    renderAt('/')
+    const liste = screen.getByTestId('spiele-liste')
+    swipe(liste, 300, 400, 80, 410)
+    expect(useFilters.getState().cat).toBe('lernen')
+    swipe(liste, 80, 400, 300, 395)
+    swipe(liste, 80, 400, 300, 395)
+    expect(useFilters.getState().cat).toBe('rollen')
+    expect(screen.getByRole('button', { name: 'Rollenspiel' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+  })
+
+  it('reagiert nicht auf senkrechtes Scrollen', () => {
+    renderAt('/')
+    swipe(screen.getByTestId('spiele-liste'), 200, 500, 230, 100)
+    expect(useFilters.getState().cat).toBe('alle')
+  })
+
   it('zeigt alle Spiele und die Tageskarte', () => {
     renderAt('/')
     expect(screen.getByText('338 Spiele')).toBeInTheDocument()

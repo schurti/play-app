@@ -26,36 +26,6 @@ button {
   outline: 3px solid var(--coral);
   outline-offset: 2px;
 }
-header {
-  position: sticky;
-  top: 0;
-  z-index: 3;
-  background: var(--bg);
-  padding: 14px 16px 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  max-width: 680px;
-  margin: 0 auto;
-}
-h1 {
-  margin: 0;
-  line-height: 0.95;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-}
-h1 small {
-  display: block;
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: 0;
-  color: var(--coral);
-}
-h1 span {
-  display: block;
-  font-size: 32px;
-}
 .meta {
   font-size: 13.5px;
   color: var(--muted);
@@ -71,4 +41,15 @@ h1 span {
   margin: 18px 4px 10px;
   font-size: 22px;
   font-weight: 900;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }

@@ -21,6 +21,7 @@
   border-radius: var(--r-xl) var(--r-xl) 0 0;
   padding: 0 16px calc(28px + env(safe-area-inset-bottom));
   animation: up 0.22s ease-out;
+  overscroll-behavior: contain;
 }
 @keyframes up {
   from {
@@ -52,6 +53,33 @@
   bottom: 14px;
   transform: translateX(-50%);
   filter: drop-shadow(0 6px 5px #2a245333);
+}
+.handle {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  z-index: 1;
+  width: 44px;
+  height: 5px;
+  margin-left: -22px;
+  border-radius: 99px;
+  background: #2a245340;
+}
+.ico.prev,
+.ico.next {
+  position: absolute;
+  bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  opacity: 0.9;
+}
+.prev {
+  left: 14px;
+}
+.next {
+  right: 14px;
 }
 .icons {
   position: absolute;

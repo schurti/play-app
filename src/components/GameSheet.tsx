@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useRef } from 'react'
-import { useSearchParams } from 'react-router'
+import { useLocation, useNavigate, useSearchParams } from 'react-router'
 import { CATEGORIES, catVars } from '../games/categories'
-import { getGame } from '../games'
+import { GAMES, getGame } from '../games'
 import type { Game } from '../games/types'
 import { useGameNav } from '../hooks/useGameNav'
+import { useTouchGestures } from '../hooks/useTouchGestures'
+import { useVisibleGames } from '../hooks/useVisibleGames'
 import { stopSpeech } from '../lib/audio'
 import { useProgress } from '../store/progress'
 import { TOOLS } from '../tools/registry'
@@ -12,7 +14,13 @@ import styles from './GameSheet.module.css'
 import Scene from './Scene'
 import { useToast } from './Toast'
 
-function SheetBody({ game }: { game: Game }) {
+interface BodyProps {
+  game: Game
+  /** Zum vorherigen / nächsten Spiel der aktuellen Liste (Wischen, Pfeiltasten). */
+  onStep?: (delta: 1 | -1) => void
+}
+
+function SheetBody({ game, onStep }: BodyProps) {
   const { closeGame: navigateClose } = useGameNav()
   const closing = useRef(false)
   const closeGame = useCallback(() => {
@@ -24,18 +32,48 @@ function SheetBody({ game }: { game: Game }) {
   const fav = useProgress((s) => Boolean(s.fav[game.id]))
   const cat = CATEGORIES[game.category]
   const Tool = game.tool ? TOOLS[game.tool] : undefined
+  const sheetRef = useRef<HTMLDivElement>(null)
+  const bgRef = useRef<HTMLDivElement>(null)
+
+  // Nach unten ziehen schliesst, seitlich wischen blättert zum nächsten Spiel.
+  useTouchGestures(sheetRef, {
+    onPull(dy) {
+      const sheet = sheetRef.current
+      if (!sheet) return
+      sheet.style.transition = 'none'
+      sheet.style.transform = `translateY(${dy}px)`
+      if (bgRef.current)
+        bgRef.current.style.opacity = String(Math.max(0.3, 1 - dy / 400))
+    },
+    onPullEnd(release) {
+      const sheet = sheetRef.current
+      if (release) {
+        closeGame()
+        return
+      }
+      if (sheet) {
+        sheet.style.transition = 'transform 0.2s ease-out'
+        sheet.style.transform = ''
+      }
+      if (bgRef.current) bgRef.current.style.opacity = ''
+    },
+    onSwipeLeft: () => onStep?.(1),
+    onSwipeRight: () => onStep?.(-1),
+  })
 
   useEffect(() => {
     document.body.classList.add('lock')
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closeGame()
+      if (e.key === 'ArrowRight') onStep?.(1)
+      if (e.key === 'ArrowLeft') onStep?.(-1)
     }
     document.addEventListener('keydown', onKey)
     return () => {
       document.body.classList.remove('lock')
       document.removeEventListener('keydown', onKey)
     }
-  }, [closeGame])
+  }, [closeGame, onStep])
 
   useEffect(() => stopSpeech, [])
 
@@ -46,12 +84,14 @@ function SheetBody({ game }: { game: Game }) {
 
   return (
     <div
+      ref={bgRef}
       className={styles.bg}
       onClick={(e) => {
         if (e.target === e.currentTarget) closeGame()
       }}
     >
       <div
+        ref={sheetRef}
         className={styles.sheet}
         role="dialog"
         aria-modal="true"
@@ -60,7 +100,54 @@ function SheetBody({ game }: { game: Game }) {
       >
         <div className={styles.art}>
           <Scene category={game.category} className={styles.scene} />
+          <span className={styles.handle} aria-hidden="true" />
           <Art emoji={game.emoji} size={112} className={styles.emoji} />
+          {onStep && (
+            <>
+              <button
+                className={`${styles.ico} ${styles.prev}`}
+                aria-label="Vorheriges Spiel"
+                onClick={() => onStep(-1)}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="22"
+                  height="22"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M15 5 L8 12 L15 19"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+              <button
+                className={`${styles.ico} ${styles.next}`}
+                aria-label="Nächstes Spiel"
+                onClick={() => onStep(1)}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="22"
+                  height="22"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M9 5 L16 12 L9 19"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </>
+          )}
           <div className={styles.icons}>
             <button className={styles.ico} aria-label="Favorit" onClick={onFav}>
               {fav ? '❤️' : '🤍'}
@@ -124,6 +211,28 @@ export default function GameSheet() {
   const [params, setParams] = useSearchParams()
   const id = params.get('spiel')
   const game = id ? getGame(id) : undefined
+  const navigate = useNavigate()
+  const location = useLocation()
+  const fav = useProgress((s) => s.fav)
+  const visible = useVisibleGames()
+
+  // Blätter-Reihenfolge: Favoriten auf der Favoriten-Seite, sonst die gefilterte Liste.
+  const list =
+    location.pathname === '/favoriten'
+      ? GAMES.filter((g) => fav[g.id])
+      : visible
+  const index = game ? list.findIndex((g) => g.id === game.id) : -1
+  const step = useCallback(
+    (delta: 1 | -1) => {
+      if (index < 0 || list.length < 2) return
+      const next = list[(index + delta + list.length) % list.length]
+      navigate(
+        { search: '?spiel=' + next.id },
+        { replace: true, state: location.state },
+      )
+    },
+    [index, list, navigate, location.state],
+  )
 
   useEffect(() => {
     if (id && !game) {
@@ -138,5 +247,11 @@ export default function GameSheet() {
     }
   }, [id, game, setParams])
 
-  return game ? <SheetBody key={game.id} game={game} /> : null
+  return game ? (
+    <SheetBody
+      key={game.id}
+      game={game}
+      onStep={index >= 0 && list.length > 1 ? step : undefined}
+    />
+  ) : null
 }

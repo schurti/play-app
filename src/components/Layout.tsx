@@ -12,12 +12,8 @@ export default function Layout() {
   }, [pathname])
   return (
     <ToastProvider>
-      <header>
-        <h1>
-          <small>Spielideen</small>
-          <span>Pömpgeck</span>
-        </h1>
-      </header>
+      {/* Titel nur für Screenreader – spart oben Platz */}
+      <h1 className="sr-only">Pömpgeck</h1>
       <main className={styles.wrap}>
         <Outlet />
       </main>

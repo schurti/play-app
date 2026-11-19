@@ -1,53 +1,57 @@
 import type { ReactNode } from 'react'
 import type { CategoryId } from '../games/categories'
 
-/**
- * Gezeichnete Hintergrund-Szene pro Kategorie. Die Mitte bleibt frei,
- * damit das Spielbild darauf «stehen» kann.
+/*
+ * Gezeichnete Hintergrund-Szenen pro Kategorie – bewusst ruhig und pastellig,
+ * damit das 3D-Bild im Vordergrund steht.
+ *
+ * Die Zeichenfläche ist breit (x −160 … 480), der Bildinhalt sitzt in der Mitte
+ * (x 0 … 320). So füllt die Szene auch breite Flächen (Dialog auf dem Tablet),
+ * ohne oben abgeschnitten zu werden. Die Mitte (x ≈ 110 … 210) bleibt frei
+ * für das Spielbild.
  */
+const W = { x: -160, w: 640 }
+const bg = (fill: string) => (
+  <rect x={W.x} y="0" width={W.w} height="140" fill={fill} />
+)
+const floor = (y: number, fill: string) => (
+  <rect x={W.x} y={y} width={W.w} height={140 - y} fill={fill} />
+)
+
 const SCENES: Record<CategoryId, ReactNode> = {
   lernen: (
     <>
-      <rect width="320" height="140" fill="#E2E8FF" />
-      <rect x="0" y="112" width="320" height="28" fill="#C9D3FB" />
-      <rect x="44" y="40" width="58" height="6" rx="3" fill="#AEBBF0" />
-      <rect x="48" y="20" width="10" height="20" rx="2" fill="#4C6EF5" />
-      <rect x="60" y="24" width="9" height="16" rx="2" fill="#FFB547" />
-      <rect x="71" y="18" width="11" height="22" rx="2" fill="#E5583A" />
-      <rect x="84" y="26" width="9" height="14" rx="2" fill="#2F9E5B" />
-      <rect x="222" y="92" width="22" height="22" rx="5" fill="#FFB547" />
-      <rect x="248" y="92" width="22" height="22" rx="5" fill="#4C6EF5" />
-      <rect x="235" y="70" width="22" height="22" rx="5" fill="#E5583A" />
-      <text x="228" y="108" fontSize="14" fontWeight="900" fill="#fff">
-        A
-      </text>
-      <text x="254" y="108" fontSize="14" fontWeight="900" fill="#fff">
-        B
-      </text>
-      <text x="241" y="86" fontSize="14" fontWeight="900" fill="#fff">
-        C
-      </text>
+      {bg('#E2E8FF')}
+      {floor(112, '#D5DCFB')}
+      <rect x="40" y="44" width="56" height="5" rx="2.5" fill="#C9D2F7" />
+      <rect x="46" y="26" width="9" height="18" rx="2" fill="#B9C6F5" />
+      <rect x="57" y="30" width="8" height="14" rx="2" fill="#F3D9BC" />
+      <rect x="67" y="24" width="10" height="20" rx="2" fill="#F2C7BF" />
+      <rect x="79" y="31" width="8" height="13" rx="2" fill="#C8E3CC" />
+      <rect x="226" y="94" width="18" height="18" rx="4" fill="#F3D9BC" />
+      <rect x="248" y="94" width="18" height="18" rx="4" fill="#C9D2F7" />
+      <rect x="237" y="76" width="18" height="18" rx="4" fill="#F2C7BF" />
     </>
   ),
   malen: (
     <>
-      <rect width="320" height="140" fill="#FCE0EC" />
-      <rect x="0" y="114" width="320" height="26" fill="#F8C8DA" />
-      <circle cx="62" cy="36" r="15" fill="#F7A8C6" />
-      <circle cx="80" cy="52" r="7" fill="#FFD25E" />
-      <circle cx="258" cy="30" r="13" fill="#9AD0F5" />
-      <circle cx="242" cy="46" r="6" fill="#B7E08C" />
+      {bg('#FCE0EC')}
+      {floor(114, '#F8D3E2')}
+      <circle cx="62" cy="38" r="13" fill="#F7CADC" />
+      <circle cx="80" cy="52" r="6" fill="#FBE6BF" />
+      <circle cx="256" cy="34" r="11" fill="#D5E8F6" />
+      <circle cx="242" cy="50" r="5" fill="#D9EDCB" />
       <path
-        d="M212 104 q20 -18 46 -6"
-        stroke="#D9488F"
-        strokeWidth="6"
+        d="M214 102 q20 -14 42 -5"
+        stroke="#F2BDD2"
+        strokeWidth="5"
         fill="none"
         strokeLinecap="round"
       />
       <path
-        d="M50 100 q22 10 42 -6"
-        stroke="#FFB547"
-        strokeWidth="6"
+        d="M52 100 q20 8 38 -5"
+        stroke="#F8DDB0"
+        strokeWidth="5"
         fill="none"
         strokeLinecap="round"
       />
@@ -55,176 +59,170 @@ const SCENES: Record<CategoryId, ReactNode> = {
   ),
   papier: (
     <>
-      <rect width="320" height="140" fill="#D3F1EC" />
-      <rect x="0" y="108" width="320" height="32" fill="#B7E3DA" />
-      <rect x="0" y="106" width="320" height="5" fill="#9CD6CA" />
-      <g transform="rotate(-8 74 64)">
-        <rect x="46" y="34" width="56" height="70" rx="4" fill="#fff" />
+      {bg('#D3F1EC')}
+      {floor(108, '#C4EAE3')}
+      <g transform="rotate(-8 72 66)">
+        <rect
+          x="48"
+          y="40"
+          width="48"
+          height="60"
+          rx="4"
+          fill="#FFFFFF"
+          opacity="0.75"
+        />
         <path
-          d="M54 50 H94 M54 60 H94 M54 70 H86 M54 80 H92"
-          stroke="#BFD9F2"
+          d="M56 54 H88 M56 63 H88 M56 72 H82"
+          stroke="#CFE4F2"
           strokeWidth="3"
         />
       </g>
-      <g transform="rotate(30 248 60)">
-        <rect x="240" y="24" width="12" height="64" rx="3" fill="#FFB547" />
-        <path d="M240 88 L246 102 L252 88Z" fill="#F5D7A8" />
-        <path d="M244 96 L246 102 L248 96Z" fill="#2A2453" />
-        <rect x="240" y="18" width="12" height="8" rx="3" fill="#F7A8C6" />
+      <g transform="rotate(30 250 62)" opacity="0.8">
+        <rect x="244" y="30" width="10" height="56" rx="3" fill="#F6DCAA" />
+        <path d="M244 86 L249 98 L254 86Z" fill="#F4E4C8" />
+        <rect x="244" y="25" width="10" height="7" rx="3" fill="#F5C8D8" />
       </g>
-      <circle cx="236" cy="118" r="9" fill="#fff" opacity="0.85" />
     </>
   ),
   bewegung: (
     <>
-      <rect width="320" height="140" fill="#E4F6FF" />
-      <circle cx="214" cy="34" r="18" fill="#FFD25E" />
-      <path d="M-10 104 Q70 64 160 96 T330 88 V150 H-10Z" fill="#B7E08C" />
-      <path d="M-10 122 Q100 90 200 116 T330 112 V150 H-10Z" fill="#8FCB64" />
-      <circle cx="62" cy="80" r="15" fill="#6DB24A" />
-      <rect x="59.5" y="90" width="5" height="14" rx="2.5" fill="#9C6B3F" />
-      <circle cx="266" cy="90" r="11" fill="#6DB24A" />
-      <rect x="264" y="98" width="4" height="10" rx="2" fill="#9C6B3F" />
+      {/* Turnhalle: Sprossenwand, Hallenboden mit Linie, Ball und Hütchen */}
+      {bg('#DCF2D9')}
+      {floor(108, '#CDE9C9')}
+      <rect x={W.x} y="116" width={W.w} height="2.5" fill="#E9F7E6" />
+      <g stroke="#BFE0BA" strokeWidth="4" strokeLinecap="round">
+        <path d="M44 24 V108 M92 24 V108" />
+        <path d="M44 38 H92 M44 54 H92 M44 70 H92 M44 86 H92 M44 102 H92" />
+      </g>
+      <circle cx="252" cy="98" r="11" fill="#F6D2B4" />
+      <path
+        d="M241 98 Q252 92 263 98"
+        stroke="#F0BE98"
+        strokeWidth="2"
+        fill="none"
+      />
+      <path d="M222 108 L229 90 L236 108Z" fill="#F7D8A5" />
+      <rect x="219" y="106" width="20" height="3" rx="1.5" fill="#EFC98C" />
     </>
   ),
   draussen: (
     <>
       <defs>
         <linearGradient id="scene-wald" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#DDF1FB" />
-          <stop offset="1" stopColor="#F3F8E6" />
+          <stop offset="0" stopColor="#E6F3F8" />
+          <stop offset="1" stopColor="#EEF5DD" />
         </linearGradient>
       </defs>
-      <rect width="320" height="140" fill="url(#scene-wald)" />
-      <circle cx="96" cy="30" r="14" fill="#FFE08A" />
-      <path d="M-10 112 Q80 92 160 104 T330 100 V150 H-10Z" fill="#B9D77E" />
+      <rect x={W.x} y="0" width={W.w} height="140" fill="url(#scene-wald)" />
+      <circle cx="92" cy="30" r="12" fill="#FBEBB0" />
       <path
-        d="M120 140 Q150 118 176 112 Q196 110 214 116 Q190 124 176 140Z"
-        fill="#E8D3A8"
+        d="M-170 112 Q-40 96 80 106 Q200 96 320 104 T490 102 V150 H-170Z"
+        fill="#D7E8B9"
       />
-      <g fill="#4E7A2A">
-        <path d="M54 104 L70 64 L86 104Z" />
-        <path d="M58 82 L70 50 L82 82Z" />
-        <path d="M232 106 L250 60 L268 106Z" />
-        <path d="M237 82 L250 46 L263 82Z" />
-        <path d="M268 108 L280 80 L292 108Z" />
+      <g fill="#B5CF8E">
+        <path d="M50 108 L64 72 L78 108Z" />
+        <path d="M54 88 L64 60 L74 88Z" />
+        <path d="M236 108 L252 68 L268 108Z" />
+        <path d="M241 86 L252 56 L263 86Z" />
       </g>
-      <rect x="68" y="102" width="4" height="8" fill="#7A5230" />
-      <rect x="248" y="104" width="4" height="8" fill="#7A5230" />
-      <path d="M100 118 a9 7 0 0 1 18 0Z" fill="#E5583A" />
-      <rect x="107" y="117" width="4" height="7" rx="1.5" fill="#F7EBDD" />
-      <circle cx="105" cy="114" r="1.6" fill="#fff" />
-      <circle cx="112" cy="112" r="1.4" fill="#fff" />
       <path
-        d="M204 30 q8 -8 16 0 q8 -6 14 2 q-14 4 -30 -2Z"
-        fill="#fff"
-        opacity="0.9"
+        d="M200 30 q7 -7 14 0 q7 -5 12 2 q-12 4 -26 -2Z"
+        fill="#FFFFFF"
+        opacity="0.8"
       />
     </>
   ),
   basteln: (
     <>
-      <rect width="320" height="140" fill="#FDEBB5" />
-      <rect x="0" y="110" width="320" height="30" fill="#F2CF7A" />
-      <rect x="0" y="108" width="320" height="6" fill="#E8BE5E" />
-      <path d="M52 30 l18 6 -12 14z" fill="#E5583A" />
-      <path d="M244 22 l16 12 -18 6z" fill="#4C6EF5" />
-      <path d="M78 66 l14 -8 2 16z" fill="#2F9E5B" />
-      <path d="M226 66 l18 2 -8 14z" fill="#D9488F" />
+      {bg('#FDEBB5')}
+      {floor(110, '#F7E0A2')}
+      <path d="M54 34 l15 5 -10 12z" fill="#F4C7B8" />
+      <path d="M246 28 l14 10 -15 5z" fill="#CCD6F6" />
+      <path d="M78 66 l12 -7 2 14z" fill="#CFE6C5" />
+      <path d="M228 66 l15 2 -7 12z" fill="#F4CADB" />
       <rect
-        x="46"
-        y="118"
-        width="40"
-        height="8"
+        x="48"
+        y="117"
+        width="36"
+        height="7"
         rx="2"
-        fill="#fff"
-        opacity="0.8"
+        fill="#FFFFFF"
+        opacity="0.6"
       />
-      <rect x="230" y="120" width="44" height="8" rx="2" fill="#FFB547" />
+      <rect x="232" y="118" width="38" height="7" rx="2" fill="#F6D29A" />
     </>
   ),
   musik: (
     <>
-      <rect width="320" height="140" fill="#EDE4FF" />
-      <path d="M-10 118 Q80 104 160 116 T330 112 V150 H-10Z" fill="#DCCBFF" />
-      <g fill="#B79BF5">
-        <circle cx="62" cy="58" r="8" />
-        <rect x="68" y="24" width="4" height="34" />
-        <path d="M68 24 q14 4 18 14 q-8 -4 -18 -4z" />
-        <circle cx="236" cy="46" r="7" />
-        <circle cx="258" cy="40" r="7" />
-        <rect x="241" y="16" width="3.5" height="30" />
-        <rect x="263" y="10" width="3.5" height="30" />
-        <rect x="241" y="10" width="25.5" height="6" />
+      {bg('#EDE4FF')}
+      <path d="M-170 118 Q0 108 160 116 T490 112 V150 H-170Z" fill="#E3D8FB" />
+      <g fill="#D6C8F7">
+        <circle cx="62" cy="60" r="7" />
+        <rect x="67" y="30" width="3.5" height="30" />
+        <path d="M67 30 q12 4 15 12 q-7 -4 -15 -3z" />
+        <circle cx="240" cy="48" r="6" />
+        <circle cx="259" cy="43" r="6" />
+        <rect x="244.5" y="20" width="3" height="28" />
+        <rect x="263.5" y="15" width="3" height="28" />
+        <rect x="244.5" y="15" width="22" height="5" />
       </g>
-      <circle cx="96" cy="30" r="4" fill="#fff" opacity="0.7" />
-      <circle cx="222" cy="80" r="3" fill="#fff" opacity="0.7" />
     </>
   ),
   forschen: (
     <>
-      <rect width="320" height="140" fill="#D6EEF9" />
-      <g stroke="#C2E3F3" strokeWidth="2">
-        <path d="M0 30 H320 M0 60 H320 M0 90 H320" />
-        <path d="M40 0 V108 M80 0 V108 M120 0 V108 M160 0 V108 M200 0 V108 M240 0 V108 M280 0 V108" />
+      {bg('#D6EEF9')}
+      <g stroke="#CBE8F6" strokeWidth="2">
+        <path d={`M${W.x} 34 H480 M${W.x} 68 H480`} />
+        <path d="M0 0 V106 M40 0 V106 M80 0 V106 M240 0 V106 M280 0 V106 M320 0 V106" />
       </g>
-      <rect x="0" y="108" width="320" height="32" fill="#A9D8EE" />
-      <rect x="0" y="106" width="320" height="6" fill="#8CC8E5" />
-      <circle cx="62" cy="40" r="12" fill="#fff" opacity="0.75" />
-      <circle cx="80" cy="62" r="6" fill="#fff" opacity="0.75" />
-      <circle cx="254" cy="34" r="9" fill="#fff" opacity="0.75" />
-      <circle cx="240" cy="58" r="5" fill="#fff" opacity="0.75" />
+      {floor(106, '#C3E3F2')}
+      <circle cx="64" cy="42" r="10" fill="#FFFFFF" opacity="0.6" />
+      <circle cx="80" cy="62" r="5" fill="#FFFFFF" opacity="0.6" />
+      <circle cx="252" cy="36" r="8" fill="#FFFFFF" opacity="0.6" />
+      <circle cx="240" cy="58" r="4" fill="#FFFFFF" opacity="0.6" />
     </>
   ),
   ruhe: (
     <>
       <defs>
         <linearGradient id="scene-nacht" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#4B5A93" />
-          <stop offset="1" stopColor="#8C97C6" />
+          <stop offset="0" stopColor="#A7B0D3" />
+          <stop offset="1" stopColor="#CDD2E8" />
         </linearGradient>
       </defs>
-      <rect width="320" height="140" fill="url(#scene-nacht)" />
-      <circle cx="214" cy="34" r="16" fill="#FFF3C4" />
-      <circle cx="223" cy="28" r="14" fill="#55649B" />
-      <g fill="#FFF3C4">
-        <circle cx="56" cy="24" r="2" />
-        <circle cx="90" cy="46" r="1.5" />
-        <circle cx="128" cy="18" r="2" />
-        <circle cx="206" cy="26" r="1.5" />
-        <circle cx="226" cy="64" r="2" />
-        <circle cx="48" cy="70" r="1.5" />
+      <rect x={W.x} y="0" width={W.w} height="140" fill="url(#scene-nacht)" />
+      <circle cx="214" cy="34" r="13" fill="#FFF6D8" />
+      <circle cx="221" cy="29" r="11" fill="#AEB7D8" />
+      <g fill="#FFF6D8" opacity="0.8">
+        <circle cx="56" cy="26" r="1.8" />
+        <circle cx="88" cy="46" r="1.4" />
+        <circle cx="128" cy="20" r="1.6" />
+        <circle cx="252" cy="54" r="1.6" />
+        <circle cx="46" cy="70" r="1.4" />
       </g>
-      <path d="M-10 116 Q90 98 170 112 T330 106 V150 H-10Z" fill="#6C78AC" />
+      <path d="M-170 116 Q60 100 170 112 T490 108 V150 H-170Z" fill="#BCC3E0" />
     </>
   ),
   rollen: (
     <>
-      <rect width="320" height="140" fill="#FDDDD0" />
-      <ellipse cx="160" cy="118" rx="100" ry="18" fill="#FBEBDF" />
-      <rect
-        x="0"
-        y="112"
-        width="320"
-        height="28"
-        fill="#EBA685"
-        opacity="0.6"
-      />
-      <path d="M0 0 H82 Q76 60 88 140 H0Z" fill="#E5583A" />
-      <path d="M320 0 H238 Q244 60 232 140 H320Z" fill="#E5583A" />
+      {bg('#FDDDD0')}
+      {floor(112, '#F9D0C1')}
+      <ellipse cx="160" cy="118" rx="96" ry="14" fill="#FDE8DE" />
+      <path d={`M${W.x} 0 H80 Q74 60 86 140 H${W.x}Z`} fill="#F6C1AE" />
+      <path d="M480 0 H240 Q246 60 234 140 H480Z" fill="#F6C1AE" />
       <path
-        d="M48 0 Q44 70 52 140 M66 0 Q62 70 70 140"
-        stroke="#C4432A"
-        strokeWidth="3"
+        d="M50 0 Q46 70 54 140 M66 0 Q62 70 70 140"
+        stroke="#EFAF98"
+        strokeWidth="2.5"
         fill="none"
       />
       <path
-        d="M272 0 Q276 70 268 140 M254 0 Q258 70 250 140"
-        stroke="#C4432A"
-        strokeWidth="3"
+        d="M270 0 Q274 70 266 140 M254 0 Q258 70 250 140"
+        stroke="#EFAF98"
+        strokeWidth="2.5"
         fill="none"
       />
-      <path d="M0 0 H320 V12 Q160 26 0 12Z" fill="#C4432A" />
+      <path d={`M${W.x} 0 H480 V10 Q160 22 ${W.x} 10Z`} fill="#EFAF98" />
     </>
   ),
 }
@@ -239,7 +237,7 @@ export default function Scene({
   return (
     <svg
       className={className}
-      viewBox="0 0 320 140"
+      viewBox={`${W.x} 0 ${W.w} 140`}
       preserveAspectRatio="xMidYMax slice"
       aria-hidden="true"
     >
