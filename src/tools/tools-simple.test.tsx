@@ -1,0 +1,122 @@
+import { act, render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import type { ComponentType } from 'react'
+import { GAMES } from '../games'
+import { ANIMALS } from './animal/animals'
+import { TREASURE } from './treasure/riddles'
+import { PANTO } from './panto/cards'
+import type { ToolId } from './ids'
+import { TOOLS } from './registry'
+import type { ToolProps } from './ToolProps'
+
+vi.mock('../lib/audio', () => ({ tone: vi.fn(), noise: vi.fn(), speak: vi.fn(), stopSpeech: vi.fn() }))
+
+async function renderTool(id: ToolId, random = 0) {
+  vi.spyOn(Math, 'random').mockReturnValue(random)
+  const Tool = TOOLS[id] as ComponentType<ToolProps>
+  expect(Tool).toBeDefined()
+  render(<Tool game={GAMES[0]} color="#123456" />)
+}
+
+afterEach(() => {
+  vi.restoreAllMocks()
+  vi.useRealTimers()
+})
+
+describe('einfache Werkzeuge', () => {
+  it('color zeigt eine Farbaufgabe und eine Neu-Schaltfläche', async () => {
+    await renderTool('color')
+    expect(await screen.findByText('Finde etwas in Rot!')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: '🔄 Neue Aufgabe' })).toBeInTheDocument()
+  })
+
+  it('number zeigt Anzahl und Eigenschaft', async () => {
+    await renderTool('number')
+    expect(await screen.findByText(/Dinge, die rund sind!/)).toBeInTheDocument()
+  })
+
+  it('letter zeigt den ersten Buchstaben', async () => {
+    await renderTool('letter')
+    expect(await screen.findByText('A')).toBeInTheDocument()
+  })
+
+  it('shape nennt die Form und füllt mit der Kategorie-Farbe', async () => {
+    await renderTool('shape')
+    expect(await screen.findByText('Finde etwas mit der Form: Kreis!')).toBeInTheDocument()
+    expect(document.querySelector('svg')).toHaveStyle({ fill: '#123456' })
+  })
+
+  it('animal benutzt den passenden Artikel', async () => {
+    await renderTool('animal')
+    expect(await screen.findByText('Bewegt euch wie ein Frosch!')).toBeInTheDocument()
+  })
+
+  it('animal: Krabbe bekommt „eine“', async () => {
+    const i = ANIMALS.findIndex((a) => a.name === 'Krabbe')
+    await renderTool('animal', (i + 0.5) / ANIMALS.length)
+    expect(await screen.findByText('Bewegt euch wie eine Krabbe!')).toBeInTheDocument()
+  })
+
+  it('yoga und story haben ihre eigenen Beschriftungen', async () => {
+    await renderTool('yoga')
+    expect(await screen.findByRole('button', { name: '🔄 Neue Figur' })).toBeInTheDocument()
+    expect(screen.getByText('5 Atemzüge halten')).toBeInTheDocument()
+  })
+
+  it('story zeigt Wer, Wo, Was', async () => {
+    await renderTool('story')
+    expect(await screen.findByRole('button', { name: '🔄 Neu würfeln' })).toBeInTheDocument()
+    expect(screen.getByText(/🦔 ein mutiger Igel/)).toBeInTheDocument()
+  })
+
+  it('Neu-Schaltfläche zieht eine neue Aufgabe', async () => {
+    await renderTool('color')
+    await screen.findByText('Finde etwas in Rot!')
+    vi.spyOn(Math, 'random').mockReturnValue(0.99)
+    await userEvent.click(screen.getByRole('button', { name: '🔄 Neue Aufgabe' }))
+    expect(screen.getByText('Finde etwas in Grau!')).toBeInTheDocument()
+  })
+
+  it('panto verbirgt das Wort bis zum Tipp', async () => {
+    await renderTool('panto')
+    const reveal = await screen.findByRole('button', { name: '🤫 Nur wer dran ist: hier tippen' })
+    expect(screen.queryByText(PANTO[0].word)).not.toBeInTheDocument()
+    await userEvent.click(reveal)
+    expect(screen.getByText('Elefant')).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: '🔄 Neue Karte' }))
+    expect(screen.queryByText('Elefant')).not.toBeInTheDocument()
+  })
+
+  it('dice: 2 Würfel zeigt Summe im Format a + b = s', async () => {
+    await renderTool('dice')
+    await userEvent.click(await screen.findByRole('button', { name: '2 Würfel' }))
+    expect(screen.getByTestId('sum')).toHaveTextContent(/^\d \+ \d = \d+$/)
+    expect(screen.getAllByTestId('die')).toHaveLength(2)
+    expect(screen.getByRole('button', { name: '1 Würfel' })).toBeInTheDocument()
+  })
+
+  it('dice: Würfeln läuft 9 Ticks und endet', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    await renderTool('dice', 0.99)
+    const btn = await screen.findByRole('button', { name: '🎲 Würfeln' })
+    expect(screen.getByTestId('sum')).toHaveTextContent('1')
+    await act(async () => {
+      btn.click()
+      await vi.advanceTimersByTimeAsync(70 * 9)
+    })
+    expect(screen.getByTestId('sum')).toHaveTextContent('6')
+    expect(vi.getTimerCount()).toBe(0)
+  })
+
+  it('treasure zeigt genau 5 Hinweise mit Lösung in details', async () => {
+    await renderTool('treasure')
+    const items = await screen.findAllByRole('listitem')
+    expect(items).toHaveLength(5)
+    for (const li of items) {
+      expect(li.querySelector('details')).not.toBeNull()
+      expect(within(li).getByText('Lösung für Erwachsene')).toBeInTheDocument()
+    }
+    expect(TREASURE).toHaveLength(17)
+    expect(screen.getByRole('button', { name: '🔄 Neue Hinweise' })).toBeInTheDocument()
+  })
+})

@@ -1,0 +1,15 @@
+export const PROPS: readonly string[] = [
+  'rund',
+  'weich',
+  'eckig',
+  'schwer',
+  'leicht',
+  'glänzend',
+  'aus Holz',
+  'aus Stoff',
+  'aus Plastik',
+  'kleiner als deine Hand',
+  'zum Essen',
+  'gestreift',
+  'durchsichtig',
+]
