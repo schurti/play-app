@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router'
 import { useProgress } from '../store/progress'
 import BottomNav from './BottomNav'
+import GameSheet from './GameSheet'
 import styles from './Layout.module.css'
 import { ToastProvider } from './Toast'
 
@@ -25,6 +26,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <BottomNav />
+      <GameSheet />
     </ToastProvider>
   )
 }
