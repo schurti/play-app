@@ -20,8 +20,8 @@ export default defineConfig({
         display: 'standalone',
         start_url: base,
         scope: base,
-        theme_color: '#FFF8EC',
-        background_color: '#FFF8EC',
+        theme_color: '#FFF6E6',
+        background_color: '#FFF6E6',
         icons: [
           { src: 'pwa-64x64.png', sizes: '64x64', type: 'image/png' },
           { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
@@ -36,7 +36,7 @@ export default defineConfig({
       },
       workbox: {
         navigateFallback: `${base}index.html`,
-        globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2,webp}'],
       },
     }),
   ],

@@ -37,3 +37,9 @@ GitHub Pages kennt keinen SPA-Fallback; deshalb kopiert der Build `index.html` n
 
 Heisst das Repository anders, den Basis-Pfad beim Build überschreiben, z. B. `BASE_PATH=/mein-repo/ pnpm build`
 (in der CI als `env: BASE_PATH` am Build-Schritt setzen). Bei einer Seite auf der Wurzel einer Domain: `BASE_PATH=/`.
+
+## Bildnachweis
+
+Die Spielbilder unter `public/img/emoji/` stammen aus
+[Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji) (3D-Stil, MIT-Lizenz, siehe `public/img/emoji/LICENSE.txt`).
+Neue Spiele mit einem Emoji ohne Bild zeigen automatisch das normale Emoji an.

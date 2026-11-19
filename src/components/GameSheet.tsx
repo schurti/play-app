@@ -3,11 +3,10 @@ import {
   useEffect,
   useRef,
   useState,
-  type CSSProperties,
   type MouseEvent,
 } from 'react'
 import { useSearchParams } from 'react-router'
-import { CATEGORIES } from '../games/categories'
+import { CATEGORIES, catVars } from '../games/categories'
 import { GAMES, getGame } from '../games'
 import type { Game } from '../games/types'
 import { useGameNav } from '../hooks/useGameNav'
@@ -16,9 +15,11 @@ import { fanfare, audioContext, stopSpeech } from '../lib/audio'
 import { rewardMessage } from '../lib/reward'
 import { useProgress } from '../store/progress'
 import { TOOLS } from '../tools/registry'
+import Art from './Art'
 import Burst from './Burst'
 import Countdown from './Countdown'
 import styles from './GameSheet.module.css'
+import Scene from './Scene'
 import { useToast } from './Toast'
 
 const TIMERS = [
@@ -100,19 +101,11 @@ function SheetBody({ game, onBurst }: BodyProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="sheet-title"
-        style={{ '--c': cat.color } as CSSProperties}
+        style={catVars(game.category)}
       >
-        <div className={styles.top}>
-          <div>
-            <div className={styles.emoji}>{game.emoji}</div>
-            <h2 id="sheet-title">{game.title}</h2>
-            <div className="meta">
-              {cat.emoji} {cat.name} · ab {game.minAge} J. · ca. {game.minutes}{' '}
-              Min.
-              {game.tags.includes('allein') && ' · allein spielbar'}
-              {game.tags.includes('gruppe') && ' · gut für Gruppen'}
-            </div>
-          </div>
+        <div className={styles.art}>
+          <Scene category={game.category} className={styles.scene} />
+          <Art emoji={game.emoji} size={112} className={styles.emoji} />
           <div className={styles.icons}>
             <button className={styles.ico} aria-label="Favorit" onClick={onFav}>
               {fav ? '❤️' : '🤍'}
@@ -125,6 +118,12 @@ function SheetBody({ game, onBurst }: BodyProps) {
               ✕
             </button>
           </div>
+        </div>
+        <h2 id="sheet-title">{game.title}</h2>
+        <div className="meta">
+          {cat.emoji} {cat.name} · ab {game.minAge} J. · ca. {game.minutes} Min.
+          {game.tags.includes('allein') && ' · allein spielbar'}
+          {game.tags.includes('gruppe') && ' · gut für Gruppen'}
         </div>
         <div className={styles.need}>
           {game.items.length ? (
@@ -148,7 +147,7 @@ function SheetBody({ game, onBurst }: BodyProps) {
             {Tool && <Tool key={game.id} game={game} color={cat.color} />}
           </div>
         )}
-        <ol>
+        <ol className={styles.steps}>
           {game.steps.map((s) => (
             <li key={s}>{s}</li>
           ))}
@@ -162,7 +161,11 @@ function SheetBody({ game, onBurst }: BodyProps) {
           💡 <b>Das lernt ihr:</b> {game.learn}
         </div>
         <div className={styles.btns}>
-          <button className={styles.btn} onClick={onDone} disabled={finished}>
+          <button
+            className={`${styles.btn} ${styles.done}`}
+            onClick={onDone}
+            disabled={finished}
+          >
             Geschafft! ⭐
           </button>
           {doneCount > 0 && (

@@ -1,7 +1,7 @@
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 12px;
 }
 @media (min-width: 560px) {
   .grid {
@@ -11,6 +11,9 @@
 .empty {
   grid-column: 1 / -1;
   text-align: center;
-  padding: 28px 12px;
+  padding: 32px 16px;
   color: var(--muted);
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  box-shadow: var(--lift);
 }

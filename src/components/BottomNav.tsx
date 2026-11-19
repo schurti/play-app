@@ -4,6 +4,7 @@ import { useGameNav } from '../hooks/useGameNav'
 import { useVisibleGames } from '../hooks/useVisibleGames'
 import { pick } from '../lib/random'
 import { useProgress } from '../store/progress'
+import Art from './Art'
 import styles from './BottomNav.module.css'
 
 const TABS = [
@@ -33,7 +34,7 @@ export default function BottomNav() {
         isActive ? `${styles.btn} ${styles.on}` : styles.btn
       }
     >
-      <span>{t.emoji}</span>
+      <Art emoji={t.emoji} size={28} className={styles.icon} />
       {t.label}
     </NavLink>
   )
@@ -43,7 +44,10 @@ export default function BottomNav() {
       <div className={styles.in}>
         {tab(TABS[0])}
         <button className={`${styles.btn} ${styles.dice}`} onClick={random}>
-          <span>🎲</span>Zufall
+          <span className={styles.ball}>
+            <Art emoji="🎲" size={34} />
+          </span>
+          Zufall
         </button>
         {tab(TABS[1])}
         {tab(TABS[2])}

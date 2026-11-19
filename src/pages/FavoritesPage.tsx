@@ -7,9 +7,7 @@ export default function FavoritesPage() {
   const games = GAMES.filter((g) => fav[g.id])
   return (
     <>
-      <h3 style={{ margin: '16px 4px 8px', fontSize: 19 }}>
-        ❤️ Eure Lieblingsspiele
-      </h3>
+      <h3 className="title">❤️ Eure Lieblingsspiele</h3>
       <GameGrid
         games={games}
         empty={

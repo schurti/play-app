@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { pick } from '../../lib/random'
 import t from '../tool.module.css'
 import { PANTO } from './cards'
+import Art from '../../components/Art'
 
 export default function PantoTool() {
   const [card, setCard] = useState(() => pick(PANTO))
@@ -11,7 +12,9 @@ export default function PantoTool() {
       {shown ? (
         <>
           <div className="meta">{card.kind}</div>
-          <div className={t.huge}>{card.emoji}</div>
+          <div className={t.huge}>
+            <Art emoji={card.emoji} size={96} />
+          </div>
           <div className={t.big}>{card.word}</div>
         </>
       ) : (

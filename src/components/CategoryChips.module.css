@@ -2,7 +2,8 @@
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  padding: 2px 2px 8px;
+  margin: 0 -16px;
+  padding: 2px 16px 10px;
   scrollbar-width: none;
 }
 .row::-webkit-scrollbar {
@@ -10,14 +11,22 @@
 }
 .chip {
   flex: 0 0 auto;
-  border: 2px solid var(--line);
-  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 2px solid transparent;
+  background: var(--surface);
   border-radius: 99px;
-  padding: 5px 12px;
+  padding: 7px 14px;
   font-size: 15px;
+  font-weight: 800;
+  box-shadow: var(--lift-sm);
 }
 .on {
-  background: var(--c);
-  color: #fff;
+  background: var(--soft);
   border-color: var(--c);
+  color: var(--ink);
+}
+.icon {
+  margin: -4px 0;
 }

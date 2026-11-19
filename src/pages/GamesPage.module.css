@@ -2,32 +2,44 @@
   display: flex;
   gap: 8px;
   align-items: center;
-  margin: 4px 0 8px;
+  margin: 2px 0 12px;
 }
 .search input {
   flex: 1;
-  border: 2px solid var(--line);
-  border-radius: 14px;
-  padding: 10px 12px;
-  font: inherit;
-  background: #fff;
   min-width: 0;
+  border: 2px solid transparent;
+  border-radius: 99px;
+  padding: 11px 16px;
+  font: inherit;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--surface);
+  box-shadow: var(--lift-sm);
+}
+.search input::placeholder {
+  color: var(--muted);
+  font-weight: 600;
+}
+.search input:focus {
+  outline: none;
+  border-color: var(--coral);
 }
 .fbtn {
-  border: 2px solid var(--line);
-  background: #fff;
-  border-radius: 14px;
-  padding: 9px 12px;
-  font-weight: 700;
+  border: 2px solid transparent;
+  background: var(--surface);
+  border-radius: 99px;
+  padding: 10px 14px;
+  font-weight: 800;
   white-space: nowrap;
+  box-shadow: var(--lift-sm);
 }
 .act {
-  background: var(--ink);
-  color: #fff;
+  background: var(--lavender);
   border-color: var(--ink);
 }
 .count {
   font-size: 14px;
+  font-weight: 800;
   color: var(--muted);
-  margin: 2px 4px 6px;
+  margin: 4px 4px 8px;
 }

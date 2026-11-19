@@ -29,7 +29,7 @@ describe('Spiele-Seite', () => {
 
   it('filtert per Kategorie-Chip und blendet die Tageskarte aus', async () => {
     renderAt('/')
-    await userEvent.click(screen.getByRole('button', { name: '🌙 Ruhe' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Ruhe' }))
     expect(screen.getByText('25 Spiele')).toBeInTheDocument()
     expect(screen.queryByText('⭐ Spiel des Tages')).not.toBeInTheDocument()
   })

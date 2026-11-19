@@ -9,10 +9,10 @@ body {
 body {
   background: var(--bg);
   color: var(--ink);
-  font-family: 'Baloo 2', system-ui, sans-serif;
-  font-weight: 500;
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-weight: 600;
   font-size: 17px;
-  line-height: 1.35;
+  line-height: 1.4;
 }
 body.lock {
   overflow: hidden;
@@ -22,12 +22,16 @@ button {
   color: inherit;
   cursor: pointer;
 }
+:focus-visible {
+  outline: 3px solid var(--coral);
+  outline-offset: 2px;
+}
 header {
   position: sticky;
   top: 0;
   z-index: 3;
   background: var(--bg);
-  padding: 12px 14px 8px;
+  padding: 14px 16px 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -37,26 +41,46 @@ header {
 }
 h1 {
   margin: 0;
-  font-size: 24px;
-  line-height: 1.05;
+  line-height: 0.95;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+h1 small {
+  display: block;
+  font-size: 15px;
   font-weight: 800;
+  letter-spacing: 0;
+  color: var(--coral);
+}
+h1 span {
+  display: block;
+  font-size: 32px;
 }
 .pill {
-  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
   border-radius: 99px;
-  padding: 6px 12px;
-  font-weight: 700;
-  box-shadow: 0 2px 0 #0001;
+  padding: 7px 14px;
+  font-weight: 900;
+  font-size: 18px;
+  box-shadow: var(--lift-sm);
   white-space: nowrap;
 }
 .meta {
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--muted);
 }
 .reset {
   border: 0;
   background: none;
-  color: #c2410c;
-  font-weight: 700;
+  color: var(--coral);
+  font-weight: 800;
   padding: 4px 0;
+}
+.title {
+  margin: 18px 4px 10px;
+  font-size: 22px;
+  font-weight: 900;
 }

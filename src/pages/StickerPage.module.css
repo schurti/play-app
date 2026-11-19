@@ -1,31 +1,29 @@
-.h3 {
-  margin: 16px 4px 8px;
-  font-size: 19px;
-}
 .stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin: 6px 0 14px;
+  gap: 10px;
+  margin: 4px 0 14px;
 }
 .stat {
-  background: #fff;
-  border-radius: 16px;
-  padding: 10px;
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  padding: 12px 8px;
   text-align: center;
-  box-shadow: 0 2px 0 #0001;
+  box-shadow: var(--lift);
 }
 .stat b {
   display: block;
-  font-size: 26px;
-  line-height: 1;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.1;
 }
 .stat span {
   font-size: 13px;
+  font-weight: 700;
   color: var(--muted);
 }
 .intro {
-  margin: 0 4px 8px;
+  margin: 0 4px 12px;
 }
 .stickers {
   list-style: none;
@@ -33,7 +31,7 @@
   padding: 0;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 12px;
 }
 @media (min-width: 560px) {
   .stickers {
@@ -41,37 +39,55 @@
   }
 }
 .st {
-  background: #fff;
-  border-radius: 18px;
-  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  padding: 14px 10px 12px;
   text-align: center;
-  box-shadow: 0 2px 0 #0001;
-  border: 3px dashed #0002;
-}
-.got {
-  border: 3px solid var(--c);
-  background: color-mix(in srgb, var(--c) 12%, #fff);
-}
-.gold {
-  border-color: #f59e0b;
-  box-shadow: 0 0 0 3px #fde68a;
+  box-shadow: var(--lift);
 }
 .e {
-  font-size: 40px;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  background: #f3eee6;
+  border: 3px dashed #d9cdb8;
+}
+.st:not(.got) .e {
   filter: grayscale(1);
-  opacity: 0.35;
+  opacity: 0.55;
 }
 .got .e {
-  filter: none;
-  opacity: 1;
+  background: var(--soft);
+  border: 4px solid var(--surface);
+  box-shadow:
+    0 0 0 3px var(--c),
+    0 4px 0 3px color-mix(in srgb, var(--c) 55%, #000);
+}
+.gold .e {
+  background: var(--butter);
+  box-shadow:
+    0 0 0 3px #e9b324,
+    0 0 0 8px #fff3c4,
+    0 4px 0 8px #e9b324;
 }
 .st b {
   display: block;
-  font-size: 15px;
+  font-size: 15.5px;
+  font-weight: 900;
 }
 .bar {
+  width: 100%;
   height: 8px;
-  background: #0000000f;
+  background: #f1e9db;
   border-radius: 99px;
   margin-top: 6px;
   overflow: hidden;
@@ -79,10 +95,16 @@
 .bar i {
   display: block;
   height: 100%;
+  border-radius: 99px;
   background: var(--c);
 }
 .history {
   margin: 0 4px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  box-shadow: var(--lift);
+  line-height: 1.8;
 }
 .date {
   opacity: 0.6;
@@ -91,5 +113,5 @@
   font-size: 13px;
   color: var(--muted);
   text-align: center;
-  margin: 18px 8px;
+  margin: 20px 8px;
 }

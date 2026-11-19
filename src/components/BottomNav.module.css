@@ -4,46 +4,66 @@
   right: 0;
   bottom: 0;
   z-index: 4;
-  background: #fff;
-  box-shadow: 0 -2px 12px #0001;
   display: flex;
   justify-content: center;
-  padding-bottom: env(safe-area-inset-bottom);
+  pointer-events: none;
 }
 .in {
+  pointer-events: auto;
   display: flex;
+  gap: 4px;
   width: 100%;
   max-width: 680px;
+  padding: 8px 10px calc(10px + env(safe-area-inset-bottom));
+  background: var(--surface);
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  box-shadow:
+    0 -4px 0 var(--edge),
+    0 -8px 24px #2a245314;
 }
 .btn {
   flex: 1;
   border: 0;
   background: none;
-  padding: 8px 2px 10px;
+  border-radius: var(--r-md);
+  padding: 6px 2px 7px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1px;
   font-size: 12.5px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--muted);
   text-decoration: none;
 }
-.btn span {
-  font-size: 24px;
-  line-height: 1.1;
+.icon {
+  display: block;
+  margin-bottom: 1px;
 }
 .on {
   color: var(--ink);
+  background: var(--cream);
 }
-.dice span {
-  background: var(--ink);
-  color: #fff;
+.dice {
+  color: var(--ink);
+}
+.ball {
+  width: 54px;
+  height: 54px;
+  margin-top: -26px;
+  margin-bottom: 2px;
   border-radius: 50%;
-  width: 44px;
-  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: -18px;
-  box-shadow: 0 3px 8px #0003;
+  background: var(--coral);
+  box-shadow:
+    0 4px 0 var(--coral-edge),
+    0 0 0 5px var(--surface);
+}
+.dice:active .ball {
+  transform: translateY(2px);
+  box-shadow:
+    0 2px 0 var(--coral-edge),
+    0 0 0 5px var(--surface);
 }

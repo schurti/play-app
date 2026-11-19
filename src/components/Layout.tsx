@@ -16,9 +16,8 @@ export default function Layout() {
     <ToastProvider>
       <header>
         <h1>
-          🏠 Haushalts-
-          <br />
-          Spielplatz
+          <small>Haushalts-</small>
+          <span>Spielplatz</span>
         </h1>
         <div className="pill">⭐ {stars}</div>
       </header>

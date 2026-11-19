@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { useToast } from '../components/Toast'
 import { GAMES, getGame } from '../games'
-import { CATEGORIES, CATEGORY_IDS } from '../games/categories'
+import { CATEGORIES, CATEGORY_IDS, catVars } from '../games/categories'
 import { badges, catProgress } from '../lib/progress'
 import { useProgress } from '../store/progress'
+import Art from '../components/Art'
 import styles from './StickerPage.module.css'
 
 const WIPE_LABEL = 'Fortschritt zurücksetzen'
@@ -42,11 +43,11 @@ export default function StickerPage() {
 
   return (
     <>
-      <h3 className={styles.h3}>🏆 Sticker-Album</h3>
+      <h3 className="title">🏆 Sticker-Album</h3>
       <div className={styles.stats}>
         <div className={styles.stat}>
-          <b>⭐ {stars}</b>
-          <span>Sterne</span>
+          <b>{stars}</b>
+          <span>⭐ Sterne</span>
         </div>
         <div className={styles.stat}>
           <b>
@@ -73,9 +74,11 @@ export default function StickerPage() {
             <li
               key={k}
               className={cls(styles.st, got && styles.got, gold && styles.gold)}
-              style={{ '--c': c.color } as CSSProperties}
+              style={catVars(k)}
             >
-              <div className={styles.e}>{c.emoji}</div>
+              <div className={styles.e}>
+                <Art emoji={c.emoji} size={44} />
+              </div>
               <b>{c.name}</b>
               <span className="meta">
                 {gold
@@ -94,15 +97,22 @@ export default function StickerPage() {
           )
         })}
       </ul>
-      <h3 className={styles.h3}>🎖️ Entdecker-Abzeichen</h3>
+      <h3 className="title">🎖️ Entdecker-Abzeichen</h3>
       <ul className={styles.stickers} aria-label="Entdecker-Abzeichen">
         {badges(GAMES.length).map((b) => (
           <li
             key={b.min}
             className={cls(styles.st, distinct >= b.min && styles.got)}
-            style={{ '--c': '#f59e0b' } as CSSProperties}
+            style={
+              {
+                '--c': '#C47A00',
+                '--soft': 'var(--butter)',
+              } as CSSProperties
+            }
           >
-            <div className={styles.e}>{b.emoji}</div>
+            <div className={styles.e}>
+              <Art emoji={b.emoji} size={44} />
+            </div>
             <b>{b.name}</b>
             <span className="meta">
               {Math.min(distinct, b.min)} / {b.min} Spiele
@@ -110,7 +120,7 @@ export default function StickerPage() {
           </li>
         ))}
       </ul>
-      <h3 className={styles.h3}>📜 Zuletzt gespielt</h3>
+      <h3 className="title">📜 Zuletzt gespielt</h3>
       <div className={`meta ${styles.history}`}>
         {recent.length
           ? recent.map(({ g, t }, i) => (

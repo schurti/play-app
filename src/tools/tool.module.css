@@ -1,6 +1,6 @@
 .big {
   font-size: 27px;
-  font-weight: 800;
+  font-weight: 900;
   line-height: 1.15;
   margin: 4px 0 8px;
 }
@@ -12,14 +12,23 @@
   border: 0;
   border-radius: 99px;
   padding: 10px 18px;
-  font-weight: 700;
+  font-weight: 900;
   font-size: 17px;
   color: #fff;
-  background: var(--c, #2b2a33);
+  background: var(--c, var(--ink));
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--c, #2a2453) 65%, #000);
+}
+.btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--c, #2a2453) 65%, #000);
 }
 .alt {
-  background: #e7e6ef;
+  background: var(--bg);
   color: var(--ink);
+  box-shadow: 0 3px 0 var(--edge);
+}
+.alt:active {
+  box-shadow: 0 1px 0 var(--edge);
 }
 .sm {
   padding: 7px 13px;
@@ -35,9 +44,10 @@
 }
 .sw {
   height: 72px;
-  border-radius: 14px;
+  border-radius: var(--r-md);
   margin-bottom: 8px;
-  border: 2px solid #0002;
+  border: 3px solid var(--surface);
+  box-shadow: 0 0 0 2px var(--line);
 }
 .three {
   display: grid;
@@ -45,8 +55,8 @@
   text-align: left;
 }
 .three div {
-  background: #fff;
-  border-radius: 14px;
+  background: var(--bg);
+  border-radius: var(--r-md);
   padding: 8px 12px;
 }
 .three small {
@@ -59,9 +69,10 @@
 .secret {
   background: var(--ink);
   color: #fff;
-  border-radius: 16px;
+  border-radius: var(--r-lg);
   padding: 22px 12px;
-  font-weight: 700;
+  box-shadow: 0 4px 0 #120e2e;
+  font-weight: 900;
   font-size: 20px;
   border: 0;
   width: 100%;
@@ -75,9 +86,9 @@
 .die {
   width: 84px;
   height: 84px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 3px 0 #0002;
+  background: var(--bg);
+  border-radius: 18px;
+  box-shadow: 0 4px 0 var(--edge);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
@@ -103,27 +114,27 @@
   color: var(--muted);
 }
 .stage {
-  border-radius: 16px;
+  border-radius: var(--r-lg);
   padding: 22px 10px;
   font-size: 34px;
-  font-weight: 800;
+  font-weight: 900;
   transition: background 0.2s;
-  background: #fff;
+  background: var(--bg);
 }
 .stage.go {
-  background: #bbf7d0;
+  background: var(--mint);
 }
 .stage.stop {
-  background: #bfdbfe;
+  background: var(--sky);
 }
 .cmd {
   font-size: 26px;
 }
 .ok {
-  color: #16a34a;
+  color: var(--mint-ink);
 }
 .no {
-  color: #dc2626;
+  color: var(--coral-edge);
 }
 .beat {
   display: inline-flex;
@@ -132,37 +143,37 @@
   align-items: center;
   justify-content: center;
   font-size: 32px;
-  background: #fff;
-  border-radius: 14px;
+  background: var(--bg);
+  border-radius: var(--r-md);
   margin: 3px;
   transition: transform 0.1s;
 }
 .beat.hit {
   transform: scale(1.25);
-  background: #fde68a;
+  background: var(--butter);
 }
 .breath {
   width: 180px;
   height: 180px;
   margin: 10px auto;
   border-radius: 50%;
-  background: radial-gradient(circle, #c7d2fe, #818cf8);
+  background: radial-gradient(circle, #e9e4fb, #a78bfa);
   transform: scale(0.45);
   transition: transform 4s ease-in-out;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-weight: 800;
+  font-weight: 900;
 }
 .canvas {
   width: 100%;
   height: 320px;
   background: #fff;
-  border-radius: 14px;
+  border-radius: var(--r-md);
   touch-action: none;
   display: block;
-  box-shadow: inset 0 0 0 2px #0001;
+  box-shadow: inset 0 0 0 2px var(--line);
 }
 .pal {
   display: flex;
