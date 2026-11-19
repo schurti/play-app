@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router'
 import { CATEGORIES, catVars } from '../games/categories'
 import { GAMES, getGame } from '../games'
@@ -105,18 +105,21 @@ function SheetBody({ game, onStep }: BodyProps) {
     onSwipeRight: () => onStep?.(-1),
   })
 
-  useEffect(() => {
+  // Layout-Effekt: Die Sperre fällt beim Schliessen im selben Commit wie der
+  // Dialog weg, nicht erst danach (sonst bleibt das Scrollen kurz gesperrt).
+  useLayoutEffect(() => {
     document.body.classList.add('lock')
+    return () => document.body.classList.remove('lock')
+  }, [])
+
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closeGame()
       if (e.key === 'ArrowRight') onStep?.(1)
       if (e.key === 'ArrowLeft') onStep?.(-1)
     }
     document.addEventListener('keydown', onKey)
-    return () => {
-      document.body.classList.remove('lock')
-      document.removeEventListener('keydown', onKey)
-    }
+    return () => document.removeEventListener('keydown', onKey)
   }, [closeGame, onStep])
 
   useEffect(() => stopSpeech, [])
