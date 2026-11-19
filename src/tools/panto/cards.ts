@@ -4,7 +4,11 @@ export interface PantoCard {
   word: string
 }
 
-const c = (kind: PantoCard['kind'], emoji: string, word: string): PantoCard => ({ kind, emoji, word })
+const c = (
+  kind: PantoCard['kind'],
+  emoji: string,
+  word: string,
+): PantoCard => ({ kind, emoji, word })
 
 export const PANTO: readonly PantoCard[] = [
   c('Tier', '🐘', 'Elefant'),

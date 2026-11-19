@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type MouseEvent,
+} from 'react'
 import { useSearchParams } from 'react-router'
 import { CATEGORIES } from '../games/categories'
 import { GAMES, getGame } from '../games'
@@ -38,7 +45,9 @@ function SheetBody({ game, onBurst }: BodyProps) {
   const fav = useProgress((s) => Boolean(s.fav[game.id]))
   const doneCount = useProgress((s) => s.done[game.id] ?? 0)
   const [finished, setFinished] = useState(false)
-  const [timer, setTimer] = useState<{ seconds: number; run: number } | null>(null)
+  const [timer, setTimer] = useState<{ seconds: number; run: number } | null>(
+    null,
+  )
   const cat = CATEGORIES[game.category]
   const Tool = game.tool ? TOOLS[game.tool] : undefined
 
@@ -68,7 +77,8 @@ function SheetBody({ game, onBurst }: BodyProps) {
     const r = e.currentTarget.getBoundingClientRect()
     onBurst(r.left + r.width / 2, r.top)
     fanfare()
-    if (keys.length) timers.later(() => toast(rewardMessage(keys[0], GAMES.length)), 300)
+    if (keys.length)
+      timers.later(() => toast(rewardMessage(keys[0], GAMES.length)), 300)
     else toast('⭐ Super gemacht! +1 Stern')
     timers.later(closeGame, 650)
   }
@@ -97,7 +107,8 @@ function SheetBody({ game, onBurst }: BodyProps) {
             <div className={styles.emoji}>{game.emoji}</div>
             <h2 id="sheet-title">{game.title}</h2>
             <div className="meta">
-              {cat.emoji} {cat.name} · ab {game.minAge} J. · ca. {game.minutes} Min.
+              {cat.emoji} {cat.name} · ab {game.minAge} J. · ca. {game.minutes}{' '}
+              Min.
               {game.tags.includes('allein') && ' · allein spielbar'}
               {game.tags.includes('gruppe') && ' · gut für Gruppen'}
             </div>
@@ -106,7 +117,11 @@ function SheetBody({ game, onBurst }: BodyProps) {
             <button className={styles.ico} aria-label="Favorit" onClick={onFav}>
               {fav ? '❤️' : '🤍'}
             </button>
-            <button className={styles.ico} aria-label="Schliessen" onClick={closeGame}>
+            <button
+              className={styles.ico}
+              aria-label="Schliessen"
+              onClick={closeGame}
+            >
               ✕
             </button>
           </div>
@@ -123,7 +138,11 @@ function SheetBody({ game, onBurst }: BodyProps) {
             <span>Kein Material nötig</span>
           )}
         </div>
-        {game.adultNote && <div className={`${styles.box} ${styles.hint}`}>👩‍👧 {game.adultNote}</div>}
+        {game.adultNote && (
+          <div className={`${styles.box} ${styles.hint}`}>
+            👩‍👧 {game.adultNote}
+          </div>
+        )}
         {game.tool && (
           <div className={styles.tool}>
             {Tool && <Tool key={game.id} game={game} color={cat.color} />}
@@ -146,11 +165,17 @@ function SheetBody({ game, onBurst }: BodyProps) {
           <button className={styles.btn} onClick={onDone} disabled={finished}>
             Geschafft! ⭐
           </button>
-          {doneCount > 0 && <span className="meta">schon {doneCount}× gespielt</span>}
+          {doneCount > 0 && (
+            <span className="meta">schon {doneCount}× gespielt</span>
+          )}
         </div>
         <div className={styles.btns}>
           {TIMERS.map((t) => (
-            <button key={t.seconds} className={`${styles.btn} ${styles.alt} ${styles.sm}`} onClick={() => startTimer(t.seconds)}>
+            <button
+              key={t.seconds}
+              className={`${styles.btn} ${styles.alt} ${styles.sm}`}
+              onClick={() => startTimer(t.seconds)}
+            >
               {t.label}
             </button>
           ))}
@@ -163,7 +188,11 @@ function SheetBody({ game, onBurst }: BodyProps) {
 
 export default function GameSheet() {
   const [params, setParams] = useSearchParams()
-  const [burst, setBurst] = useState<{ x: number; y: number; run: number } | null>(null)
+  const [burst, setBurst] = useState<{
+    x: number
+    y: number
+    run: number
+  } | null>(null)
   const id = params.get('spiel')
   const game = id ? getGame(id) : undefined
 
@@ -180,13 +209,19 @@ export default function GameSheet() {
     }
   }, [id, game, setParams])
 
-  const onBurst = useCallback((x: number, y: number) => setBurst((b) => ({ x, y, run: (b?.run ?? 0) + 1 })), [])
+  const onBurst = useCallback(
+    (x: number, y: number) =>
+      setBurst((b) => ({ x, y, run: (b?.run ?? 0) + 1 })),
+    [],
+  )
   const endBurst = useCallback(() => setBurst(null), [])
 
   return (
     <>
       {game && <SheetBody key={game.id} game={game} onBurst={onBurst} />}
-      {burst && <Burst key={burst.run} x={burst.x} y={burst.y} onDone={endBurst} />}
+      {burst && (
+        <Burst key={burst.run} x={burst.x} y={burst.y} onDone={endBurst} />
+      )}
     </>
   )
 }

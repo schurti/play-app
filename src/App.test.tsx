@@ -6,7 +6,10 @@ describe('App', () => {
   it('zeigt den Titel', () => {
     render(<RouterProvider router={createMemoryRouter(routes)} />)
     expect(
-      screen.getByRole('heading', { level: 1, name: /Haushalts-\s*Spielplatz/ }),
+      screen.getByRole('heading', {
+        level: 1,
+        name: /Haushalts-\s*Spielplatz/,
+      }),
     ).toBeInTheDocument()
   })
 })

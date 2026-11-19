@@ -23,7 +23,15 @@ function makeParticles(): Particle[] {
 }
 
 /** Konfetti-Funken an einer Bildschirmposition; entfernt sich nach 1 s selbst. */
-export default function Burst({ x, y, onDone }: { x: number; y: number; onDone: () => void }) {
+export default function Burst({
+  x,
+  y,
+  onDone,
+}: {
+  x: number
+  y: number
+  onDone: () => void
+}) {
   const [particles] = useState(makeParticles)
 
   useEffect(() => {
@@ -38,7 +46,14 @@ export default function Burst({ x, y, onDone }: { x: number; y: number; onDone: 
           key={i}
           className={styles.burst}
           aria-hidden="true"
-          style={{ left: x, top: y, '--x': p.x + 'px', '--y': p.y + 'px' } as CSSProperties}
+          style={
+            {
+              left: x,
+              top: y,
+              '--x': p.x + 'px',
+              '--y': p.y + 'px',
+            } as CSSProperties
+          }
         >
           {p.emoji}
         </span>

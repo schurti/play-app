@@ -11,7 +11,13 @@ export default function ShapeTool({ color }: ToolProps) {
   const [name, setName] = useState(() => pick(NAMES))
   return (
     <>
-      <svg viewBox="0 0 120 120" width="120" height="120" style={{ fill: color }} aria-hidden="true">
+      <svg
+        viewBox="0 0 120 120"
+        width="120"
+        height="120"
+        style={{ fill: color }}
+        aria-hidden="true"
+      >
         {SHAPES[name]}
       </svg>
       <div className={t.big}>Finde etwas mit der Form: {name}!</div>

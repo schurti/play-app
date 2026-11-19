@@ -1,5 +1,11 @@
 import { GAMES, getGame } from '../games'
-import { EMPTY_FILTERS, activeFilterCount, itemsByFrequency, matchGame, type Filters } from './filter'
+import {
+  EMPTY_FILTERS,
+  activeFilterCount,
+  itemsByFrequency,
+  matchGame,
+  type Filters,
+} from './filter'
 
 const g = (id: string) => {
   const game = getGame(id)
@@ -12,7 +18,14 @@ describe('itemsByFrequency', () => {
   it('liefert alle 37 Gegenstände, häufigste zuerst', () => {
     const items = itemsByFrequency(GAMES)
     expect(items).toHaveLength(37)
-    expect(items.slice(0, 6)).toEqual(['Stifte', 'Papier', 'Klebeband', 'Socken', 'Becher', 'Karton'])
+    expect(items.slice(0, 6)).toEqual([
+      'Stifte',
+      'Papier',
+      'Klebeband',
+      'Socken',
+      'Becher',
+      'Karton',
+    ])
   })
 })
 
@@ -21,7 +34,14 @@ describe('activeFilterCount', () => {
     expect(activeFilterCount(EMPTY_FILTERS)).toBe(0)
     expect(activeFilterCount(f({ cat: 'ruhe', q: 'x' }))).toBe(0)
     expect(
-      activeFilterCount(f({ age: 4, dur: 10, sit: { leise: true, ohne: true }, have: { Papier: true } })),
+      activeFilterCount(
+        f({
+          age: 4,
+          dur: 10,
+          sit: { leise: true, ohne: true },
+          have: { Papier: true },
+        }),
+      ),
     ).toBe(5)
   })
 })
@@ -49,7 +69,9 @@ describe('matchGame', () => {
   it('Situation ohne Material', () => {
     expect(matchGame(g('farben'), f({ sit: { ohne: true } }))).toBe(true)
     expect(matchGame(g('kim'), f({ sit: { ohne: true } }))).toBe(false)
-    expect(GAMES.filter((x) => matchGame(x, f({ sit: { ohne: true } })))).toHaveLength(19)
+    expect(
+      GAMES.filter((x) => matchGame(x, f({ sit: { ohne: true } }))),
+    ).toHaveLength(19)
   })
   it('Vorhandenes: alle Gegenstände müssen gewählt sein', () => {
     const have = f({ have: { Papier: true, Stifte: true } })

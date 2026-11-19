@@ -1,5 +1,9 @@
 import { create } from 'zustand'
-import { createJSONStorage, persist, type StateStorage } from 'zustand/middleware'
+import {
+  createJSONStorage,
+  persist,
+  type StateStorage,
+} from 'zustand/middleware'
 import { GAMES } from '../games'
 import { stickerSet, type StickerKey } from '../lib/progress'
 import { loadLegacy } from './legacy'
@@ -56,7 +60,11 @@ export const useProgress = create<Progress & ProgressActions>()(
         const s = get()
         const before = stickerSet(GAMES, s.done)
         const done = { ...s.done, [id]: (s.done[id] ?? 0) + 1 }
-        set({ stars: s.stars + 1, done, hist: [{ id, t: now }, ...s.hist].slice(0, 30) })
+        set({
+          stars: s.stars + 1,
+          done,
+          hist: [{ id, t: now }, ...s.hist].slice(0, 30),
+        })
         return stickerSet(GAMES, done).filter((k) => !before.includes(k))
       },
       toggleFav(id) {

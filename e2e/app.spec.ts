@@ -13,7 +13,9 @@ test('Spiel öffnen und mit Zurück wieder schliessen', async ({ page }) => {
 
 test('Direktaufruf /sticker zeigt das Sticker-Album', async ({ page }) => {
   await page.goto('sticker')
-  await expect(page.getByRole('heading', { name: '🏆 Sticker-Album' })).toBeVisible()
+  await expect(
+    page.getByRole('heading', { name: '🏆 Sticker-Album' }),
+  ).toBeVisible()
 })
 
 test('Stern bleibt nach dem Neuladen erhalten', async ({ page }) => {
@@ -24,7 +26,9 @@ test('Stern bleibt nach dem Neuladen erhalten', async ({ page }) => {
   await expect(page.getByRole('banner')).toContainText('⭐ 1')
   await page.reload()
   await expect(page.getByRole('banner')).toContainText('⭐ 1')
-  const stored = await page.evaluate(() => localStorage.getItem('play-app:progress'))
+  const stored = await page.evaluate(() =>
+    localStorage.getItem('play-app:progress'),
+  )
   expect(stored).not.toBeNull()
 })
 
@@ -42,5 +46,7 @@ test('Manifest und Build-Artefakte', async ({ request }) => {
   expect(manifest.scope).toBe('/play-app/')
   expect(existsSync('dist/sw.js')).toBe(true)
   expect(existsSync('dist/404.html')).toBe(true)
-  expect(readFileSync('dist/404.html', 'utf8')).toBe(readFileSync('dist/index.html', 'utf8'))
+  expect(readFileSync('dist/404.html', 'utf8')).toBe(
+    readFileSync('dist/index.html', 'utf8'),
+  )
 })

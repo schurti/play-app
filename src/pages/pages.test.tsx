@@ -38,10 +38,16 @@ describe('Spiele-Seite', () => {
     renderAt('/')
     const input = screen.getByPlaceholderText('Suchen: Socken, Farben, leise …')
     await userEvent.type(input, 'socken')
-    const expected = GAMES.filter((g) => matchGame(g, { ...EMPTY_FILTERS, q: 'socken' }))
+    const expected = GAMES.filter((g) =>
+      matchGame(g, { ...EMPTY_FILTERS, q: 'socken' }),
+    )
     expect(expected.length).toBeGreaterThan(0)
     expect(expected.length).toBeLessThan(78)
-    expect(screen.getByText(`${expected.length} Spiel${expected.length === 1 ? '' : 'e'}`)).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        `${expected.length} Spiel${expected.length === 1 ? '' : 'e'}`,
+      ),
+    ).toBeInTheDocument()
     await userEvent.clear(input)
     await userEvent.type(input, 'xyzxyz')
     expect(screen.getByText('0 Spiele')).toBeInTheDocument()
@@ -53,9 +59,15 @@ describe('Spiele-Seite', () => {
     await userEvent.click(screen.getByRole('button', { name: '⚙️ Filter' }))
     await userEvent.click(screen.getByRole('button', { name: '3 J.' }))
     await userEvent.click(screen.getByRole('button', { name: 'bis 10 Min.' }))
-    expect(screen.getByRole('button', { name: '⚙️ Filter (2)' })).toBeInTheDocument()
-    await userEvent.click(screen.getByRole('button', { name: '✕ Alle Filter zurücksetzen' }))
-    expect(screen.getByRole('button', { name: '⚙️ Filter' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: '⚙️ Filter (2)' }),
+    ).toBeInTheDocument()
+    await userEvent.click(
+      screen.getByRole('button', { name: '✕ Alle Filter zurücksetzen' }),
+    )
+    expect(
+      screen.getByRole('button', { name: '⚙️ Filter' }),
+    ).toBeInTheDocument()
   })
 
   it('öffnet ein Spiel per Kartenklick als ?spiel=', async () => {
@@ -101,7 +113,12 @@ describe('Sticker-Seite', () => {
   })
 
   it('überspringt Verlaufseinträge mit unbekannter ID', () => {
-    useProgress.setState({ hist: [{ id: 'gibtsnicht', t: 1 }, { id: 'farben', t: 2 }] })
+    useProgress.setState({
+      hist: [
+        { id: 'gibtsnicht', t: 1 },
+        { id: 'farben', t: 2 },
+      ],
+    })
     renderAt('/sticker')
     expect(screen.getByText(/Farben-Jagd/)).toBeInTheDocument()
     expect(screen.queryByText(/gibtsnicht/)).not.toBeInTheDocument()
@@ -110,10 +127,14 @@ describe('Sticker-Seite', () => {
   it('löscht den Fortschritt erst beim zweiten Tippen', async () => {
     useProgress.getState().markDone('farben')
     renderAt('/sticker')
-    await userEvent.click(screen.getByRole('button', { name: 'Fortschritt zurücksetzen' }))
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Fortschritt zurücksetzen' }),
+    )
     expect(useProgress.getState().stars).toBe(1)
     await userEvent.click(
-      screen.getByRole('button', { name: 'Wirklich alles löschen? Nochmal tippen' }),
+      screen.getByRole('button', {
+        name: 'Wirklich alles löschen? Nochmal tippen',
+      }),
     )
     expect(useProgress.getState().stars).toBe(0)
     expect(screen.getByText('Fortschritt zurückgesetzt')).toBeInTheDocument()
@@ -133,7 +154,9 @@ describe('useGameNav', () => {
     )
   }
   const make = (entry: string) =>
-    createMemoryRouter([{ path: '*', element: <Probe /> }], { initialEntries: [entry] })
+    createMemoryRouter([{ path: '*', element: <Probe /> }], {
+      initialEntries: [entry],
+    })
 
   it('schliesst per Zurück, wenn in der App geöffnet', async () => {
     const router = make('/sticker')

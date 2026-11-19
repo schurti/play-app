@@ -62,10 +62,16 @@ describe('useProgress', () => {
 })
 
 describe('loadLegacy', () => {
-  const store = (data: Record<string, string>) => ({ getItem: (k: string) => data[k] ?? null })
+  const store = (data: Record<string, string>) => ({
+    getItem: (k: string) => data[k] ?? null,
+  })
 
   it('liest hs2 und normalisiert fav', () => {
-    const p = loadLegacy(store({ hs2: '{"stars":7,"done":{"farben":2},"fav":{"kim":1},"hist":[]}' }))
+    const p = loadLegacy(
+      store({
+        hs2: '{"stars":7,"done":{"farben":2},"fav":{"kim":1},"hist":[]}',
+      }),
+    )
     expect(p?.stars).toBe(7)
     expect(p?.done.farben).toBe(2)
     expect(p?.fav.kim).toBe(true)
@@ -84,7 +90,13 @@ describe('loadLegacy', () => {
   })
 
   it('gibt null zurück, wenn der Zugriff wirft', () => {
-    expect(loadLegacy({ getItem: () => { throw new Error('privat') } })).toBeNull()
+    expect(
+      loadLegacy({
+        getItem: () => {
+          throw new Error('privat')
+        },
+      }),
+    ).toBeNull()
   })
 })
 
@@ -94,7 +106,12 @@ describe('useFilters', () => {
     f.set({ age: 4, q: 'ball' })
     f.toggleSit('leise')
     f.toggleHave('Küchenpapier')
-    expect(useFilters.getState()).toMatchObject({ age: 4, q: 'ball', sit: { leise: true }, have: { Küchenpapier: true } })
+    expect(useFilters.getState()).toMatchObject({
+      age: 4,
+      q: 'ball',
+      sit: { leise: true },
+      have: { Küchenpapier: true },
+    })
     useFilters.getState().toggleSit('leise')
     expect(useFilters.getState().sit).toEqual({})
     useFilters.getState().resetFilters()

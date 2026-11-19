@@ -2,13 +2,19 @@ import { useCallback } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 
 /** Ein offenes Spiel ist der Such-Parameter `?spiel=<id>` auf jeder Route. */
-export function useGameNav(): { openGame(id: string): void; closeGame(): void } {
+export function useGameNav(): {
+  openGame(id: string): void
+  closeGame(): void
+} {
   const navigate = useNavigate()
   const location = useLocation()
-  const fromApp = Boolean((location.state as { fromApp?: boolean } | null)?.fromApp)
+  const fromApp = Boolean(
+    (location.state as { fromApp?: boolean } | null)?.fromApp,
+  )
 
   const openGame = useCallback(
-    (id: string) => navigate({ search: '?spiel=' + id }, { state: { fromApp: true } }),
+    (id: string) =>
+      navigate({ search: '?spiel=' + id }, { state: { fromApp: true } }),
     [navigate],
   )
 

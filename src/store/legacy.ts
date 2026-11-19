@@ -4,7 +4,9 @@ export function loadLegacy(storage: Pick<Storage, 'getItem'>): Progress | null {
   try {
     const raw = storage.getItem('hs2')
     if (raw) {
-      const p = JSON.parse(raw) as Partial<Record<keyof Progress, unknown>> | null
+      const p = JSON.parse(raw) as Partial<
+        Record<keyof Progress, unknown>
+      > | null
       if (!p || typeof p !== 'object') return null
       const fav: Record<string, true> = {}
       if (p.fav && typeof p.fav === 'object') {
@@ -12,7 +14,10 @@ export function loadLegacy(storage: Pick<Storage, 'getItem'>): Progress | null {
       }
       return {
         stars: typeof p.stars === 'number' ? p.stars : 0,
-        done: p.done && typeof p.done === 'object' ? (p.done as Record<string, number>) : {},
+        done:
+          p.done && typeof p.done === 'object'
+            ? (p.done as Record<string, number>)
+            : {},
         fav,
         hist: Array.isArray(p.hist) ? (p.hist as Progress['hist']) : [],
       }

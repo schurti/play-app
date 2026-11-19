@@ -11,10 +11,22 @@ export interface Filters {
   q: string
 }
 
-export const EMPTY_FILTERS: Filters = { cat: 'alle', age: 0, dur: 0, sit: {}, have: {}, q: '' }
+export const EMPTY_FILTERS: Filters = {
+  cat: 'alle',
+  age: 0,
+  dur: 0,
+  sit: {},
+  have: {},
+  q: '',
+}
 
 export function activeFilterCount(f: Filters): number {
-  return (f.age ? 1 : 0) + (f.dur ? 1 : 0) + Object.keys(f.sit).length + Object.keys(f.have).length
+  return (
+    (f.age ? 1 : 0) +
+    (f.dur ? 1 : 0) +
+    Object.keys(f.sit).length +
+    Object.keys(f.have).length
+  )
 }
 
 function searchText(g: Game): string {
@@ -41,7 +53,8 @@ export function matchGame(g: Game, f: Filters): boolean {
       if (g.items.length) return false
     } else if (!g.tags.includes(k)) return false
   }
-  if (Object.keys(f.have).length && !g.items.every((i) => f.have[i])) return false
+  if (Object.keys(f.have).length && !g.items.every((i) => f.have[i]))
+    return false
   if (f.q && !searchText(g).includes(f.q.toLowerCase())) return false
   return true
 }
@@ -50,5 +63,7 @@ export function matchGame(g: Game, f: Filters): boolean {
 export function itemsByFrequency(games: readonly Game[]): Item[] {
   const n = new Map<Item, number>()
   for (const g of games) for (const i of g.items) n.set(i, (n.get(i) ?? 0) + 1)
-  return [...n.keys()].sort((a, b) => n.get(b)! - n.get(a)! || a.localeCompare(b))
+  return [...n.keys()].sort(
+    (a, b) => n.get(b)! - n.get(a)! || a.localeCompare(b),
+  )
 }

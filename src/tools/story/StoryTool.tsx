@@ -4,7 +4,11 @@ import NewButton from '../NewButton'
 import t from '../tool.module.css'
 import { STORY } from './story'
 
-const draw = () => ({ wer: pick(STORY.wer), wo: pick(STORY.wo), was: pick(STORY.was) })
+const draw = () => ({
+  wer: pick(STORY.wer),
+  wo: pick(STORY.wo),
+  was: pick(STORY.was),
+})
 
 export default function StoryTool() {
   const [s, setStory] = useState(draw)

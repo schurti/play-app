@@ -15,7 +15,10 @@ vi.mock('../lib/audio', async (orig) => ({
 
 function renderAt(path: string, state?: unknown) {
   const router = createMemoryRouter(routes, {
-    initialEntries: state === undefined ? [path] : [{ pathname: '/' }, { pathname: '/', search: path.slice(1), state }],
+    initialEntries:
+      state === undefined
+        ? [path]
+        : [{ pathname: '/' }, { pathname: '/', search: path.slice(1), state }],
     initialIndex: state === undefined ? 0 : 1,
   })
   render(<RouterProvider router={router} />)
@@ -49,7 +52,9 @@ describe('GameSheet', () => {
     renderAt('/?spiel=farben')
     const dialog = screen.getByRole('dialog', { name: /Farben-Jagd/ })
     expect(dialog).toHaveAttribute('aria-modal', 'true')
-    expect(screen.getByRole('heading', { name: 'Farben-Jagd' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: 'Farben-Jagd' }),
+    ).toBeInTheDocument()
     expect(document.body).toHaveClass('lock')
   })
 
@@ -74,7 +79,9 @@ describe('GameSheet', () => {
 
   it('schliesst per Tipp auf den Hintergrund', async () => {
     renderAt('/?spiel=farben')
-    await userEvent.click(screen.getByRole('dialog').parentElement as HTMLElement)
+    await userEvent.click(
+      screen.getByRole('dialog').parentElement as HTMLElement,
+    )
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 
@@ -82,7 +89,9 @@ describe('GameSheet', () => {
     renderAt('/?spiel=farben')
     await userEvent.click(screen.getByRole('button', { name: 'Favorit' }))
     expect(screen.getByText('❤️ Zu Favoriten hinzugefügt')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Favorit' })).toHaveTextContent('❤️')
+    expect(screen.getByRole('button', { name: 'Favorit' })).toHaveTextContent(
+      '❤️',
+    )
   })
 
   it('„Geschafft!“ vergibt einen Stern, zeigt den Toast und schliesst', async () => {
@@ -112,7 +121,9 @@ describe('GameSheet', () => {
     await act(async () => {
       await vi.advanceTimersByTimeAsync(1500)
     })
-    expect(back.mock.calls.filter(([to]) => (to as unknown) === -1)).toHaveLength(1)
+    expect(
+      back.mock.calls.filter(([to]) => (to as unknown) === -1),
+    ).toHaveLength(1)
     expect(router.state.location.pathname).toBe('/')
     expect(router.state.location.search).toBe('')
     expect(router.state.historyAction).toBe('POP')
@@ -123,7 +134,9 @@ describe('GameSheet', () => {
     const nav = vi.spyOn(router, 'navigate')
     await userEvent.keyboard('{Escape}')
     await userEvent.keyboard('{Escape}')
-    expect(nav.mock.calls.filter(([to]) => (to as unknown) === -1)).toHaveLength(1)
+    expect(
+      nav.mock.calls.filter(([to]) => (to as unknown) === -1),
+    ).toHaveLength(1)
   })
 
   it('zählt den Countdown herunter bis „Zeit um!“ und piept', async () => {
@@ -178,11 +191,18 @@ describe('GameSheet', () => {
     await act(async () => {
       await vi.advanceTimersByTimeAsync(300)
     })
-    expect(screen.getByText('✨ Goldener Sticker: 🌙 Ruhe!')).toBeInTheDocument()
+    expect(
+      screen.getByText('✨ Goldener Sticker: 🌙 Ruhe!'),
+    ).toBeInTheDocument()
   })
 
   it('zeigt das Abzeichen beim fünften verschiedenen Spiel', async () => {
-    const [a, b, c, d, e] = ['ruhe', 'malen'].flatMap((cat) => GAMES.filter((g) => g.category === cat).map((g) => g.id)).slice(0, 5).concat()
+    const [a, b, c, d, e] = ['ruhe', 'malen']
+      .flatMap((cat) =>
+        GAMES.filter((g) => g.category === cat).map((g) => g.id),
+      )
+      .slice(0, 5)
+      .concat()
     useProgress.setState({ done: { [a]: 1, [b]: 1, [c]: 1, [d]: 1 }, stars: 4 })
     renderAt('/?spiel=' + e)
     vi.useFakeTimers({ shouldAdvanceTime: true })
@@ -191,6 +211,8 @@ describe('GameSheet', () => {
     await act(async () => {
       await vi.advanceTimersByTimeAsync(300)
     })
-    expect(screen.getByText('🎖️ Neues Abzeichen: 🥉 Entdecker!')).toBeInTheDocument()
+    expect(
+      screen.getByText('🎖️ Neues Abzeichen: 🥉 Entdecker!'),
+    ).toBeInTheDocument()
   })
 })

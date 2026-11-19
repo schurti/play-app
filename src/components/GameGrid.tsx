@@ -3,7 +3,13 @@ import type { Game } from '../games/types'
 import GameCard from './GameCard'
 import styles from './GameGrid.module.css'
 
-export default function GameGrid({ games, empty }: { games: readonly Game[]; empty: ReactNode }) {
+export default function GameGrid({
+  games,
+  empty,
+}: {
+  games: readonly Game[]
+  empty: ReactNode
+}) {
   return (
     <div className={styles.grid}>
       {games.length ? (

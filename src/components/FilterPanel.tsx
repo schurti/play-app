@@ -5,8 +5,19 @@ import { itemsByFrequency } from '../lib/filter'
 import { useFilters } from '../store/filters'
 import styles from './FilterPanel.module.css'
 
-const AGES = [[0, 'Alle'], [3, '3 J.'], [4, '4 J.'], [5, '5 J.'], [6, '6+ J.']] as const
-const DURS = [[0, 'Alle'], [10, 'bis 10 Min.'], [20, 'bis 20 Min.'], [99, 'länger']] as const
+const AGES = [
+  [0, 'Alle'],
+  [3, '3 J.'],
+  [4, '4 J.'],
+  [5, '5 J.'],
+  [6, '6+ J.'],
+] as const
+const DURS = [
+  [0, 'Alle'],
+  [10, 'bis 10 Min.'],
+  [20, 'bis 20 Min.'],
+  [99, 'länger'],
+] as const
 const SIT: readonly (readonly [Tag | 'ohne', string])[] = [
   ['allein', '🧍 Allein spielbar'],
   ['gruppe', '👫 Für Gruppen & Partys'],
@@ -15,9 +26,20 @@ const SIT: readonly (readonly [Tag | 'ohne', string])[] = [
 ]
 const ITEMS = itemsByFrequency(GAMES)
 
-function Chip({ on, onClick, children }: { on: boolean; onClick(): void; children: ReactNode }) {
+function Chip({
+  on,
+  onClick,
+  children,
+}: {
+  on: boolean
+  onClick(): void
+  children: ReactNode
+}) {
   return (
-    <button className={on ? `${styles.chip} ${styles.on}` : styles.chip} onClick={onClick}>
+    <button
+      className={on ? `${styles.chip} ${styles.on}` : styles.chip}
+      onClick={onClick}
+    >
       {children}
     </button>
   )
@@ -62,7 +84,10 @@ export default function FilterPanel() {
           </Chip>
         ))}
       </div>
-      <button className="reset" onClick={() => set({ age: 0, dur: 0, sit: {}, have: {} })}>
+      <button
+        className="reset"
+        onClick={() => set({ age: 0, dur: 0, sit: {}, have: {} })}
+      >
         ✕ Alle Filter zurücksetzen
       </button>
     </div>

@@ -7,7 +7,8 @@ export function audioContext(): AudioContext | null {
     try {
       const Ctor =
         window.AudioContext ??
-        (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
+        (window as unknown as { webkitAudioContext?: typeof AudioContext })
+          .webkitAudioContext
       ac = Ctor ? new Ctor() : null
     } catch {
       ac = null
@@ -23,7 +24,13 @@ export function audioContext(): AudioContext | null {
   return ac
 }
 
-export function tone(freq: number, dur: number, type?: OscillatorType, vol?: number, when?: number): void {
+export function tone(
+  freq: number,
+  dur: number,
+  type?: OscillatorType,
+  vol?: number,
+  when?: number,
+): void {
   const a = audioContext()
   if (!a) return
   const t = (when || 0) + a.currentTime
@@ -45,7 +52,8 @@ export function noise(dur: number, vol?: number): void {
   const len = Math.floor(a.sampleRate * dur)
   const buf = a.createBuffer(1, len, a.sampleRate)
   const ch = buf.getChannelData(0)
-  for (let i = 0; i < len; i++) ch[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3)
+  for (let i = 0; i < len; i++)
+    ch[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3)
   const s = a.createBufferSource()
   s.buffer = buf
   const g = a.createGain()
@@ -76,5 +84,7 @@ export function stopSpeech(): void {
 }
 
 export function fanfare(): void {
-  ;[523, 659, 784, 1047].forEach((f, i) => tone(f, 0.25, 'triangle', 0.15, i * 0.12))
+  ;[523, 659, 784, 1047].forEach((f, i) =>
+    tone(f, 0.25, 'triangle', 0.15, i * 0.12),
+  )
 }

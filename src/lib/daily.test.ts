@@ -6,6 +6,8 @@ describe('gameOfTheDay', () => {
     expect(gameOfTheDay(GAMES, new Date(2026, 10, 19)).id).toBe('kommando')
   })
   it('ist an einem Tag stabil, unabhängig von der Uhrzeit', () => {
-    expect(gameOfTheDay(GAMES, new Date(2026, 10, 19, 23, 59)).id).toBe('kommando')
+    expect(gameOfTheDay(GAMES, new Date(2026, 10, 19, 23, 59)).id).toBe(
+      'kommando',
+    )
   })
 })

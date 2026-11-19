@@ -10,7 +10,10 @@ interface FilterActions {
   resetFilters(): void
 }
 
-function toggled<K extends string>(rec: Partial<Record<K, true>>, k: K): Partial<Record<K, true>> {
+function toggled<K extends string>(
+  rec: Partial<Record<K, true>>,
+  k: K,
+): Partial<Record<K, true>> {
   const next = { ...rec }
   if (next[k]) delete next[k]
   else next[k] = true

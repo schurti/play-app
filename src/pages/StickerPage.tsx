@@ -49,7 +49,9 @@ export default function StickerPage() {
           <span>Sterne</span>
         </div>
         <div className={styles.stat}>
-          <b>{distinct}/{GAMES.length}</b>
+          <b>
+            {distinct}/{GAMES.length}
+          </b>
           <span>Spiele entdeckt</span>
         </div>
         <div className={styles.stat}>
@@ -58,8 +60,8 @@ export default function StickerPage() {
         </div>
       </div>
       <div className={`meta ${styles.intro}`}>
-        Spielt 3 verschiedene Spiele einer Kategorie für einen Sticker. Alle Spiele einer Kategorie
-        geschafft? Dann wird er golden!
+        Spielt 3 verschiedene Spiele einer Kategorie für einen Sticker. Alle
+        Spiele einer Kategorie geschafft? Dann wird er golden!
       </div>
       <ul className={styles.stickers} aria-label="Kategorie-Sticker">
         {CATEGORY_IDS.map((k) => {
@@ -76,10 +78,17 @@ export default function StickerPage() {
               <div className={styles.e}>{c.emoji}</div>
               <b>{c.name}</b>
               <span className="meta">
-                {gold ? 'Gold! ✨' : got ? 'Sticker erhalten' : `${Math.min(p.done, 3)} / 3`} · {p.done}/{p.all}
+                {gold
+                  ? 'Gold! ✨'
+                  : got
+                    ? 'Sticker erhalten'
+                    : `${Math.min(p.done, 3)} / 3`}{' '}
+                · {p.done}/{p.all}
               </span>
               <div className={styles.bar}>
-                <i style={{ width: `${Math.round((p.done / p.all) * 100)}%` }} />
+                <i
+                  style={{ width: `${Math.round((p.done / p.all) * 100)}%` }}
+                />
               </div>
             </li>
           )
@@ -108,7 +117,11 @@ export default function StickerPage() {
               <div key={i}>
                 {g.emoji} {g.title}{' '}
                 <span className={styles.date}>
-                  · {new Date(t).toLocaleDateString('de-CH', { day: 'numeric', month: 'short' })}
+                  ·{' '}
+                  {new Date(t).toLocaleDateString('de-CH', {
+                    day: 'numeric',
+                    month: 'short',
+                  })}
                 </span>
               </div>
             ))

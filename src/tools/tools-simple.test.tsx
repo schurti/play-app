@@ -9,7 +9,12 @@ import type { ToolId } from './ids'
 import { TOOLS } from './registry'
 import type { ToolProps } from './ToolProps'
 
-vi.mock('../lib/audio', () => ({ tone: vi.fn(), noise: vi.fn(), speak: vi.fn(), stopSpeech: vi.fn() }))
+vi.mock('../lib/audio', () => ({
+  tone: vi.fn(),
+  noise: vi.fn(),
+  speak: vi.fn(),
+  stopSpeech: vi.fn(),
+}))
 
 async function renderTool(id: ToolId, random = 0) {
   vi.spyOn(Math, 'random').mockReturnValue(random)
@@ -27,7 +32,9 @@ describe('einfache Werkzeuge', () => {
   it('color zeigt eine Farbaufgabe und eine Neu-Schaltfläche', async () => {
     await renderTool('color')
     expect(await screen.findByText('Finde etwas in Rot!')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: '🔄 Neue Aufgabe' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: '🔄 Neue Aufgabe' }),
+    ).toBeInTheDocument()
   })
 
   it('number zeigt Anzahl und Eigenschaft', async () => {
@@ -42,30 +49,40 @@ describe('einfache Werkzeuge', () => {
 
   it('shape nennt die Form und füllt mit der Kategorie-Farbe', async () => {
     await renderTool('shape')
-    expect(await screen.findByText('Finde etwas mit der Form: Kreis!')).toBeInTheDocument()
+    expect(
+      await screen.findByText('Finde etwas mit der Form: Kreis!'),
+    ).toBeInTheDocument()
     expect(document.querySelector('svg')).toHaveStyle({ fill: '#123456' })
   })
 
   it('animal benutzt den passenden Artikel', async () => {
     await renderTool('animal')
-    expect(await screen.findByText('Bewegt euch wie ein Frosch!')).toBeInTheDocument()
+    expect(
+      await screen.findByText('Bewegt euch wie ein Frosch!'),
+    ).toBeInTheDocument()
   })
 
   it('animal: Krabbe bekommt „eine“', async () => {
     const i = ANIMALS.findIndex((a) => a.name === 'Krabbe')
     await renderTool('animal', (i + 0.5) / ANIMALS.length)
-    expect(await screen.findByText('Bewegt euch wie eine Krabbe!')).toBeInTheDocument()
+    expect(
+      await screen.findByText('Bewegt euch wie eine Krabbe!'),
+    ).toBeInTheDocument()
   })
 
   it('yoga und story haben ihre eigenen Beschriftungen', async () => {
     await renderTool('yoga')
-    expect(await screen.findByRole('button', { name: '🔄 Neue Figur' })).toBeInTheDocument()
+    expect(
+      await screen.findByRole('button', { name: '🔄 Neue Figur' }),
+    ).toBeInTheDocument()
     expect(screen.getByText('5 Atemzüge halten')).toBeInTheDocument()
   })
 
   it('story zeigt Wer, Wo, Was', async () => {
     await renderTool('story')
-    expect(await screen.findByRole('button', { name: '🔄 Neu würfeln' })).toBeInTheDocument()
+    expect(
+      await screen.findByRole('button', { name: '🔄 Neu würfeln' }),
+    ).toBeInTheDocument()
     expect(screen.getByText(/🦔 ein mutiger Igel/)).toBeInTheDocument()
   })
 
@@ -73,13 +90,17 @@ describe('einfache Werkzeuge', () => {
     await renderTool('color')
     await screen.findByText('Finde etwas in Rot!')
     vi.spyOn(Math, 'random').mockReturnValue(0.99)
-    await userEvent.click(screen.getByRole('button', { name: '🔄 Neue Aufgabe' }))
+    await userEvent.click(
+      screen.getByRole('button', { name: '🔄 Neue Aufgabe' }),
+    )
     expect(screen.getByText('Finde etwas in Grau!')).toBeInTheDocument()
   })
 
   it('panto verbirgt das Wort bis zum Tipp', async () => {
     await renderTool('panto')
-    const reveal = await screen.findByRole('button', { name: '🤫 Nur wer dran ist: hier tippen' })
+    const reveal = await screen.findByRole('button', {
+      name: '🤫 Nur wer dran ist: hier tippen',
+    })
     expect(screen.queryByText(PANTO[0].word)).not.toBeInTheDocument()
     await userEvent.click(reveal)
     expect(screen.getByText('Elefant')).toBeInTheDocument()
@@ -89,7 +110,9 @@ describe('einfache Werkzeuge', () => {
 
   it('dice: 2 Würfel zeigt Summe im Format a + b = s', async () => {
     await renderTool('dice')
-    await userEvent.click(await screen.findByRole('button', { name: '2 Würfel' }))
+    await userEvent.click(
+      await screen.findByRole('button', { name: '2 Würfel' }),
+    )
     expect(screen.getByTestId('sum')).toHaveTextContent(/^\d \+ \d = \d+$/)
     expect(screen.getAllByTestId('die')).toHaveLength(2)
     expect(screen.getByRole('button', { name: '1 Würfel' })).toBeInTheDocument()
@@ -117,6 +140,8 @@ describe('einfache Werkzeuge', () => {
       expect(within(li).getByText('Lösung für Erwachsene')).toBeInTheDocument()
     }
     expect(TREASURE).toHaveLength(17)
-    expect(screen.getByRole('button', { name: '🔄 Neue Hinweise' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: '🔄 Neue Hinweise' }),
+    ).toBeInTheDocument()
   })
 })

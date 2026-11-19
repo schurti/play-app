@@ -19,7 +19,8 @@ export default function BottomNav() {
   const fav = useProgress((s) => s.fav)
 
   function random() {
-    const pool = pathname === '/favoriten' ? GAMES.filter((g) => fav[g.id]) : visible
+    const pool =
+      pathname === '/favoriten' ? GAMES.filter((g) => fav[g.id]) : visible
     openGame(pick(pool.length ? pool : GAMES).id)
   }
 
@@ -28,7 +29,9 @@ export default function BottomNav() {
       key={t.to}
       to={t.to}
       end
-      className={({ isActive }) => (isActive ? `${styles.btn} ${styles.on}` : styles.btn)}
+      className={({ isActive }) =>
+        isActive ? `${styles.btn} ${styles.on}` : styles.btn
+      }
     >
       <span>{t.emoji}</span>
       {t.label}

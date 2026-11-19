@@ -12,7 +12,10 @@ export function useActiveFilters(): Filters {
   const sit = useFilters((s) => s.sit)
   const have = useFilters((s) => s.have)
   const q = useFilters((s) => s.q)
-  return useMemo(() => ({ cat, age, dur, sit, have, q: q.trim() }), [cat, age, dur, sit, have, q])
+  return useMemo(
+    () => ({ cat, age, dur, sit, have, q: q.trim() }),
+    [cat, age, dur, sit, have, q],
+  )
 }
 
 export function useVisibleGames(): Game[] {
