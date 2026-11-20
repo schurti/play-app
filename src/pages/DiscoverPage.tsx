@@ -4,6 +4,7 @@ import CategoryTile from '../components/CategoryTile'
 import TodayCard from '../components/TodayCard'
 import { GAMES } from '../games'
 import { WORLDS, type CategoryId } from '../games/categories'
+import { primeKeyboard } from '../lib/primeKeyboard'
 import styles from './pages.module.css'
 
 const COUNT = new Map<CategoryId, number>()
@@ -13,7 +14,12 @@ export default function DiscoverPage() {
   return (
     <>
       <div className={styles.bar}>
-        <Link to="/suche" state={{ focus: true }} className={styles.fakeSearch}>
+        <Link
+          to="/suche"
+          state={{ focus: true }}
+          onClick={primeKeyboard}
+          className={styles.fakeSearch}
+        >
           <Art emoji="🔍" size={20} />
           Spiel suchen …
         </Link>

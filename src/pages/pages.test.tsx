@@ -1,4 +1,11 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createMemoryRouter, RouterProvider, useLocation } from 'react-router'
 import { GAMES, getGame } from '../games'
@@ -59,6 +66,26 @@ describe('Entdecken', () => {
     expect(
       screen.getByRole('searchbox', { name: 'Spiele suchen' }),
     ).toHaveFocus()
+  })
+
+  it('fokussiert schon beim Tippen ein Feld, damit iOS die Tastatur öffnet', async () => {
+    renderAt('/')
+    // Echter Klick ohne act(), sonst rendert die Suchseite sofort mit
+    screen
+      .getByRole('link', { name: /Spiel suchen/ })
+      .dispatchEvent(
+        new MouseEvent('click', { bubbles: true, cancelable: true }),
+      )
+    // noch im Klick, bevor die Suchseite gerendert ist
+    expect(screen.queryByRole('searchbox')).toBeNull()
+    expect(document.activeElement?.tagName).toBe('INPUT')
+    expect(
+      await screen.findByRole('searchbox', { name: 'Spiele suchen' }),
+    ).toHaveFocus()
+    await waitFor(
+      () => expect(document.querySelectorAll('input')).toHaveLength(1),
+      { timeout: 1500 },
+    )
   })
 })
 
