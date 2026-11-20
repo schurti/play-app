@@ -5,7 +5,15 @@
  * 180 = nach oben, -90 = nach links. Jedes Glied hat [oben, unten], also
  * Oberarm/Unterarm bzw. Oberschenkel/Unterschenkel.
  */
-export type Limb = readonly [number, number]
+/**
+ * [oben, unten] in Grad, optional mit Längenfaktoren für das untere und das
+ * obere Glied (verkürzt dargestellt, z.B. kniend oder auf den Fersen sitzend
+ * von vorne).
+ */
+export type Limb =
+  | readonly [number, number]
+  | readonly [number, number, number]
+  | readonly [number, number, number, number]
 
 export interface Figure {
   /** 'front' = von vorne (Arme/Beine links und rechts), 'side' = von der Seite */
@@ -20,6 +28,8 @@ export interface Figure {
   look?: number | 'front'
   /** Mund weit offen (Löwe, Kuh) */
   open?: boolean
+  /** Zunge herausstrecken (Löwe) */
+  tongue?: boolean
   /** Längerer Hals (Giraffe) */
   neck?: number
   /** Vorderes bzw. rechtes Glied */
@@ -66,9 +76,10 @@ export interface Layout {
   look: number | 'front'
 }
 
-const chain = (root: Pt, [a, b]: Limb, l1: number, l2: number): Chain => {
-  const mid = add(root, dir(a, l1))
-  return { root, mid, end: add(mid, dir(b, l2)) }
+const chain = (root: Pt, limb: Limb, l1: number, l2: number): Chain => {
+  const [a, b, k = 1, ku = 1] = limb
+  const mid = add(root, dir(a, l1 * ku))
+  return { root, mid, end: add(mid, dir(b, l2 * k)) }
 }
 
 /** Berechnet alle Gelenkpunkte relativ zur Hüfte (0,0). */
@@ -89,8 +100,8 @@ export function layoutFigure(f: Figure): Layout {
     neck,
     ctrl,
     head,
-    armF: chain(side(shoulder, 12), f.armF, LEN.upperArm, LEN.foreArm),
-    armB: chain(side(shoulder, -12), f.armB, LEN.upperArm, LEN.foreArm),
+    armF: chain(side(shoulder, 10.5), f.armF, LEN.upperArm, LEN.foreArm),
+    armB: chain(side(shoulder, -10.5), f.armB, LEN.upperArm, LEN.foreArm),
     legF: chain(side(hip, 7), f.legF, LEN.thigh, LEN.shin),
     legB: chain(side(hip, -7), f.legB, LEN.thigh, LEN.shin),
     look: f.look ?? (front ? 'front' : 90),
