@@ -20,7 +20,7 @@ export interface Figure {
   view: 'front' | 'side'
   /** Richtung Hüfte → Hals */
   torso: number
-  /** Biegung des Rückens in px (positiv = Buckel nach oben/aussen) */
+  /** Biegung des Rückens (positiv = runder Buckel, negativ = Hohlkreuz) */
   curve?: number
   /** Richtung Hals → Kopfmitte (Standard: wie der Oberkörper) */
   head?: number
@@ -87,9 +87,8 @@ export function layoutFigure(f: Figure): Layout {
   const hip: Pt = [0, 0]
   const neck = dir(f.torso, LEN.torso)
   const mid: Pt = [neck[0] / 2, neck[1] / 2]
-  // Senkrechte zum Oberkörper, nach "oben" bzw. aussen gedreht
-  const perp = dir(f.torso + 90, f.curve ?? 0)
-  const ctrl = add(mid, [-perp[0], -perp[1]])
+  // Senkrechte zum Oberkörper Richtung Rücken (die Figur schaut nach rechts)
+  const ctrl = add(mid, dir(f.torso + 90, f.curve ?? 0))
   // Schultern etwas unterhalb des Halses
   const shoulder = add(hip, dir(f.torso, LEN.torso - 4))
   const front = f.view === 'front'

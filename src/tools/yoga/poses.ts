@@ -145,4 +145,39 @@ export const YOGA: readonly Pose[] = [
     name: 'Adler',
     how: 'Arme weit ausbreiten, auf ein Bein stellen und den Oberkörper nach vorne neigen, als ob ihr durch die Luft gleitet.',
   },
+  {
+    emoji: '🐰',
+    name: 'Hase',
+    how: 'Auf die Fersen setzen, den Rücken ganz rund machen und den Scheitel vor den Knien auf den Boden legen. Die Hände greifen nach hinten zu den Füssen.',
+  },
+  {
+    emoji: '🦀',
+    name: 'Krabbe',
+    how: 'Hinsetzen, Hände hinter den Po und Füsse aufstellen. Dann den Po hochheben, bis der Bauch wie ein Tisch ist – und seitwärts krabbeln.',
+  },
+  {
+    emoji: '🐘',
+    name: 'Elefant',
+    how: 'Beine gerade, Oberkörper nach vorne beugen und die Hände zusammen hängen lassen. Den Rüssel langsam hin und her schwingen – „Törööö“.',
+  },
+  {
+    emoji: '🦸',
+    name: 'Held',
+    how: 'Einen grossen Schritt nach vorne, das vordere Knie beugen, das hintere Bein bleibt lang. Arme hoch – stark wie ein Superheld!',
+  },
+  {
+    emoji: '🐧',
+    name: 'Pinguin',
+    how: 'Fersen zusammen, Zehen auseinander. Arme steif neben den Körper, Hände abspreizen und wie ein Pinguin watscheln.',
+  },
+  {
+    emoji: '🔺',
+    name: 'Dreieck',
+    how: 'Beine weit auseinander. Zur Seite neigen, eine Hand ans Bein, die andere zeigt zur Decke – der Körper wird zum Dreieck.',
+  },
+  {
+    emoji: '🐻',
+    name: 'Bär',
+    how: 'Hände und Füsse auf den Boden, Beine fast gestreckt, Kopf nach vorne. Langsam wie ein Bär durchs Zimmer tapsen – brumm!',
+  },
 ]

@@ -27,6 +27,13 @@ describe('layoutFigure', () => {
     expect(l.look).toBe(90)
   })
 
+  it('wölbt einen positiv gebogenen Rücken nach oben (Katze)', () => {
+    const katze = layoutFigure({ ...stand, view: 'side', torso: 90, curve: 10 })
+    expect(katze.ctrl[1]).toBeLessThan(katze.neck[1])
+    const kuh = layoutFigure({ ...stand, view: 'side', torso: 90, curve: -10 })
+    expect(kuh.ctrl[1]).toBeGreaterThan(kuh.neck[1])
+  })
+
   it('berechnet den Rahmen inklusive Kopf', () => {
     const b = boundsOf(layoutFigure(stand))
     expect(b.maxY).toBeCloseTo(LEN.thigh + LEN.shin)
