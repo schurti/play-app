@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Art from '../../components/Art'
 import { tone } from '../../lib/audio'
 import { shuffle } from '../../lib/random'
+import LevelPicker from '../LevelPicker'
 import t from '../tool.module.css'
 import { EXPLAIN, type ExplainCard, type ExplainLevel } from './cards'
 
@@ -38,38 +39,30 @@ export default function ExplainTool() {
 
   return (
     <>
-      <div className={t.btns}>
-        {LEVELS.map(([level, label]) => (
-          <button
-            key={level}
-            className={`${t.btn} ${t.sm} ${deck.level === level ? '' : t.alt}`}
-            aria-pressed={deck.level === level}
-            onClick={() => {
-              if (deck.level === level) return
-              setDeck(newDeck(level))
-              setShown(false)
-            }}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-      <div className="meta">
-        {deck.level === 'bild'
-          ? 'Für alle, auch ohne Lesen'
-          : 'Für Kinder, die lesen können, und Erwachsene'}
-      </div>
+      <LevelPicker
+        labels={LEVELS.map(([, label]) => label)}
+        active={LEVELS.findIndex(([level]) => level === deck.level)}
+        note={
+          deck.level === 'bild'
+            ? 'Für alle, auch ohne Lesen'
+            : 'Für Kinder, die lesen können, und Erwachsene'
+        }
+        onPick={(i) => {
+          setDeck(newDeck(LEVELS[i][0]))
+          setShown(false)
+        }}
+      />
       {shown ? (
-        <>
-          <div className="meta">{card.kind}</div>
+        <div className={t.card}>
+          <div className={t.kind}>{card.kind}</div>
           {card.emoji && (
             <div className={t.huge}>
               <Art emoji={card.emoji} size={96} />
             </div>
           )}
           <div className={t.big}>{card.word}</div>
-          <div className="meta">Erkläre es, ohne das Wort zu sagen!</div>
-        </>
+          <div className={t.task}>Erkläre es, ohne das Wort zu sagen!</div>
+        </div>
       ) : (
         <button className={t.secret} onClick={() => setShown(true)}>
           🤫 Nur wer erklärt: hier tippen

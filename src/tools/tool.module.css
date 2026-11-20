@@ -241,3 +241,48 @@
   margin: 0 0 6px;
   color: var(--c, var(--ink));
 }
+.levels {
+  margin: 0 0 18px;
+  padding-bottom: 16px;
+  border-bottom: 2px dashed var(--tint-edge, var(--line));
+}
+.levelBtns {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.levelNote {
+  margin-top: 10px;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+/* Aufgedeckte Karte: Art, Bild, Begriff, Zusatz und Auftrag mit ruhigen Abständen */
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.card .big {
+  margin: 0;
+}
+.card .hint {
+  margin: 0;
+}
+.kind {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.task {
+  font-size: 13.5px;
+  color: var(--muted);
+  max-width: 30ch;
+}
+.card ~ .btns,
+.secret ~ .btns {
+  margin-top: 18px;
+}

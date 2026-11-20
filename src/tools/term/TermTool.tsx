@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Art from '../../components/Art'
 import { tone } from '../../lib/audio'
 import { shuffle } from '../../lib/random'
+import LevelPicker from '../LevelPicker'
 import NewButton from '../NewButton'
 import t from '../tool.module.css'
 import type { ToolProps } from '../ToolProps'
@@ -53,28 +54,18 @@ function TermCards({ deck }: { deck: TermDeck }) {
   return (
     <>
       {deck.levels.length > 1 && (
-        <div className={t.btns}>
-          {deck.levels.map((l, i) => (
-            <button
-              key={l.label}
-              className={`${t.btn} ${t.sm} ${pile.level === i ? '' : t.alt}`}
-              aria-pressed={pile.level === i}
-              onClick={() => {
-                if (pile.level === i) return
-                setPile(newPile(deck, i))
-                reset()
-              }}
-            >
-              {l.label}
-            </button>
-          ))}
-        </div>
-      )}
-      {deck.levels.length > 1 && level.note && (
-        <div className="meta">{level.note}</div>
+        <LevelPicker
+          labels={deck.levels.map((l) => l.label)}
+          active={pile.level}
+          note={level.note}
+          onPick={(i) => {
+            setPile(newPile(deck, i))
+            reset()
+          }}
+        />
       )}
       {shown ? (
-        <>
+        <div className={t.card}>
           {card.emoji && (
             <div className={t.huge}>
               <Art emoji={card.emoji} size={96} />
@@ -84,8 +75,8 @@ function TermCards({ deck }: { deck: TermDeck }) {
           {card.hint && (deck.hint === 'show' || hint) && (
             <div className={t.hint}>{card.hint}</div>
           )}
-          <div className="meta">{deck.task}</div>
-        </>
+          <div className={t.task}>{deck.task}</div>
+        </div>
       ) : (
         <button className={t.secret} onClick={() => setShown(true)}>
           🤫 Nur wer dran ist: hier tippen
