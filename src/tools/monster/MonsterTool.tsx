@@ -4,11 +4,12 @@ import { tone } from '../../lib/audio'
 import { pick } from '../../lib/random'
 import NewButton from '../NewButton'
 import t from '../tool.module.css'
-import { MONSTER_NAMES, MONSTER_PARTS } from './parts'
+import { MONSTER_PARTS, MONSTER_SYLLABLES } from './parts'
 
 type Monster = { name: string; parts: Record<string, string> }
 
-const drawName = () => pick(MONSTER_NAMES.start) + pick(MONSTER_NAMES.end)
+const drawName = () =>
+  pick(MONSTER_SYLLABLES.first) + pick(MONSTER_SYLLABLES.second)
 
 const drawMonster = (): Monster => ({
   name: drawName(),

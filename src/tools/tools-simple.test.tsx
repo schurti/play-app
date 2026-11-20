@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import type { ComponentType } from 'react'
 import { GAMES } from '../games'
 import { ANIMALS } from './animal/animals'
-import { MONSTER_PARTS } from './monster/parts'
+import { MONSTER_PARTS, MONSTER_SYLLABLES } from './monster/parts'
 import { YOGA } from './yoga/poses'
 import { FIGURES } from './yoga/figures'
 import { TREASURE } from './treasure/riddles'
@@ -101,7 +101,7 @@ describe('einfache Werkzeuge', () => {
 
   it('monster würfelt alle Bauteile und einzelne Zeilen neu', async () => {
     await renderTool('monster')
-    expect(await screen.findByText('Grummelbert')).toBeInTheDocument()
+    expect(await screen.findByText('Bobel')).toBeInTheDocument()
     for (const part of MONSTER_PARTS) {
       expect(screen.getByText(part.label)).toBeInTheDocument()
       expect(part.options.length).toBeGreaterThanOrEqual(25)
@@ -119,13 +119,32 @@ describe('einfache Werkzeuge', () => {
     ).toBeInTheDocument()
     // Die anderen Teile bleiben gleich
     expect(screen.getByText('rund wie ein Ball')).toBeInTheDocument()
-    expect(screen.getByText('Grummelbert')).toBeInTheDocument()
+    expect(screen.getByText('Bobel')).toBeInTheDocument()
 
     await userEvent.click(
       screen.getByRole('button', { name: '🔄 Neues Monster' }),
     )
-    expect(screen.getByText('Pupsizaus')).toBeInTheDocument()
+    expect(screen.getByText('Zorzus')).toBeInTheDocument()
     expect(screen.queryByText('rund wie ein Ball')).not.toBeInTheDocument()
+  })
+
+  it('monster-Namen bestehen aus zwei Silben', () => {
+    const { first, second } = MONSTER_SYLLABLES
+    const vowelGroups = (s: string) =>
+      (s.toLowerCase().match(/[aeiouäöü]+/g) ?? []).length
+    for (const s of first) {
+      expect(s).toMatch(/^[A-ZÄÖÜ]/)
+      expect(vowelGroups(s)).toBe(1)
+    }
+    for (const s of second) {
+      expect(s).toMatch(/^[^aeiouäöüA-Z]/)
+      expect(vowelGroups(s)).toBe(1)
+    }
+    // Keine Doppel wie «Bobo»: die Listen überschneiden sich nicht
+    const lower = new Set(first.map((s) => s.toLowerCase()))
+    expect(second.filter((s) => lower.has(s))).toEqual([])
+    expect(new Set(first).size).toBe(first.length)
+    expect(new Set(second).size).toBe(second.length)
   })
 
   it('story zeigt Wer, Wo, Was', async () => {
