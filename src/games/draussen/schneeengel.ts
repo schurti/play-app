@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 30,
   items: ['Kleider'],
   tags: ['gruppe'],
+  seasons: ['winter'],
   order: 130,
   steps: [
     'Legt euch rücklings in frischen Schnee und bewegt Arme und Beine – fertig ist der Schnee-Engel.',

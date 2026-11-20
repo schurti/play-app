@@ -10,6 +10,7 @@ export default defineGame({
   minutes: 10,
   items: ['Wasser', 'Teller'],
   tags: ['allein'],
+  seasons: ['winter'],
   order: 350,
   steps: [
     'Legt ein paar Eiswürfel auf einen Teller.',

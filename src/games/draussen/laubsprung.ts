@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 20,
   items: [],
   tags: ['allein', 'gruppe'],
+  seasons: ['herbst'],
   order: 200,
   steps: [
     'Recht im Herbst einen grossen Laubhaufen zusammen.',

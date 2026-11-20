@@ -10,6 +10,7 @@ export default defineGame({
   items: ['Papier', 'Stifte', 'Klebeband'],
   tags: ['allein', 'leise'],
   place: 'draussen',
+  seasons: ['sommer'],
   order: 230,
   steps: [
     'Klebt an einem sonnigen Morgen ein Papier aufs Fensterbrett und stellt einen Becher darauf.',

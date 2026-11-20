@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 15,
   items: ['Wasser', 'Pinsel'],
   tags: ['allein'],
+  seasons: ['sommer'],
   order: 100,
   steps: [
     'Nehmt einen Becher Wasser und einen Pinsel mit auf den Balkon oder vor die Tür.',

@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 25,
   items: ['Spülmittel', 'Wasser', 'Schnur', 'Eimer'],
   tags: ['gruppe'],
+  seasons: ['sommer'],
   order: 230,
   steps: [
     'Mischt im Eimer Wasser mit viel Spülmittel.',

@@ -4,6 +4,8 @@ import type { Item } from './items'
 
 export type Tag = 'allein' | 'gruppe' | 'leise'
 
+export type Season = 'fruehling' | 'sommer' | 'herbst' | 'winter'
+
 /** Wo gespielt wird. Ohne Angabe: drinnen (bzw. draussen bei der Kategorie „Draussen“). */
 export type Place = 'drinnen' | 'draussen' | 'beides'
 
@@ -19,6 +21,8 @@ export interface Game {
   items: Item[]
   tags: Tag[]
   place?: Exclude<Place, 'drinnen'>
+  /** Passt besonders zu diesen Jahreszeiten (für das Spiel des Tages). Ohne Angabe: ganzjährig. */
+  seasons?: Season[]
   order: number
   steps: string[]
   learn: string

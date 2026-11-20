@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 25,
   items: ['Kreide'],
   tags: ['allein'],
+  seasons: ['fruehling', 'sommer'],
   order: 120,
   steps: [
     'Malt mit Strassenkreide eine ganze Stadt auf den Platz: Strassen, Kreisel, Zebrastreifen, Parkplätze.',

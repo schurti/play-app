@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 15,
   items: ['Obst', 'Becher', 'Löffel'],
   tags: ['allein'],
+  seasons: ['sommer'],
   order: 80,
   steps: [
     'Zerdrückt Beeren oder Banane mit etwas Joghurt.',

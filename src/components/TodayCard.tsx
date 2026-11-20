@@ -2,7 +2,7 @@ import { GAMES } from '../games'
 import { CATEGORIES, catVars } from '../games/categories'
 import { useGameNav } from '../hooks/useGameNav'
 import { ageLabel } from '../games/types'
-import { gameOfTheDay } from '../lib/daily'
+import { fitsSeason, gameOfTheDay, SEASON_LABEL, seasonOf } from '../lib/daily'
 import Art from './Art'
 import Scene from './Scene'
 import styles from './TodayCard.module.css'
@@ -17,6 +17,8 @@ export default function TodayCard() {
   const { openGame } = useGameNav()
   const today = new Date()
   const g = gameOfTheDay(GAMES, today)
+  const season = seasonOf(today)
+  const seasonal = fitsSeason(g, season)
   return (
     <button
       className={styles.today}
@@ -29,7 +31,11 @@ export default function TodayCard() {
       </span>
       <span className={styles.body}>
         <span className={styles.head}>
-          <small>⭐ Spiel des Tages</small>
+          <small>
+            {seasonal
+              ? `${SEASON_LABEL[season].emoji} Spiel des Tages · passt zum ${SEASON_LABEL[season].name}`
+              : '⭐ Spiel des Tages'}
+          </small>
           <span className={styles.date}>{DATE.format(today)}</span>
         </span>
         <span className={styles.row}>

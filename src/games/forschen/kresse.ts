@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: ['Kresse-Samen', 'Küchenpapier', 'Becher'],
   tags: ['allein', 'leise'],
+  seasons: ['fruehling'],
   order: 70,
   steps: [
     'Malt ein Gesicht auf einen Becher.',

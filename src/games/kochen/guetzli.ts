@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 45,
   items: ['Mehl', 'Ausstechformen', 'Teller'],
   tags: ['gruppe'],
+  seasons: ['winter'],
   order: 100,
   steps: [
     'Knetet einen einfachen Mürbeteig (oder kauft einen fertigen).',

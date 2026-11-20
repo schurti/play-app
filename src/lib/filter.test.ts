@@ -22,16 +22,16 @@ const count = (patch: Partial<Filters>) =>
   GAMES.filter((x) => matchGame(x, f(patch))).length
 
 describe('itemsByFrequency', () => {
-  it('liefert alle 80 Gegenstände, häufigste zuerst', () => {
+  it('liefert alle 83 Gegenstände, häufigste zuerst', () => {
     const items = itemsByFrequency(GAMES)
-    expect(items).toHaveLength(80)
+    expect(items).toHaveLength(83)
     expect(items.slice(0, 6)).toEqual([
       'Papier',
       'Stifte',
       'Klebeband',
       'Wasser',
-      'Karton',
       'Becher',
+      'Karton',
     ])
   })
 })
@@ -46,8 +46,8 @@ describe('matchGame', () => {
     expect(matchGame(g('kniereiter'), f({ age: 4 }))).toBe(true)
     expect(matchGame(g('kniereiter'), f({ age: 5 }))).toBe(false)
     expect(matchGame(g('farben'), f({ age: 1 }))).toBe(false)
-    expect(count({ age: 2 })).toBe(32)
-    expect(count({ age: 6 })).toBe(GAMES.length - 27)
+    expect(count({ age: 2 })).toBe(40)
+    expect(count({ age: 6 })).toBe(GAMES.length - 29)
   })
   it('Dauer', () => {
     expect(matchGame(g('collage'), f({ dur: 10 }))).toBe(false)
@@ -55,8 +55,8 @@ describe('matchGame', () => {
     expect(matchGame(g('farben'), f({ dur: 99 }))).toBe(false)
   })
   it('Mitspieler', () => {
-    expect(count({ who: 'allein' })).toBe(277)
-    expect(count({ who: 'gruppe' })).toBe(236)
+    expect(count({ who: 'allein' })).toBe(297)
+    expect(count({ who: 'gruppe' })).toBe(294)
   })
   it('Ort: „beides“ zählt für drinnen und draussen', () => {
     expect(matchGame(g('stabfangen'), f({ place: 'drinnen' }))).toBe(true)
@@ -69,18 +69,18 @@ describe('matchGame', () => {
     )
   })
   it('Stimmung ruhig / wild', () => {
-    expect(count({ mood: 'ruhig' })).toBe(160)
+    expect(count({ mood: 'ruhig' })).toBe(179)
     expect(matchGame(g('lava'), f({ mood: 'wild' }))).toBe(true)
     expect(matchGame(g('kim'), f({ mood: 'wild' }))).toBe(false)
   })
   it('Sofort: ohne Material und höchstens 10 Minuten', () => {
     expect(matchGame(g('farben'), f({ sofort: true }))).toBe(true)
     expect(matchGame(g('kim'), f({ sofort: true }))).toBe(false)
-    expect(count({ sofort: true })).toBe(91)
+    expect(count({ sofort: true })).toBe(98)
   })
   it('Mit App und Stift & Papier', () => {
     expect(count({ app: true })).toBe(GAMES.filter((x) => x.tool).length)
-    expect(count({ stift: true })).toBe(73)
+    expect(count({ stift: true })).toBe(81)
     expect(matchGame(g('farben'), f({ stift: true }))).toBe(false)
   })
   it('Vorhandenes: alle Gegenstände müssen gewählt sein', () => {

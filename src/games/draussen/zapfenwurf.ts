@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 15,
   items: ['Eimer'],
   tags: ['allein', 'gruppe'],
+  seasons: ['herbst'],
   order: 190,
   steps: [
     'Sammelt einen Haufen Tannenzapfen.',

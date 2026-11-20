@@ -10,6 +10,7 @@ export default defineGame({
   minutes: 10,
   items: [],
   tags: ['allein'],
+  seasons: ['herbst'],
   order: 290,
   steps: [
     'Sucht im Herbst einen Haufen trockenes Laub.',

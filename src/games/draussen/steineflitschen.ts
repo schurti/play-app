@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 15,
   items: [],
   tags: ['allein', 'gruppe'],
+  seasons: ['sommer'],
   order: 210,
   steps: [
     'Sucht flache, runde Steine.',

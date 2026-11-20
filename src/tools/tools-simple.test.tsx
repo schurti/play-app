@@ -8,6 +8,7 @@ import { YOGA } from './yoga/poses'
 import { FIGURES } from './yoga/figures'
 import { TREASURE } from './treasure/riddles'
 import { PANTO } from './panto/cards'
+import { EXPLAIN } from './explain/cards'
 import type { ToolId } from './ids'
 import { TOOLS } from './registry'
 import type { ToolProps } from './ToolProps'
@@ -24,6 +25,11 @@ async function renderTool(id: ToolId, random = 0) {
   const Tool = TOOLS[id] as ComponentType<ToolProps>
   expect(Tool).toBeDefined()
   render(<Tool game={GAMES[0]} color="#123456" />)
+}
+
+/** Erste Karte nach shuffle() mit Math.random = 0 (Fisher-Yates). */
+function shuffleFirst<T>(arr: readonly T[]): T {
+  return arr.length > 1 ? arr[1] : arr[0]
 }
 
 afterEach(() => {
@@ -175,6 +181,34 @@ describe('einfache Werkzeuge', () => {
     expect(screen.getByText('Elefant')).toBeInTheDocument()
     await userEvent.click(screen.getByRole('button', { name: '🔄 Neue Karte' }))
     expect(screen.queryByText('Elefant')).not.toBeInTheDocument()
+  })
+
+  it('explain verbirgt die Karte und wechselt zwischen Bild und Wort', async () => {
+    await renderTool('explain')
+    const bild = shuffleFirst(EXPLAIN.bild)
+    expect(screen.queryByText(bild.word)).not.toBeInTheDocument()
+    await userEvent.click(
+      screen.getByRole('button', { name: '🤫 Nur wer erklärt: hier tippen' }),
+    )
+    expect(screen.getByText(bild.word)).toBeInTheDocument()
+    expect(screen.getByText(bild.kind)).toBeInTheDocument()
+
+    await userEvent.click(screen.getByRole('button', { name: '🎉 Erraten!' }))
+    expect(screen.queryByText(bild.word)).not.toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: '🤫 Nur wer erklärt: hier tippen' }),
+    ).toBeInTheDocument()
+
+    const wortBtn = screen.getByRole('button', { name: '🔤 Wort-Karten' })
+    expect(wortBtn).toHaveAttribute('aria-pressed', 'false')
+    await userEvent.click(wortBtn)
+    expect(wortBtn).toHaveAttribute('aria-pressed', 'true')
+    await userEvent.click(
+      screen.getByRole('button', { name: '🤫 Nur wer erklärt: hier tippen' }),
+    )
+    expect(
+      screen.getByText(shuffleFirst(EXPLAIN.wort).word),
+    ).toBeInTheDocument()
   })
 
   it('dice: 2 Würfel zeigt Summe im Format a + b = s', async () => {

@@ -223,6 +223,26 @@ const SCENES: Record<CategoryId, ReactNode> = {
       />
     </>
   ),
+  geschwister: (
+    <>
+      {bg('#DDF1E4')}
+      <path d="M-170 114 Q20 102 160 112 T490 108 V150 H-170Z" fill="#CDE9D6" />
+      {/* zwei Ballone an verknoteten Schnüren */}
+      <path
+        d="M58 52 Q62 80 72 104 M84 46 Q80 78 72 104"
+        stroke="#B3D8BF"
+        strokeWidth="2"
+        fill="none"
+      />
+      <ellipse cx="56" cy="40" rx="12" ry="14" fill="#F4CADB" />
+      <ellipse cx="86" cy="34" rx="10" ry="12" fill="#FAE0A0" />
+      <g fill="#FFFFFF" opacity="0.7">
+        <circle cx="236" cy="70" r="11" />
+        <circle cx="262" cy="78" r="8" />
+      </g>
+      <path d="M226 112 q10 -30 20 0 M254 112 q8 -24 16 0" fill="#B3D8BF" />
+    </>
+  ),
   unterwegs: (
     <>
       {bg('#DCEBF2')}
@@ -361,6 +381,27 @@ const SCENES: Record<CategoryId, ReactNode> = {
         opacity="0.6"
       />
       <rect x="232" y="118" width="38" height="7" rx="2" fill="#F6D29A" />
+    </>
+  ),
+  bauen: (
+    <>
+      {bg('#DBE8F7')}
+      {floor(112, '#CCDDF2')}
+      {/* Klotzturm links, Brücke rechts, Schiene am Boden */}
+      <rect x="44" y="92" width="22" height="20" rx="3" fill="#F2C7BF" />
+      <rect x="68" y="92" width="22" height="20" rx="3" fill="#B9CCEC" />
+      <rect x="56" y="72" width="22" height="20" rx="3" fill="#F3D9BC" />
+      <path d="M58 72 L67 56 L76 72Z" fill="#C8E3CC" />
+      <rect x="228" y="88" width="14" height="24" rx="3" fill="#B9CCEC" />
+      <rect x="272" y="88" width="14" height="24" rx="3" fill="#B9CCEC" />
+      <path
+        d="M222 88 h70 v-8 a8 8 0 0 0 -8 -8 h-54 a8 8 0 0 0 -8 8z"
+        fill="#F3D9BC"
+      />
+      <g stroke="#B6C9E6" strokeWidth="3">
+        <path d={`M${W.x} 126 H480`} />
+        <path d="M20 122 v8 M44 122 v8 M268 122 v8 M292 122 v8" />
+      </g>
     </>
   ),
   musik: (

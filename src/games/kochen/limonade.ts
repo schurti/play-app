@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: ['Zitrone', 'Wasser', 'Gläser', 'Löffel'],
   tags: ['gruppe'],
+  seasons: ['sommer'],
   order: 160,
   steps: [
     'Presst eine Zitrone aus.',

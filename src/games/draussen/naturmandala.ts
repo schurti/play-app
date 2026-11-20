@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 20,
   items: [],
   tags: ['allein', 'leise'],
+  seasons: ['herbst'],
   order: 30,
   steps: [
     'Sammelt draussen Blätter, Steine, Zapfen, Blüten und Stöcke.',

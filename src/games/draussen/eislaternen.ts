@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 20,
   items: ['Schüssel', 'Wasser', 'Becher'],
   tags: ['allein'],
+  seasons: ['winter'],
   order: 150,
   steps: [
     'Füllt eine Schüssel mit Wasser und stellt einen Becher mit Steinen in die Mitte.',

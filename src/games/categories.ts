@@ -20,6 +20,8 @@ export type CategoryId =
   | 'ruhe'
   | 'unterwegs'
   | 'rollen'
+  | 'bauen'
+  | 'geschwister'
 
 export interface Category {
   name: string
@@ -63,6 +65,7 @@ export const CATEGORIES: Record<CategoryId, Category> = {
     soft: '#D3F1EC',
   },
   basteln: { name: 'Basteln', emoji: '✂️', color: '#C47A00', soft: '#FDEBB5' },
+  bauen: { name: 'Bauen', emoji: '🧱', color: '#2B6CB0', soft: '#DBE8F7' },
   musik: { name: 'Musik', emoji: '🎵', color: '#8B5CF6', soft: '#EDE4FF' },
   rollen: {
     name: 'Rollenspiel',
@@ -119,6 +122,12 @@ export const CATEGORIES: Record<CategoryId, Category> = {
     color: '#B7791F',
     soft: '#FDF3C7',
   },
+  geschwister: {
+    name: 'Geschwister',
+    emoji: '🫂',
+    color: '#2F855A',
+    soft: '#DDF1E4',
+  },
   ruhe: { name: 'Ruhe', emoji: '🌙', color: '#5B6B8C', soft: '#E5E9F2' },
 }
 
@@ -149,7 +158,7 @@ export const WORLDS: readonly World[] = [
     id: 'kreativ',
     name: 'Kreativ',
     emoji: '🖍️',
-    cats: ['malen', 'papier', 'basteln', 'musik', 'rollen'],
+    cats: ['malen', 'papier', 'basteln', 'bauen', 'musik', 'rollen'],
   },
   {
     id: 'denken',
@@ -161,7 +170,14 @@ export const WORLDS: readonly World[] = [
     id: 'alltag',
     name: 'Alltag & Familie',
     emoji: '🏡',
-    cats: ['kochen', 'haushalt', 'unterwegs', 'gefuehle', 'ruhe'],
+    cats: [
+      'kochen',
+      'haushalt',
+      'unterwegs',
+      'gefuehle',
+      'geschwister',
+      'ruhe',
+    ],
   },
 ]
 

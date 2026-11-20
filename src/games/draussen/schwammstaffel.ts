@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 20,
   items: ['Schwamm', 'Eimer', 'Becher'],
   tags: ['gruppe'],
+  seasons: ['sommer'],
   order: 220,
   steps: [
     'Stellt an einem heissen Tag einen vollen und einen leeren Eimer weit auseinander.',

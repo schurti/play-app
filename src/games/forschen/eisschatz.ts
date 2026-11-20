@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 20,
   items: ['Becher', 'Wasser', 'Salz'],
   tags: ['allein'],
+  seasons: ['winter'],
   order: 50,
   steps: [
     'Am Vorabend: Ein kleines Spielzeug in einen Becher mit Wasser legen und einfrieren.',

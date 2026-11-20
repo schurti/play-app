@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 20,
   items: [],
   tags: ['gruppe'],
+  seasons: ['sommer'],
   order: 170,
   steps: [
     'Sucht verschiedene Untergründe: Wiese, Moos, Sand, Kies, Rinde.',

@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 15,
   items: [],
   tags: ['gruppe'],
+  seasons: ['sommer'],
   order: 10,
   steps: [
     'Geht an einem sonnigen Tag nach draussen.',

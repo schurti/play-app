@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 10,
   items: ['Gläser', 'Küchenpapier', 'Wasser', 'Bohnen'],
   tags: ['allein', 'leise'],
+  seasons: ['fruehling'],
   order: 160,
   steps: [
     'Rollt nasses Küchenpapier und steckt es rundherum in ein Glas.',

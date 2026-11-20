@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 30,
   items: ['Schnur'],
   tags: ['allein'],
+  seasons: ['sommer'],
   order: 260,
   steps: [
     'Sammelt gerade Stöcke, etwa gleich lang.',

@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 20,
   items: ['Kleider'],
   tags: ['allein', 'gruppe'],
+  seasons: ['fruehling', 'herbst'],
   order: 60,
   steps: [
     'Zieht Regenkleider und Gummistiefel an.',

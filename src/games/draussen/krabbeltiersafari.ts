@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 20,
   items: ['Lupe', 'Becher'],
   tags: ['allein', 'leise'],
+  seasons: ['fruehling', 'sommer'],
   order: 70,
   steps: [
     'Hebt vorsichtig Steine und Holzstücke an.',

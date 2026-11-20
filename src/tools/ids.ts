@@ -15,6 +15,7 @@ export const TOOL_IDS = [
   'treasure',
   'draw',
   'monster',
+  'explain',
 ] as const
 
 export type ToolId = (typeof TOOL_IDS)[number]

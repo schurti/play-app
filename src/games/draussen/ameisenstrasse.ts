@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 15,
   items: ['Lupe'],
   tags: ['allein', 'leise'],
+  seasons: ['fruehling', 'sommer'],
   order: 240,
   steps: [
     'Sucht eine Ameisenstrasse.',

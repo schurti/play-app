@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 15,
   items: ['Farbe', 'Pinsel', 'Papier'],
   tags: ['allein', 'leise'],
+  seasons: ['herbst'],
   order: 240,
   steps: [
     'Sammelt draussen ein paar Blätter mit starken Adern.',

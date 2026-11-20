@@ -40,7 +40,7 @@ describe('Entdecken', () => {
 
   it('zeigt Tageskarte, Wunsch-Karte und alle Kategorien in vier Welten', () => {
     renderAt('/')
-    expect(screen.getByText('⭐ Spiel des Tages')).toBeInTheDocument()
+    expect(screen.getByText(/Spiel des Tages/)).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Keine Idee\?/ })).toHaveAttribute(
       'href',
       '/zufall',
@@ -55,8 +55,8 @@ describe('Entdecken', () => {
     const tiles = screen
       .getAllByRole('link')
       .filter((a) => a.getAttribute('href')?.startsWith('/k/'))
-    expect(tiles).toHaveLength(19)
-    expect(screen.getByRole('link', { name: /Ruhe\s*33 Spiele/ })).toBeVisible()
+    expect(tiles).toHaveLength(21)
+    expect(screen.getByRole('link', { name: /Ruhe\s*34 Spiele/ })).toBeVisible()
   })
 
   it('führt über das Suchfeld zur Suche', async () => {
@@ -92,17 +92,17 @@ describe('Entdecken', () => {
 describe('Kategorie-Seite', () => {
   it('zeigt Kopf, Spiele und die Kategorien derselben Welt', async () => {
     const router = renderAt('/')
-    await userEvent.click(screen.getByRole('link', { name: /Ruhe\s*33/ }))
+    await userEvent.click(screen.getByRole('link', { name: /Ruhe\s*34/ }))
     expect(router.state.location.pathname).toBe('/k/ruhe')
     expect(
       screen.getByRole('heading', { level: 2, name: 'Ruhe' }),
     ).toBeVisible()
-    expect(screen.getByText('33 Spiele')).toBeInTheDocument()
+    expect(screen.getByText('34 Spiele')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Ruhe' })).toHaveAttribute(
       'aria-current',
       'page',
     )
-    // nur die fünf Kategorien von „Alltag & Familie“
+    // nur die sechs Kategorien von „Alltag & Familie“
     expect(screen.getByRole('link', { name: 'Kochen & Backen' })).toBeVisible()
     expect(screen.queryByRole('link', { name: 'Bewegung' })).toBeNull()
   })

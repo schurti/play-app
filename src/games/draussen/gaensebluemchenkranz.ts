@@ -9,6 +9,7 @@ export default defineGame({
   minutes: 20,
   items: [],
   tags: ['allein', 'leise'],
+  seasons: ['fruehling', 'sommer'],
   order: 160,
   steps: [
     'Pflückt Gänseblümchen mit langen Stielen.',
