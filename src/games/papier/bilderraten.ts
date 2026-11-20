@@ -11,12 +11,13 @@ export default defineGame({
   tags: ['gruppe'],
   order: 10,
   steps: [
-    'Eine Person denkt sich heimlich ein Wort aus: Hund, Velo, Glace, Regenschirm.',
-    'Sie zeichnet es – ohne Buchstaben und ohne zu sprechen.',
+    'Eine Person holt sich heimlich ein Wort aus der App oder denkt sich selbst eins aus.',
+    'Sie zeichnet es, ohne Buchstaben und ohne zu sprechen.',
     'Die anderen raten laut. Wer es errät, zeichnet als Nächstes.',
-    'Spannender wird es mit Zeitlimit: Jemand zählt langsam bis 60 – schafft ihr es bis dahin?',
+    'Spannender wird es mit Zeitlimit: Jemand zählt langsam bis 60. Schafft ihr es bis dahin?',
   ],
   learn: 'Ideen auf das Wesentliche reduzieren und genau hinschauen.',
   variants:
     'Für Kleine: Erwachsene zeichnen, Kinder raten. Für Grössere: schwierigere Wörter wie „Geburtstag“ oder „Gewitter“.',
+  tool: 'term',
 })

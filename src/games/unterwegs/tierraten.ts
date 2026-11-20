@@ -12,9 +12,10 @@ export default defineGame({
   place: 'beides',
   order: 60,
   steps: [
-    'Eine Person denkt sich ein Tier aus.',
-    'Die anderen stellen Ja-Nein-Fragen: „Kann es fliegen?“ – „Lebt es im Wasser?“',
-    'Wer das Tier errät, denkt sich das nächste aus.',
+    'Eine Person denkt sich ein Tier aus oder holt sich heimlich eins aus der App.',
+    'Die anderen stellen Ja-Nein-Fragen: «Kann es fliegen?», «Lebt es im Wasser?»',
+    'Wer das Tier errät, ist als Nächstes dran.',
   ],
   learn: 'Gezielt fragen und Tiere unterscheiden.',
+  tool: 'term',
 })

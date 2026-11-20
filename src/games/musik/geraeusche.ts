@@ -12,8 +12,9 @@ export default defineGame({
   order: 50,
   steps: [
     'Das Kind schliesst die Augen.',
-    'Jemand macht ein Geräusch: Schlüssel klimpern, Papier knüllen, Wasser giessen, Reissverschluss.',
+    'Jemand macht ein Geräusch, zum Beispiel eines aus der App: Schlüssel klimpern, Papier knüllen, Wasser giessen.',
     'Was war das? Dann tauschen.',
   ],
   learn: 'Genaues Hinhören.',
+  tool: 'term',
 })

@@ -11,11 +11,12 @@ export default defineGame({
   tags: ['gruppe'],
   order: 120,
   steps: [
-    'Eine Person nennt eine Gruppe: „Alles, was Obst ist!“',
-    'Der Ball wird herumgeworfen – wer fängt, nennt schnell etwas Passendes.',
-    'Wer nichts mehr weiss, wählt die nächste Gruppe.',
+    'Eine Person nennt eine Gruppe aus der App: «Alles, was Obst ist!»',
+    'Der Ball wird herumgeworfen. Wer fängt, nennt schnell etwas Passendes.',
+    'Wer nichts mehr weiss, holt die nächste Gruppe.',
   ],
   learn: 'Oberbegriffe und Wortschatz.',
   variants:
     'Ideen: Tiere mit vier Beinen, Dinge in der Küche, Fahrzeuge, Farben.',
+  tool: 'term',
 })

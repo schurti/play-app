@@ -11,9 +11,10 @@ export default defineGame({
   tags: ['gruppe', 'leise'],
   order: 70,
   steps: [
-    'Eine Person summt ein bekanntes Lied – ohne Worte.',
+    'Eine Person holt sich heimlich ein Lied aus der App und summt es, ohne Worte.',
     'Die anderen raten.',
     'Wer es errät, summt das nächste.',
   ],
   learn: 'Melodien erkennen und Gedächtnis.',
+  tool: 'term',
 })

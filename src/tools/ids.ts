@@ -6,7 +6,6 @@ export const TOOL_IDS = [
   'animal',
   'yoga',
   'story',
-  'panto',
   'dice',
   'commands',
   'dance',
@@ -16,6 +15,7 @@ export const TOOL_IDS = [
   'draw',
   'monster',
   'explain',
+  'term',
 ] as const
 
 export type ToolId = (typeof TOOL_IDS)[number]

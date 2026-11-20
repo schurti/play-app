@@ -11,9 +11,10 @@ export default defineGame({
   tags: ['gruppe'],
   order: 70,
   steps: [
-    'Eine Person zeigt ohne Worte ein Gefühl: wütend, ängstlich, stolz, gelangweilt.',
+    'Eine Person holt sich heimlich ein Gefühl aus der App und zeigt es ohne Worte.',
     'Die anderen raten.',
     'Wer es errät, erzählt, wann er sich zuletzt so gefühlt hat.',
   ],
   learn: 'Gefühle erkennen und zeigen.',
+  tool: 'term',
 })

@@ -7,7 +7,6 @@ import { MONSTER_PARTS, MONSTER_SYLLABLES } from './monster/parts'
 import { YOGA } from './yoga/poses'
 import { FIGURES } from './yoga/figures'
 import { TREASURE } from './treasure/riddles'
-import { PANTO } from './panto/cards'
 import { EXPLAIN } from './explain/cards'
 import type { ToolId } from './ids'
 import { TOOLS } from './registry'
@@ -169,18 +168,6 @@ describe('einfache Werkzeuge', () => {
       screen.getByRole('button', { name: '🔄 Neue Aufgabe' }),
     )
     expect(screen.getByText('Finde etwas in Grau!')).toBeInTheDocument()
-  })
-
-  it('panto verbirgt das Wort bis zum Tipp', async () => {
-    await renderTool('panto')
-    const reveal = await screen.findByRole('button', {
-      name: '🤫 Nur wer dran ist: hier tippen',
-    })
-    expect(screen.queryByText(PANTO[0].word)).not.toBeInTheDocument()
-    await userEvent.click(reveal)
-    expect(screen.getByText('Elefant')).toBeInTheDocument()
-    await userEvent.click(screen.getByRole('button', { name: '🔄 Neue Karte' }))
-    expect(screen.queryByText('Elefant')).not.toBeInTheDocument()
   })
 
   it('explain verbirgt die Karte und wechselt zwischen Bild und Wort', async () => {

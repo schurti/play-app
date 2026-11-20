@@ -16,5 +16,5 @@ export default defineGame({
     'Die anderen raten. Wer es errät, ist als Nächstes dran.',
   ],
   learn: 'Körpersprache und Fantasie.',
-  tool: 'panto',
+  tool: 'term',
 })

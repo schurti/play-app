@@ -12,9 +12,10 @@ export default defineGame({
   order: 10,
   steps: [
     'Zeichnet leere Kreise als Gesichter.',
-    'Eine Person malt heimlich ein Gefühl hinein: fröhlich, traurig, wütend, überrascht, müde.',
+    'Eine Person holt sich heimlich ein Gefühl aus der App und malt es in ein Gesicht.',
     'Die anderen raten das Gefühl.',
     'Erzählt: Wann habt ihr euch zuletzt so gefühlt?',
   ],
   learn: 'Gefühle erkennen, benennen und darüber reden.',
+  tool: 'term',
 })

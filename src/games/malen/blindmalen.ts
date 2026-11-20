@@ -11,9 +11,10 @@ export default defineGame({
   tags: ['gruppe'],
   order: 40,
   steps: [
-    'Zu zweit: Eine Person beschreibt ein Bild, z. B. „ein Haus mit einem Baum“.',
-    'Die andere malt nur nach der Beschreibung.',
-    'Vergleicht danach mit dem Original.',
+    'Zu zweit: Eine Person holt sich heimlich ein Bild aus der App, z. B. «Ein Hund mit einer Krone auf dem Mond».',
+    'Sie beschreibt es, die andere malt nur nach der Beschreibung.',
+    'Vergleicht danach: Was stimmt, was ist lustig geworden?',
   ],
   learn: 'Zuhören und genau beschreiben.',
+  tool: 'term',
 })

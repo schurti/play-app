@@ -12,9 +12,10 @@ export default defineGame({
   order: 100,
   steps: [
     'Alle schliessen die Augen.',
-    'Jemand sagt an: „Zeichnet ein Schwein!“ – dann: „Jetzt die Ohren!“ – „Jetzt den Schwanz!“',
-    'Augen auf und vergleichen.',
-    'Wessen Schwein ist am lustigsten?',
+    'Jemand sagt an, was gezeichnet wird. Ideen gibt die App: «Zeichnet ein Schwein!»',
+    'Dann Teil für Teil: «Jetzt die Ohren!», «Jetzt den Schwanz!»',
+    'Augen auf und vergleichen. Wessen Bild ist am lustigsten?',
   ],
   learn: 'Vorstellungsvermögen, Körpergefühl – und viel Lachen.',
+  tool: 'term',
 })

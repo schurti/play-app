@@ -12,9 +12,10 @@ export default defineGame({
   order: 290,
   steps: [
     'Teilt ein Blatt in zwei Hälften.',
-    'Links malt ein Erwachsener etwas, z. B. eine Maus.',
+    'Links malt ein Erwachsener etwas, z. B. eine Maus. Ideen gibt die App.',
     'Rechts malt das Kind etwas, das sich darauf reimt: ein Haus!',
     'Wie viele Reim-Paare schafft ihr?',
   ],
   learn: 'Reime hören – eine wichtige Vorstufe zum Lesen.',
+  tool: 'term',
 })

@@ -11,9 +11,10 @@ export default defineGame({
   tags: ['gruppe'],
   order: 100,
   steps: [
-    'Eine Person legt heimlich einen Gegenstand in eine Schachtel.',
-    'Sie beschreibt ihn, ohne ihn zu nennen: „Es ist rund, rot und man kann es essen.“',
+    'Eine Person legt heimlich einen Gegenstand in eine Schachtel. Ideen gibt die App.',
+    'Sie beschreibt ihn, ohne ihn zu nennen: «Es ist rund, rot und man kann es essen.»',
     'Die anderen raten.',
   ],
   learn: 'Beschreiben, Eigenschaften und Wortschatz.',
+  tool: 'term',
 })

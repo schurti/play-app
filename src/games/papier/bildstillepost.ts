@@ -11,10 +11,11 @@ export default defineGame({
   tags: ['gruppe'],
   order: 250,
   steps: [
-    'Die erste Person zeichnet oben auf ein Blatt etwas Einfaches und faltet es um.',
+    'Die erste Person holt sich heimlich ein Motiv aus der App, zeichnet es oben auf ein Blatt und faltet es um.',
     'Die nächste schaut kurz und zeichnet es aus dem Gedächtnis darunter.',
     'Wieder umfalten und weitergeben.',
-    'Am Ende alles aufklappen: Was ist aus dem ersten Bild geworden?',
+    'Am Ende alles aufklappen: Was ist aus dem ersten Bild geworden? Und was stand in der App?',
   ],
   learn: 'Merkfähigkeit und genaues Hinschauen.',
+  tool: 'term',
 })

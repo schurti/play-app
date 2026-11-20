@@ -8,7 +8,6 @@ import ShapeTool from './shape/ShapeTool'
 import AnimalTool from './animal/AnimalTool'
 import YogaTool from './yoga/YogaTool'
 import StoryTool from './story/StoryTool'
-import PantoTool from './panto/PantoTool'
 import DiceTool from './dice/DiceTool'
 import CommandsTool from './commands/CommandsTool'
 import DanceTool from './dance/DanceTool'
@@ -18,6 +17,7 @@ import DrawTool from './draw/DrawTool'
 import TreasureTool from './treasure/TreasureTool'
 import MonsterTool from './monster/MonsterTool'
 import ExplainTool from './explain/ExplainTool'
+import TermTool from './term/TermTool'
 
 /** Alle Werkzeuge statisch gebündelt (offline-sicher); ein fehlendes Werkzeug ist ein Typfehler. */
 export const TOOLS: Record<ToolId, ComponentType<ToolProps>> = {
@@ -28,7 +28,6 @@ export const TOOLS: Record<ToolId, ComponentType<ToolProps>> = {
   animal: AnimalTool,
   yoga: YogaTool,
   story: StoryTool,
-  panto: PantoTool,
   dice: DiceTool,
   commands: CommandsTool,
   dance: DanceTool,
@@ -38,4 +37,5 @@ export const TOOLS: Record<ToolId, ComponentType<ToolProps>> = {
   treasure: TreasureTool,
   monster: MonsterTool,
   explain: ExplainTool,
+  term: TermTool,
 }

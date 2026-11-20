@@ -11,12 +11,13 @@ export default defineGame({
   tags: ['gruppe', 'leise'],
   order: 20,
   steps: [
-    'Eine Person sagt ein Wort, z. B. „gross“.',
-    'Das Kind ruft das Gegenteil: „klein!“',
+    'Eine Person liest ein Wort aus der App vor, z. B. «gross».',
+    'Das Kind ruft das Gegenteil: «klein!» Die Lösung steht in der App.',
     'Dazu passt eine Bewegung: gross machen, klein machen.',
     'Nach ein paar Runden tauschen.',
   ],
   learn: 'Wortschatz und Begriffe vergleichen.',
   variants:
     'Ideen: heiss–kalt, laut–leise, schnell–langsam, oben–unten, nass–trocken, voll–leer.',
+  tool: 'term',
 })

@@ -235,3 +235,9 @@
   font-size: 15px;
   opacity: 0.55;
 }
+.hint {
+  font-weight: 800;
+  font-size: 18px;
+  margin: 0 0 6px;
+  color: var(--c, var(--ink));
+}
